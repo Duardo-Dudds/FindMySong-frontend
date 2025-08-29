@@ -3,11 +3,12 @@
 Texto descritivo com a visão geral do projeto abordado. Inclui o contexto, o problema, os objetivos, a justificativa e o público-alvo do projeto.
 
 ## Problema
-Nesse momento você deve apresentar o problema que a sua aplicação deve  resolver. No entanto, não é a hora de comentar sobre a aplicação.
+Apesar da ampla difusão dos serviços de streaming e aplicativos de música, muitos usuários enfrentam dificuldades quando não lembram do título exato de uma canção ou do nome do artista. Na maioria das vezes, o que permanece na memória é apenas um pequeno trecho da letra, o que torna a busca frustrante, já que as ferramentas tradicionais geralmente não oferecem suporte eficiente para esse tipo de pesquisa.
 
-Descreva também o contexto em que essa aplicação será usada, se  houver: empresa, tecnologias, etc. Novamente, descreva apenas o que de  fato existir, pois ainda não é a hora de apresentar requisitos  detalhados ou projetos.
+Essa limitação prejudica a experiência do usuário, que acaba gastando tempo excessivo tentando localizar a música desejada ou até mesmo desistindo da procura. Além disso, estudantes que utilizam músicas como recurso pedagógico — por exemplo, no aprendizado de idiomas como o inglês — também encontram barreiras na hora de identificar canções a partir de versos específicos.
 
-Nesse momento, o grupo pode optar por fazer uso  de ferramentas como Design Thinking, que permite um olhar de ponta a ponta para o problema.
+Diante desse cenário, existe a necessidade de um sistema capaz de realizar buscas por trechos de letras, oferecendo resultados rápidos, precisos e integrados a plataformas oficiais de streaming. Assim, o problema que se apresenta não é apenas de ordem técnica, mas também de experiência do usuário, reforçando a relevância da solução
+proposta.
 
 > **Links Úteis**:
 > - [Objetivos, Problema de pesquisa e Justificativa](https://medium.com/@versioparole/objetivos-problema-de-pesquisa-e-justificativa-c98c8233b9c3)
@@ -16,9 +17,21 @@ Nesse momento, o grupo pode optar por fazer uso  de ferramentas como Design Thin
 
 ## Objetivos
 
-Aqui você deve descrever os objetivos do trabalho indicando que o objetivo geral é desenvolver um software para solucionar o problema apresentado acima. 
+Desenvolver um sistema que possibilite a busca de músicas por trechos de suas letras, de forma automatizada e integrada a plataformas de streaming credenciadas.
 
-Apresente também alguns (pelo menos 2) objetivos específicos dependendo de onde você vai querer concentrar a sua prática investigativa, ou como você vai aprofundar no seu trabalho.
+Objetivos Específicos
+> Criar uma interface simples, intuitiva e acessível para digitação do trecho e
+visualização dos resultados.
+> Integrar o sistema a uma base de dados ou API confiável, garantindo precisão na
+busca das letras.
+> Direcionar os usuários para plataformas oficiais de streaming, respeitando
+direitos autorais.
+> Implementar mecanismos de feedback para avaliar a qualidade das buscas
+realizadas.
+> Desenvolver relatórios de uso e desempenho, identificando músicas e artistas
+mais pesquisados.
+> Realizar testes de usabilidade e performance, assegurando que o sistema
+atenda às necessidades dos diferentes perfis de usuários.
  
 > **Links Úteis**:
 > - [Objetivo geral e objetivo específico: como fazer e quais verbos utilizar](https://blog.mettzer.com/diferenca-entre-objetivo-geral-e-objetivo-especifico/)
