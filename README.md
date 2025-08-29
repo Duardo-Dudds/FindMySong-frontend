@@ -1,10 +1,10 @@
-# TÍTULO DO PROJETO
+# FindMySong
 
-`CURSO`
+`Sistemas da Informação `
 
-`DISCIPLINA`
+`Trabalho Interdisciplinar: Aplicações para Processos de Negócios`
 
-`SEMESTRE`
+`3º`
 
 Descrever resumidamente, em um ou dois parágrafos, o projeto que está sendo desenvolvido.
 
@@ -15,9 +15,9 @@ Descrever resumidamente, em um ou dois parágrafos, o projeto que está sendo de
 * Nome completo do aluno 3
 * Nome completo do aluno 4
 
-## Orientador
+## Cleia Marcia Gomes Amaral
 
-* Nome completo do professor 1
+* Cleia Marcia Gomes Amaral
 
 ## Instruções de utilização
 
