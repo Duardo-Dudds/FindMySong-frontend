@@ -1,6 +1,11 @@
 # Introdução
 
-Texto descritivo com a visão geral do projeto abordado. Inclui o contexto, o problema, os objetivos, a justificativa e o público-alvo do projeto.
+Este projeto tem como objetivo o desenvolvimento de uma aplicação capaz de **buscar músicas a partir de trechos de suas letras**, oferecendo uma solução prática para um problema recorrente: a dificuldade de identificar uma canção quando o usuário não se lembra do título ou do artista.  
+
+## Contexto  
+
+Com a popularização dos serviços de streaming, ouvir música tornou-se parte do cotidiano. No entanto, os aplicativos tradicionais nem sempre oferecem recursos eficientes de pesquisa por letras. O mercado musical digital, em constante crescimento, abre espaço para soluções inovadoras que melhorem a experiência do usuário.  
+
 
 ## Problema
 Apesar da ampla difusão dos serviços de streaming e aplicativos de música, muitos usuários enfrentam dificuldades quando não lembram do título exato de uma canção ou do nome do artista. Na maioria das vezes, o que permanece na memória é apenas um pequeno trecho da letra, o que torna a busca frustrante, já que as ferramentas tradicionais geralmente não oferecem suporte eficiente para esse tipo de pesquisa.
