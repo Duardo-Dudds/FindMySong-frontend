@@ -1,35 +1,47 @@
 
-# Projeto de Interface
+# Projeto de Interface  
 
-<span style="color:red">Pré-requisitos: <a href="2-Especificação do Projeto.md"> Documentação de Especificação</a></span>
+O projeto de interface foi elaborado para garantir **simplicidade, clareza e acessibilidade**, atendendo diretamente aos requisitos funcionais, não funcionais e às histórias de usuário identificadas.  
 
-Visão geral da interação do usuário pelas telas do sistema e protótipo interativo das telas com as funcionalidades que fazem parte do sistema (wireframes).
+---
 
- Apresente as principais interfaces da plataforma. Discuta como ela foi elaborada de forma a atender os requisitos funcionais, não funcionais e histórias de usuário abordados nas <a href="2-Especificação do Projeto.md"> Documentação de Especificação</a>.
+## User Flow  
 
-## User Flow
+O **fluxo de usuário (User Flow)** descreve os principais caminhos de navegação na aplicação. Ele permite visualizar as interações esperadas e garante que cada persona consiga atingir seus objetivos com facilidade.  
 
-![Exemplo de UserFlow](img/userflow.jpg)
+### Principais fluxos mapeados:  
+1. **Busca de música por trecho da letra** → Exibir título, artista e links de streaming.  
+2. **Visualização da letra completa** → Apoiar estudantes e usuários curiosos.  
+3. **Feedback do resultado da busca** → Melhorar a precisão da aplicação.  
+4. **Relatórios administrativos** → Permitir que administradores gerenciem a base de dados.  
 
-Fluxo de usuário (User Flow) é uma técnica que permite ao desenvolvedor mapear todo fluxo de telas do site ou app. Essa técnica funciona para alinhar os caminhos e as possíveis ações que o usuário pode fazer junto com os membros de sua equipe.
+📌 O fluxograma abaixo exemplifica o caminho que o usuário percorre dentro da aplicação:  
 
-> **Links Úteis**:
-> - [User Flow: O Quê É e Como Fazer?](https://medium.com/7bits/fluxo-de-usu%C3%A1rio-user-flow-o-que-%C3%A9-como-fazer-79d965872534)
-> - [User Flow vs Site Maps](http://designr.com.br/sitemap-e-user-flow-quais-as-diferencas-e-quando-usar-cada-um/)
-> - [Top 25 User Flow Tools & Templates for Smooth](https://www.mockplus.com/blog/post/user-flow-tools)
+![User Flow](bc0000a3-914b-4160-81de-50297dcb63a2.png)  
 
+---
 
-## Wireframes
+## Wireframes  
 
-![Exemplo de Wireframe](img/wireframe-example.png)
+Foram desenvolvidos **wireframes de baixa fidelidade**, representando a estrutura e o layout inicial das telas. O objetivo é validar a experiência do usuário antes da implementação final.  
 
-São protótipos usados em design de interface para sugerir a estrutura de um site web e seu relacionamentos entre suas páginas. Um wireframe web é uma ilustração semelhante do layout de elementos fundamentais na interface.
- 
-> **Links Úteis**:
-> - [Protótipos vs Wireframes](https://www.nngroup.com/videos/prototypes-vs-wireframes-ux-projects/)
-> - [Ferramentas de Wireframes](https://rockcontent.com/blog/wireframes/)
-> - [MarvelApp](https://marvelapp.com/developers/documentation/tutorials/)
-> - [Figma](https://www.figma.com/)
-> - [Adobe XD](https://www.adobe.com/br/products/xd.html#scroll)
-> - [Axure](https://www.axure.com/edu) (Licença Educacional)
-> - [InvisionApp](https://www.invisionapp.com/) (Licença Educacional)
+### Telas prototipadas:  
+- **Tela inicial de busca:** campo de entrada de trecho da letra.  
+- **Tela de resultados:** lista de músicas com título, artista e botão para abrir em plataforma de streaming.  
+- **Tela de feedback:** formulário simples para avaliar a qualidade da busca.  
+- **Tela administrativa:** acesso para atualização de letras e geração de relatórios.  
+
+📌 Exemplo de wireframe criado para a aplicação:  
+
+![Wireframe](e32e04e8-7054-461c-b9f9-e7415ce4446e.png)  
+
+---
+
+## Conexão com os Requisitos  
+
+- **RF-001 (Busca por trecho da letra):** atendido pela tela inicial e tela de resultados.  
+- **RF-002 (Exibir título, artista e links):** contemplado no layout da tela de resultados.  
+- **RF-003 (Feedback do usuário):** garantido pela tela de avaliação.  
+- **RNF-001 (Responsividade):** interfaces desenhadas de forma adaptável para web e mobile.  
+- **Personas:** cada fluxo foi pensado para atender necessidades distintas (usuários comuns, estudantes, músicos e professores).  
+
