@@ -21,12 +21,12 @@ proposta.
 Desenvolver um sistema que possibilite a busca de músicas por trechos de suas letras, de forma automatizada e integrada a plataformas de streaming credenciadas.
 
 Objetivos Específicos
-> Criar uma interface simples, intuitiva e acessível para digitação do trecho e visualização dos resultados.
-> Integrar o sistema a uma base de dados ou API confiável, garantindo precisão na busca das letras.
-> Direcionar os usuários para plataformas oficiais de streaming, respeitando direitos autorais.
-> Implementar mecanismos de feedback para avaliar a qualidade das buscas realizadas.
-> Desenvolver relatórios de uso e desempenho, identificando músicas e artistas mais pesquisados.
-> Realizar testes de usabilidade e performance, assegurando que o sistema atenda às necessidades dos diferentes perfis de usuários.
+ Criar uma interface simples, intuitiva e acessível para digitação do trecho e visualização dos resultados.
+ Integrar o sistema a uma base de dados ou API confiável, garantindo precisão na busca das letras.
+ Direcionar os usuários para plataformas oficiais de streaming, respeitando direitos autorais.
+ Implementar mecanismos de feedback para avaliar a qualidade das buscas realizadas.
+ Desenvolver relatórios de uso e desempenho, identificando músicas e artistas mais pesquisados.
+ Realizar testes de usabilidade e performance, assegurando que o sistema atenda às necessidades dos diferentes perfis de usuários.
 
 
 ## Justificativa
