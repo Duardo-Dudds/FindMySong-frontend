@@ -10,10 +10,6 @@ Essa limitação prejudica a experiência do usuário, que acaba gastando tempo 
 Diante desse cenário, existe a necessidade de um sistema capaz de realizar buscas por trechos de letras, oferecendo resultados rápidos, precisos e integrados a plataformas oficiais de streaming. Assim, o problema que se apresenta não é apenas de ordem técnica, mas também de experiência do usuário, reforçando a relevância da solução
 proposta.
 
-> **Links Úteis**:
-> - [Objetivos, Problema de pesquisa e Justificativa](https://medium.com/@versioparole/objetivos-problema-de-pesquisa-e-justificativa-c98c8233b9c3)
-> - [Matriz Certezas, Suposições e Dúvidas](https://medium.com/educa%C3%A7%C3%A3o-fora-da-caixa/matriz-certezas-suposi%C3%A7%C3%B5es-e-d%C3%BAvidas-fa2263633655)
-> - [Brainstorming](https://www.euax.com.br/2018/09/brainstorming/)
 
 ## Objetivos
 
@@ -32,28 +28,89 @@ realizadas.
 mais pesquisados.
 > Realizar testes de usabilidade e performance, assegurando que o sistema
 atenda às necessidades dos diferentes perfis de usuários.
- 
-> **Links Úteis**:
-> - [Objetivo geral e objetivo específico: como fazer e quais verbos utilizar](https://blog.mettzer.com/diferenca-entre-objetivo-geral-e-objetivo-especifico/)
+
 
 ## Justificativa
 
-Descreva a importância ou a motivação para trabalhar com esta aplicação que você escolheu. Indique as razões pelas quais você escolheu seus objetivos específicos ou as razões para aprofundar em certos aspectos do software.
+A aplicação foi escolhida pela sua relevância em resolver um problema comum: **a dificuldade de encontrar músicas quando o usuário lembra apenas de um trecho da letra**.  
 
-O grupo de trabalho pode fazer uso de questionários, entrevistas e dados estatísticos, que podem ser apresentados, com o objetivo de esclarecer detalhes do problema que será abordado pelo grupo.
+- **Impacto prático:** torna a busca mais rápida, intuitiva e acessível.  
+- **Impacto social:** auxilia estudantes de idiomas e profissionais da música.  
+- **Impacto no mercado:** valoriza o consumo legal, ao direcionar para plataformas oficiais de streaming.  
 
-> **Links Úteis**:
-> - [Como montar a justificativa](https://guiadamonografia.com.br/como-montar-justificativa-do-tcc/)
+Os **objetivos específicos** foram definidos para garantir:  
+1. **Praticidade:** interface simples e intuitiva.  
+2. **Confiabilidade:** integração com APIs/bases oficiais.  
+3. **Aprimoramento contínuo:** mecanismos de feedback e relatórios de uso.  
 
-## Público-Alvo
+---
 
-Descreva quem serão as pessoas que usarão a sua aplicação indicando os diferentes perfis. O objetivo aqui não é definir quem serão os clientes ou quais serão os papéis dos usuários na aplicação. A ideia é, dentro do possível, conhecer um pouco mais sobre o perfil dos usuários: conhecimentos prévios, relação com a tecnologia, relações
-hierárquicas, etc.
+## Abordagem Metodológica  
 
-Adicione informações sobre o público-alvo por meio de uma descrição textual, diagramas de personas e mapa de stakeholders.
+Para esclarecer a problemática e validar a solução, o grupo pode utilizar:  
+- **Questionários online:** identificar dificuldades reais dos usuários.  
+- **Entrevistas rápidas:** com estudantes e músicos, avaliando a utilidade pedagógica e profissional.  
+- **Dados estatísticos:** relatórios da IFPI sobre o crescimento do mercado musical digital.  
 
-> **Links Úteis**:
-> - [Público-alvo](https://blog.hotmart.com/pt-br/publico-alvo/)
-> - [Como definir o público alvo](https://exame.com/pme/5-dicas-essenciais-para-definir-o-publico-alvo-do-seu-negocio/)
-> - [Público-alvo: o que é, tipos, como definir seu público e exemplos](https://klickpages.com.br/blog/publico-alvo-o-que-e/)
-> - [Qual a diferença entre público-alvo e persona?](https://rockcontent.com/blog/diferenca-publico-alvo-e-persona/)
+Esses recursos reforçam a importância do projeto e sustentam a proposta de desenvolvimento do sistema.  
+
+
+## Público-Alvo  
+
+A aplicação se destina a diferentes perfis de usuários, com níveis variados de conhecimento tecnológico e motivações distintas:  
+
+- **Usuários comuns:**  
+  - Pessoas que utilizam o sistema ocasionalmente para encontrar músicas.  
+  - Relação com tecnologia: usam aplicativos de streaming no dia a dia, mas não têm perfil técnico.  
+
+- **Estudantes de idiomas:**  
+  - Usam músicas como ferramenta pedagógica no aprendizado de línguas estrangeiras.  
+  - Relação com tecnologia: familiarizados com aplicativos educacionais e de música, buscam praticidade e precisão.  
+
+- **Músicos e pesquisadores:**  
+  - Utilizam o sistema para composições, estudos e análises musicais.  
+  - Relação com tecnologia: maior familiaridade com softwares de apoio, valorizam ferramentas de busca avançada.  
+
+- **Administradores:**  
+  - Responsáveis por manter a base de letras/artistas atualizada e garantir o funcionamento da aplicação.  
+  - Relação com tecnologia: possuem conhecimento técnico intermediário ou avançado.  
+
+- **Professores e educadores:**  
+  - Utilizam a aplicação como recurso de apoio em sala de aula ou pesquisas acadêmicas.  
+  - Relação com tecnologia: usam ferramentas digitais no ensino e valorizam interfaces simples.  
+
+---
+
+### Personas  
+
+**Persona 1 – Maria (usuária comum):**  
+- Idade: 22 anos  
+- Perfil: estudante universitária que gosta de ouvir música no dia a dia  
+- Dor: lembra só de um trecho da música e não consegue encontrá-la nos apps tradicionais  
+
+**Persona 2 – João (estudante de idiomas):**  
+- Idade: 18 anos  
+- Perfil: aluno de curso de inglês que usa músicas para treinar vocabulário  
+- Dor: precisa de um recurso rápido para encontrar letras e traduzir trechos  
+
+**Persona 3 – Ana (professora/pesquisadora):**  
+- Idade: 35 anos  
+- Perfil: professora de inglês que utiliza músicas como recurso pedagógico  
+- Dor: dificuldade em localizar rapidamente músicas com trechos específicos para aula  
+
+**Persona 4 – Carlos (músico):**  
+- Idade: 28 anos  
+- Perfil: compositor independente  
+- Dor: precisa encontrar músicas para se inspirar e comparar letras  
+
+---
+
+### Mapa de Stakeholders  
+
+- **Usuários finais:** usuários comuns, estudantes, músicos e professores.  
+- **Administradores:** responsáveis pela gestão da aplicação.  
+- **Plataformas de streaming:** parceiras indiretas, beneficiadas pelo direcionamento de tráfego.  
+- **Instituição acadêmica:** utiliza o projeto como exercício de aprendizado e aplicação prática.  
+
+
+
