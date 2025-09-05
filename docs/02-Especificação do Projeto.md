@@ -1,91 +1,85 @@
-# Especificações do Projeto
+# Especificações do Projeto  
 
-<span style="color:red">Pré-requisitos: <a href="1-Documentação de Contexto.md"> Documentação de Contexto</a></span>
+Esta seção apresenta as especificações do sistema de busca de músicas por trechos de letras, partindo da perspectiva do usuário. Para isso, utilizamos:  
 
-Definição do problema e ideia de solução a partir da perspectiva do usuário. É composta pela definição do  diagrama de personas, histórias de usuários, requisitos funcionais e não funcionais além das restrições do projeto.
+- **Personas** para detalhar os perfis ideais de usuários.  
+- **Histórias de Usuários (User Stories)** para descrever necessidades e valores.  
+- **Requisitos Funcionais e Não Funcionais** que delimitam o escopo da aplicação.  
+- **Restrições do Projeto** que estabelecem limitações e condições para o desenvolvimento.  
 
-Apresente uma visão geral do que será abordado nesta parte do documento, enumerando as técnicas e/ou ferramentas utilizadas para realizar a especificações do projeto
+---
 
-## Personas
+## Personas  
 
-Pedro Paulo tem 26 anos, é arquiteto recém-formado e autônomo. Pensa em se desenvolver profissionalmente através de um mestrado fora do país, pois adora viajar, é solteiro e sempre quis fazer um intercâmbio. Está buscando uma agência que o ajude a encontrar universidades na Europa que aceitem alunos estrangeiros.
+**Persona 1 – Maria (usuária comum)**  
+- Idade: 22 anos  
+- Estudante universitária, gosta de ouvir música diariamente.  
+- Objetivo: encontrar músicas lembrando apenas de um trecho da letra.  
+- Dor: não consegue localizar a canção em aplicativos de streaming tradicionais.  
 
-Enumere e detalhe as personas da sua solução. Para tanto, baseie-se tanto nos documentos disponibilizados na disciplina e/ou nos seguintes links:
+**Persona 2 – João (estudante de idiomas)**  
+- Idade: 18 anos  
+- Faz curso de inglês e usa músicas como recurso de aprendizado.  
+- Objetivo: buscar letras para praticar vocabulário e compreensão auditiva.  
+- Dor: dificuldade em localizar músicas específicas para estudo.  
 
-> **Links Úteis**:
-> - [Rock Content](https://rockcontent.com/blog/personas/)
-> - [Hotmart](https://blog.hotmart.com/pt-br/como-criar-persona-negocio/)
-> - [O que é persona?](https://resultadosdigitais.com.br/blog/persona-o-que-e/)
-> - [Persona x Público-alvo](https://flammo.com.br/blog/persona-e-publico-alvo-qual-a-diferenca/)
-> - [Mapa de Empatia](https://resultadosdigitais.com.br/blog/mapa-da-empatia/)
-> - [Mapa de Stalkeholders](https://www.racecomunicacao.com.br/blog/como-fazer-o-mapeamento-de-stakeholders/)
->
-Lembre-se que você deve ser enumerar e descrever precisamente e personalizada todos os clientes ideais que sua solução almeja.
+**Persona 3 – Ana (professora/pesquisadora)**  
+- Idade: 35 anos  
+- Professora de inglês, utiliza músicas como recurso pedagógico em sala de aula.  
+- Objetivo: selecionar rapidamente músicas que se encaixem em atividades didáticas.  
+- Dor: perde tempo procurando canções adequadas para suas aulas.  
 
-## Histórias de Usuários
+**Persona 4 – Carlos (músico/compositor)**  
+- Idade: 28 anos  
+- Músico independente, utiliza músicas como inspiração para composições.  
+- Objetivo: pesquisar letras e identificar referências musicais.  
+- Dor: dificuldade em encontrar obras com base em versos específicos.  
 
-Com base na análise das personas forma identificadas as seguintes histórias de usuários:
+---
 
-|EU COMO... `PERSONA`| QUERO/PRECISO ... `FUNCIONALIDADE` |PARA ... `MOTIVO/VALOR`                 |
-|--------------------|------------------------------------|----------------------------------------|
-|Usuário do sistema  | Registrar minhas tarefas           | Não esquecer de fazê-las               |
-|Administrador       | Alterar permissões                 | Permitir que possam administrar contas |
+## Histórias de Usuários  
 
-Apresente aqui as histórias de usuário que são relevantes para o projeto de sua solução. As Histórias de Usuário consistem em uma ferramenta poderosa para a compreensão e elicitação dos requisitos funcionais e não funcionais da sua aplicação. Se possível, agrupe as histórias de usuário por contexto, para facilitar consultas recorrentes à essa parte do documento.
+| EU COMO... (Persona)      | QUERO/PRECISO ... (Funcionalidade)   | PARA ... (Motivo/Valor)                        |  
+|----------------------------|--------------------------------------|------------------------------------------------|  
+| Usuário comum (Maria)      | Buscar músicas por trecho da letra   | Descobrir rapidamente o nome da canção         |  
+| Estudante (João)           | Acessar a letra completa             | Usar como recurso pedagógico no estudo de idiomas |  
+| Professora (Ana)           | Salvar músicas encontradas           | Reutilizar em aulas futuras                    |  
+| Músico (Carlos)            | Comparar letras pesquisadas          | Inspirar novas composições                     |  
+| Administrador do sistema   | Atualizar a base de letras e artistas| Manter o sistema preciso e atualizado          |  
+| Usuário comum              | Avaliar a busca realizada            | Ajudar a melhorar a precisão dos resultados    |  
 
-> **Links Úteis**:
-> - [Histórias de usuários com exemplos e template](https://www.atlassian.com/br/agile/project-management/user-stories)
-> - [Como escrever boas histórias de usuário (User Stories)](https://medium.com/vertice/como-escrever-boas-users-stories-hist%C3%B3rias-de-usu%C3%A1rios-b29c75043fac)
-> - [User Stories: requisitos que humanos entendem](https://www.luiztools.com.br/post/user-stories-descricao-de-requisitos-que-humanos-entendem/)
-> - [Histórias de Usuários: mais exemplos](https://www.reqview.com/doc/user-stories-example.html)
-> - [9 Common User Story Mistakes](https://airfocus.com/blog/user-story-mistakes/)
+---
 
-## Requisitos
+## Requisitos  
 
-As tabelas que se seguem apresentam os requisitos funcionais e não funcionais que detalham o escopo do projeto.
+### Requisitos Funcionais (RF)  
 
-### Requisitos Funcionais
+| ID     | Descrição do Requisito                                         | Prioridade |  
+|--------|----------------------------------------------------------------|------------|  
+| RF-001 | Permitir a busca de músicas por trecho de letra                | ALTA       |  
+| RF-002 | Exibir título, artista e opções de streaming                   | ALTA       |  
+| RF-003 | Permitir feedback dos usuários sobre os resultados             | MÉDIA      |  
+| RF-004 | Gerar relatórios de uso (músicas/artistas mais buscados)       | MÉDIA      |  
+| RF-005 | Permitir que administradores atualizem layout e cadastros      | ALTA       |  
+| RF-006 | Direcionar para plataformas de streaming oficiais              | ALTA       |  
 
-|ID    | Descrição do Requisito  | Prioridade |
-|------|-----------------------------------------|----|
-|RF-001| Permitir que o usuário cadastre tarefas | ALTA | 
-|RF-002| Emitir um relatório de tarefas no mês   | MÉDIA |
+### Requisitos Não Funcionais (RNF)  
 
+| ID      | Descrição do Requisito                                         | Prioridade |  
+|---------|----------------------------------------------------------------|------------|  
+| RNF-001 | O sistema deve ser responsivo (desktop e mobile)              | ALTA       |  
+| RNF-002 | O tempo de resposta deve ser inferior a 3 segundos por busca  | MÉDIA      |  
+| RNF-003 | A interface deve ser intuitiva e acessível                    | ALTA       |  
+| RNF-004 | O sistema deve respeitar direitos autorais (sem exibir mídia direta) | ALTA  |  
+| RNF-005 | O sistema deve suportar pelo menos 500 buscas simultâneas     | MÉDIA      |  
 
-### Requisitos não Funcionais
+---
 
-|ID     | Descrição do Requisito  |Prioridade |
-|-------|-------------------------|----|
-|RNF-001| O sistema deve ser responsivo para rodar em um dispositivos móvel | MÉDIA | 
-|RNF-002| Deve processar requisições do usuário em no máximo 3s |  BAIXA | 
+## Restrições  
 
-Com base nas Histórias de Usuário, enumere os requisitos da sua solução. Classifique esses requisitos em dois grupos:
-
-- [Requisitos Funcionais
- (RF)](https://pt.wikipedia.org/wiki/Requisito_funcional):
- correspondem a uma funcionalidade que deve estar presente na
-  plataforma (ex: cadastro de usuário).
-- [Requisitos Não Funcionais
-  (RNF)](https://pt.wikipedia.org/wiki/Requisito_n%C3%A3o_funcional):
-  correspondem a uma característica técnica, seja de usabilidade,
-  desempenho, confiabilidade, segurança ou outro (ex: suporte a
-  dispositivos iOS e Android).
-Lembre-se que cada requisito deve corresponder à uma e somente uma
-característica alvo da sua solução. Além disso, certifique-se de que
-todos os aspectos capturados nas Histórias de Usuário foram cobertos.
-
-## Restrições
-
-O projeto está restrito pelos itens apresentados na tabela a seguir.
-
-|ID| Restrição                                             |
-|--|-------------------------------------------------------|
-|01| O projeto deverá ser entregue até o final do semestre |
-|02| Não pode ser desenvolvido um módulo de backend        |
-
-
-Enumere as restrições à sua solução. Lembre-se de que as restrições geralmente limitam a solução candidata.
-
-> **Links Úteis**:
-> - [O que são Requisitos Funcionais e Requisitos Não Funcionais?](https://codificar.com.br/requisitos-funcionais-nao-funcionais/)
-> - [O que são requisitos funcionais e requisitos não funcionais?](https://analisederequisitos.com.br/requisitos-funcionais-e-requisitos-nao-funcionais-o-que-sao/)
+| ID   | Restrição                                                                 |  
+|------|----------------------------------------------------------------------------|  
+| 01   | O projeto deverá ser entregue até o final do semestre letivo.             |  
+| 02   | Não será desenvolvido um módulo de backend robusto, apenas integração com APIs externas. |  
+| 03   | O sistema deverá operar utilizando apenas APIs oficiais/licenciadas de música. |  
+| 04   | O desenvolvimento deve ser feito em ambiente web, com suporte multiplataforma. |  
