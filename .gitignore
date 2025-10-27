@@ -1,0 +1,8 @@
+# Ignorar dependências
+node_modules/
+
+# Build output
+dist/
+
+# Ambiente
+.env
