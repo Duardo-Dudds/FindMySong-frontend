@@ -1,0 +1,8 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Reset opcional (visual mais limpo) */
+body {
+  @apply bg-white text-black antialiased;
+}
