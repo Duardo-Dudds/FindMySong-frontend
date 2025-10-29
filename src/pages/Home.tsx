@@ -6,22 +6,39 @@ const Home = () => {
   const [query, setQuery] = useState("");
   const [musicas, setMusicas] = useState([]);
 
+  // 🔐 Função para obter token automaticamente
+  async function obterTokenSpotify() {
+    try {
+      const clientId = import.meta.env.VITE_SPOTIFY_CLIENT_ID;
+      const clientSecret = import.meta.env.VITE_SPOTIFY_CLIENT_SECRET;
+
+      const response = await fetch("https://accounts.spotify.com/api/token", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+          Authorization: "Basic " + btoa(`${clientId}:${clientSecret}`),
+        },
+        body: "grant_type=client_credentials",
+      });
+
+      const data = await response.json();
+      if (!data.access_token) throw new Error("Token inválido");
+      return data.access_token;
+    } catch (error) {
+      console.error("Erro ao gerar token do Spotify:", error);
+      alert("Erro ao conectar à API do Spotify.");
+    }
+  }
+
+  // 🎵 Buscar músicas digitadas
   async function buscarMusicas() {
     if (!query.trim()) return;
     try {
-      const token = "COLOQUE_SEU_TOKEN_DO_SPOTIFY_AQUI"; // Gera no console da Spotify
-
+      const token = await obterTokenSpotify();
       const response = await axios.get("https://api.spotify.com/v1/search", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-        params: {
-          q: query,
-          type: "track",
-          limit: 8,
-        },
+        headers: { Authorization: `Bearer ${token}` },
+        params: { q: query, type: "track", limit: 8 },
       });
-
       setMusicas(response.data.tracks.items);
     } catch (error) {
       console.error("Erro ao buscar músicas:", error);
@@ -29,7 +46,7 @@ const Home = () => {
     }
   }
 
-  // Álbuns fixos para exibir sempre
+  // 💿 Albuns fixos (padrão na tela)
   const albunsFixos = [
     {
       id: 1,
@@ -86,7 +103,7 @@ const Home = () => {
           ))}
         </nav>
 
-        {/* Botão de sair */}
+        {/* 🚪 Botão de sair */}
         <button
           onClick={() => {
             localStorage.removeItem("token");
@@ -121,7 +138,7 @@ const Home = () => {
           </button>
         </div>
 
-        {/* Recomendações fixas */}
+        {/* Albuns fixos */}
         <h3 className="text-lg font-semibold mb-4">Recomendações</h3>
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mb-10">
           {albunsFixos.map((album) => (
@@ -142,12 +159,14 @@ const Home = () => {
               </div>
               <h4 className="font-medium">{album.title}</h4>
               <p className="text-sm text-gray-600">{album.artist}</p>
-              <p className="text-xs text-gray-500">{album.year} • {album.songs}</p>
+              <p className="text-xs text-gray-500">
+                {album.year} • {album.songs}
+              </p>
             </div>
           ))}
         </div>
 
-        {/* Resultados da API */}
+        {/* Resultados Spotify */}
         <h3 className="text-lg font-semibold mb-4">Resultados</h3>
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
           {musicas.map((m: any) => (
