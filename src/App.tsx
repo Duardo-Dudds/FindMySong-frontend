@@ -2,17 +2,26 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Home from "./pages/Home";
-import SearchLyrics from "./pages/Search";
+import Search from "./pages/Search"; // <== nome corrigido e unificado
 
 function App() {
   return (
     <Router>
       <Routes>
+        {/* Página inicial */}
         <Route path="/" element={<Login />} />
+
+        {/* Cadastro */}
         <Route path="/register" element={<Register />} />
+
+        {/* Página principal (usuário logado) */}
         <Route path="/home" element={<Home />} />
+
+        {/* Página de busca de letras */}
+        <Route path="/search" element={<Search />} />
+
+        {/* Rota coringa (caso não encontre) */}
         <Route path="*" element={<Login />} />
-        <Route path="/search" element={<SearchLyrics />} />
       </Routes>
     </Router>
   );

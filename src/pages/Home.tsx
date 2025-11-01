@@ -1,48 +1,24 @@
 import { useState } from "react";
 import { Play } from "lucide-react";
-import axios from "axios";
+import api from "../api";
 
 const Home = () => {
   const [query, setQuery] = useState("");
   const [musicas, setMusicas] = useState([]);
 
-  // 🔐 Função para obter token automaticamente
-  async function obterTokenSpotify() {
-    try {
-      const clientId = import.meta.env.VITE_SPOTIFY_CLIENT_ID;
-      const clientSecret = import.meta.env.VITE_SPOTIFY_CLIENT_SECRET;
-
-      const response = await fetch("https://accounts.spotify.com/api/token", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded",
-          Authorization: "Basic " + btoa(`${clientId}:${clientSecret}`),
-        },
-        body: "grant_type=client_credentials",
-      });
-
-      const data = await response.json();
-      if (!data.access_token) throw new Error("Token inválido");
-      return data.access_token;
-    } catch (error) {
-      console.error("Erro ao gerar token do Spotify:", error);
-      alert("Erro ao conectar à API do Spotify.");
-    }
-  }
-
-  // 🎵 Buscar músicas digitadas
+  // 🎵 Buscar músicas via backend
   async function buscarMusicas() {
     if (!query.trim()) return;
     try {
-      const token = await obterTokenSpotify();
-      const response = await axios.get("https://api.spotify.com/v1/search", {
-        headers: { Authorization: `Bearer ${token}` },
-        params: { q: query, type: "track", limit: 8 },
+      // Agora usamos o backend Render — ele já cuida do token
+      const response = await api.get("/api/spotify/search", {
+        params: { q: query },
       });
-      setMusicas(response.data.tracks.items);
+
+      setMusicas(response.data || []);
     } catch (error) {
       console.error("Erro ao buscar músicas:", error);
-      alert("Erro ao buscar músicas. Verifique o token do Spotify.");
+      alert("Erro ao buscar músicas no servidor.");
     }
   }
 
@@ -55,7 +31,7 @@ const Home = () => {
       year: "2020",
       songs: "14 songs",
       image: "/albums/afterhours.jpg",
-      link: "https://open.spotify.com/album/4yP0hdKOZPNshxUOjY0cZj",
+      link: "https://open.spotify.com/album/4yP0hdKOZPNshQKyRv6AL9",
     },
     {
       id: 2,
