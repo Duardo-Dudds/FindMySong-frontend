@@ -2,16 +2,16 @@ import { useState } from "react";
 import axios from "axios";
 
 export default function Search() {
-  // Estados principais
-  const [query, setQuery] = useState(""); // termo de busca digitado
-  const [musicas, setMusicas] = useState<any[]>([]); // resultados vindos do backend
-  const [carregando, setCarregando] = useState(false); // controla o "Buscando..."
-  const [erro, setErro] = useState(""); // armazena mensagem de erro se houver
+  // estados principais
+  const [query, setQuery] = useState("");
+  const [musicas, setMusicas] = useState<any[]>([]);
+  const [carregando, setCarregando] = useState(false);
+  const [erro, setErro] = useState("");
 
-  // URL base do backend (Render)
+  // base do backend (Render)
   const apiBaseUrl = import.meta.env.VITE_API_BASE_URL || "http://localhost:3000";
 
-  // Função principal de busca
+  // função que busca músicas
   async function buscarMusicas(e: React.FormEvent) {
     e.preventDefault();
     setCarregando(true);
@@ -19,14 +19,11 @@ export default function Search() {
     setMusicas([]);
 
     try {
-      // Faz requisição pro backend
-      const res = await axios.get(
-        `${apiBaseUrl}/api/search-lyrics?q=${encodeURIComponent(query)}`
-      );
+      const res = await axios.get(`${apiBaseUrl}/api/search-lyrics?q=${encodeURIComponent(query)}`);
       setMusicas(res.data || []);
     } catch (err) {
       console.error(err);
-      setErro("Erro ao buscar músicas.");
+      setErro("Erro ao buscar músicas. Tente novamente mais tarde.");
     } finally {
       setCarregando(false);
     }
@@ -34,86 +31,85 @@ export default function Search() {
 
   return (
     <div className="min-h-screen bg-gray-900 text-white flex flex-col items-center py-10 px-4">
-      <h1 className="text-4xl font-bold mb-6 text-green-400">FindMySong</h1>
-      <p className="text-gray-300 mb-8">Busque uma música pelo trecho da letra</p>
+      <h1 className="text-4xl font-bold mb-4 text-green-400">FindMySong</h1>
+      <p className="text-gray-300 mb-8 text-center">
+        Busque músicas por nome, artista ou trecho da letra
+      </p>
 
-      {/* Formulário de busca */}
-      <form
-        onSubmit={buscarMusicas}
-        className="flex flex-col sm:flex-row gap-3 w-full max-w-md"
-      >
+      {/* campo de busca */}
+      <form onSubmit={buscarMusicas} className="flex flex-col sm:flex-row gap-3 w-full max-w-xl">
         <input
           type="text"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          placeholder="Digite um trecho ou palavra..."
-          className="flex-1 p-3 rounded text-black"
+          placeholder="Digite o nome ou trecho da música..."
+          className="flex-1 p-3 rounded text-black focus:outline-none focus:ring-2 focus:ring-green-500"
+          tabIndex={1}
         />
         <button
           type="submit"
           disabled={carregando || !query}
-          className="bg-green-500 hover:bg-green-600 px-5 py-3 rounded font-semibold transition disabled:opacity-50"
+          className="bg-green-600 hover:bg-green-700 px-6 py-3 rounded font-semibold transition disabled:opacity-50"
         >
           {carregando ? "Buscando..." : "Buscar"}
         </button>
       </form>
 
-      {/* Mostra erro, se houver */}
       {erro && <p className="text-red-400 mt-4">{erro}</p>}
 
-      {/* Resultados */}
-      <div className="mt-10 w-full max-w-6xl grid gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
-        {/* Nenhum resultado */}
-        {musicas.length === 0 && !carregando && !erro && (
-          <p className="text-gray-400 text-center col-span-full">
+      {/* lista de resultados */}
+      <div className="mt-10 w-full max-w-5xl grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        {!carregando && musicas.length === 0 && !erro && (
+          <p className="text-gray-400 col-span-full text-center">
             Nenhum resultado encontrado.
           </p>
         )}
 
-        {/* Renderiza resultados */}
         {musicas.map((m, i) => (
           <div
             key={i}
-            className="bg-gray-800 rounded-2xl p-5 shadow-lg hover:scale-[1.02] transition-transform flex flex-col items-center text-center"
+            className="bg-gray-800 rounded-lg overflow-hidden shadow-lg hover:scale-[1.02] transition-transform"
           >
-            {/* Imagem do álbum */}
+            {/* capa do álbum */}
             {m.image && (
               <img
                 src={m.image}
                 alt={m.title}
-                className="w-48 h-48 rounded-xl object-cover mb-4 shadow-md"
+                className="w-full h-56 object-cover"
               />
             )}
 
-            {/* Nome e artista */}
-            <h2 className="text-lg font-bold text-white">{m.title}</h2>
-            <p className="text-gray-400 mb-3">{m.artist}</p>
+            <div className="p-4 flex flex-col gap-2">
+              <h2 className="text-lg font-bold text-white truncate">{m.title}</h2>
+              <p className="text-gray-400 text-sm">{m.artist}</p>
 
-            {/* Preview + links */}
-            <div className="flex flex-wrap justify-center gap-3">
+              {/* preview da música */}
               {m.preview_url && (
-                <audio controls src={m.preview_url} className="w-44 h-8" />
+                <audio controls src={m.preview_url} className="w-full mt-2" />
               )}
 
-              {m.spotify_url && (
-                <a
-                  href={m.spotify_url}
-                  target="_blank"
-                  className="bg-green-600 hover:bg-green-700 px-3 py-1 rounded text-white text-sm"
-                >
-                  Spotify
-                </a>
-              )}
+              {/* links */}
+              <div className="flex flex-wrap gap-2 mt-3">
+                {m.spotify_url && (
+                  <a
+                    href={m.spotify_url}
+                    target="_blank"
+                    className="bg-green-600 hover:bg-green-700 px-3 py-1 rounded text-white text-sm"
+                  >
+                    Spotify
+                  </a>
+                )}
 
-              {m.genius_url && (
-                <a
-                  href={m.genius_url}
-                  target="_blank"
-                  className="bg-yellow-500 hover:bg-yellow-600 px-3 py-1 rounded text-white text-sm"
-                >
-                  Letra
-                </a>
-              )}
+                {m.genius_url && (
+                  <a
+                    href={m.genius_url}
+                    target="_blank"
+                    className="bg-yellow-500 hover:bg-yellow-600 px-3 py-1 rounded text-white text-sm"
+                  >
+                    Letra (Genius)
+                  </a>
+                )}
+              </div>
             </div>
           </div>
         ))}
