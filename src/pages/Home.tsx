@@ -1,28 +1,33 @@
+// src/pages/Home.tsx
 import { useState } from "react";
 import { Play } from "lucide-react";
 import api from "../api";
 
 const Home = () => {
   const [query, setQuery] = useState("");
-  const [musicas, setMusicas] = useState([]);
+  const [musicas, setMusicas] = useState<any[]>([]);
+  const [carregando, setCarregando] = useState(false);
+  const [erro, setErro] = useState("");
 
-  // 🎵 Buscar músicas via backend
   async function buscarMusicas() {
     if (!query.trim()) return;
+    setCarregando(true);
+    setErro("");
+
     try {
-      // Agora usamos o backend Render — ele já cuida do token
-      const response = await api.get("/api/spotify/search", {
+      // chama o BACKEND, não mais o Spotify direto
+      const res = await api.get(`/api/spotify/search`, {
         params: { q: query },
       });
-
-      setMusicas(response.data || []);
-    } catch (error) {
-      console.error("Erro ao buscar músicas:", error);
-      alert("Erro ao buscar músicas no servidor.");
+      setMusicas(res.data || []);
+    } catch (err: any) {
+      console.error("Erro ao buscar músicas:", err);
+      setErro("Erro ao buscar músicas no servidor.");
+    } finally {
+      setCarregando(false);
     }
   }
 
-  // 💿 Albuns fixos (padrão na tela)
   const albunsFixos = [
     {
       id: 1,
@@ -31,7 +36,7 @@ const Home = () => {
       year: "2020",
       songs: "14 songs",
       image: "/albums/afterhours.jpg",
-      link: "https://open.spotify.com/album/4yP0hdKOZPNshQKyRv6AL9",
+      link: "https://open.spotify.com/album/4yP0hdKOZPNshxUOjY0cZj",
     },
     {
       id: 2,
@@ -79,7 +84,6 @@ const Home = () => {
           ))}
         </nav>
 
-        {/* 🚪 Botão de sair */}
         <button
           onClick={() => {
             localStorage.removeItem("token");
@@ -108,11 +112,14 @@ const Home = () => {
           />
           <button
             onClick={buscarMusicas}
-            className="ml-3 bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg shadow"
+            disabled={carregando}
+            className="ml-3 bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg shadow disabled:opacity-60"
           >
-            Buscar
+            {carregando ? "Buscando..." : "Buscar"}
           </button>
         </div>
+
+        {erro && <p className="text-red-500 mb-4">{erro}</p>}
 
         {/* Albuns fixos */}
         <h3 className="text-lg font-semibold mb-4">Recomendações</h3>
@@ -142,18 +149,18 @@ const Home = () => {
           ))}
         </div>
 
-        {/* Resultados Spotify */}
+        {/* Resultados Spotify (do backend) */}
         <h3 className="text-lg font-semibold mb-4">Resultados</h3>
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
           {musicas.map((m: any) => (
             <div
               key={m.id}
               className="group bg-white p-3 rounded-xl shadow hover:shadow-lg transition-all cursor-pointer"
-              onClick={() => window.open(m.external_urls.spotify, "_blank")}
+              onClick={() => m.external_urls?.spotify && window.open(m.external_urls.spotify, "_blank")}
             >
               <div className="relative">
                 <img
-                  src={m.album.images[0]?.url}
+                  src={m.album?.images?.[0]?.url}
                   alt={m.name}
                   className="rounded-lg w-full h-44 object-cover mb-3 group-hover:opacity-90"
                 />
@@ -162,7 +169,7 @@ const Home = () => {
                 </button>
               </div>
               <h4 className="font-medium truncate">{m.name}</h4>
-              <p className="text-sm text-gray-600">{m.artists[0]?.name}</p>
+              <p className="text-sm text-gray-600">{m.artists?.[0]?.name}</p>
             </div>
           ))}
         </div>
