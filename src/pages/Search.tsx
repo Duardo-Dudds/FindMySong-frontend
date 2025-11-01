@@ -1,84 +1,117 @@
 import { useState } from "react";
 import axios from "axios";
 
-export default function SearchLyrics() {
-  const [query, setQuery] = useState("");
-  const [musicas, setMusicas] = useState<any[]>([]);
-  const [loading, setLoading] = useState(false);
-  const [erro, setErro] = useState("");
+export default function Search() {
+  // Estados principais
+  const [query, setQuery] = useState(""); // termo de busca digitado
+  const [musicas, setMusicas] = useState<any[]>([]); // resultados vindos do backend
+  const [carregando, setCarregando] = useState(false); // controla o "Buscando..."
+  const [erro, setErro] = useState(""); // armazena mensagem de erro se houver
 
-  const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
+  // URL base do backend (Render)
+  const apiBaseUrl = import.meta.env.VITE_API_BASE_URL || "http://localhost:3000";
 
-  async function handleSearch(e: React.FormEvent) {
+  // Função principal de busca
+  async function buscarMusicas(e: React.FormEvent) {
     e.preventDefault();
-    if (!query.trim()) return;
+    setCarregando(true);
+    setErro("");
+    setMusicas([]);
 
     try {
-      setLoading(true);
-      setErro("");
-      const res = await axios.get(`${apiBaseUrl}/api/search-lyrics?q=${encodeURIComponent(query)}`);
-      setMusicas(res.data);
-    } catch (err: any) {
-      console.error("Erro ao buscar músicas:", err);
-      setErro("Erro ao buscar músicas. Tente novamente.");
+      // Faz requisição pro backend
+      const res = await axios.get(
+        `${apiBaseUrl}/api/search-lyrics?q=${encodeURIComponent(query)}`
+      );
+      setMusicas(res.data || []);
+    } catch (err) {
+      console.error(err);
+      setErro("Erro ao buscar músicas.");
     } finally {
-      setLoading(false);
+      setCarregando(false);
     }
   }
 
   return (
-    <div className="min-h-screen bg-gray-900 text-white flex flex-col items-center p-8">
-      <h1 className="text-3xl font-bold mb-6">Buscar Música por Letra 🎶</h1>
+    <div className="min-h-screen bg-gray-900 text-white flex flex-col items-center py-10 px-4">
+      <h1 className="text-4xl font-bold mb-6 text-green-400">FindMySong</h1>
+      <p className="text-gray-300 mb-8">Busque uma música pelo trecho da letra</p>
 
-      <form onSubmit={handleSearch} className="flex gap-3 mb-6 w-full max-w-md">
+      {/* Formulário de busca */}
+      <form
+        onSubmit={buscarMusicas}
+        className="flex flex-col sm:flex-row gap-3 w-full max-w-md"
+      >
         <input
           type="text"
-          placeholder="Digite parte da letra ou nome..."
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          className="flex-grow p-2 rounded text-black"
+          placeholder="Digite um trecho ou palavra..."
+          className="flex-1 p-3 rounded text-black"
         />
         <button
           type="submit"
-          className="bg-blue-600 hover:bg-blue-700 px-4 rounded font-semibold"
+          disabled={carregando || !query}
+          className="bg-green-500 hover:bg-green-600 px-5 py-3 rounded font-semibold transition disabled:opacity-50"
         >
-          Buscar
+          {carregando ? "Buscando..." : "Buscar"}
         </button>
       </form>
 
-      {loading && <p>Carregando...</p>}
-      {erro && <p className="text-red-400">{erro}</p>}
+      {/* Mostra erro, se houver */}
+      {erro && <p className="text-red-400 mt-4">{erro}</p>}
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 w-full max-w-5xl">
+      {/* Resultados */}
+      <div className="mt-10 w-full max-w-6xl grid gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+        {/* Nenhum resultado */}
+        {musicas.length === 0 && !carregando && !erro && (
+          <p className="text-gray-400 text-center col-span-full">
+            Nenhum resultado encontrado.
+          </p>
+        )}
+
+        {/* Renderiza resultados */}
         {musicas.map((m, i) => (
-          <div key={i} className="bg-gray-800 p-4 rounded-lg shadow-md">
-            {m.image && <img src={m.image} alt={m.title} className="rounded mb-3" />}
-            <h2 className="text-xl font-semibold">{m.title}</h2>
-            <p className="text-gray-400 mb-3">{m.artist}</p>
-
-            {m.preview_url && (
-              <audio controls src={m.preview_url} className="w-full mb-3" />
+          <div
+            key={i}
+            className="bg-gray-800 rounded-2xl p-5 shadow-lg hover:scale-[1.02] transition-transform flex flex-col items-center text-center"
+          >
+            {/* Imagem do álbum */}
+            {m.image && (
+              <img
+                src={m.image}
+                alt={m.title}
+                className="w-48 h-48 rounded-xl object-cover mb-4 shadow-md"
+              />
             )}
 
-            <div className="flex gap-2">
+            {/* Nome e artista */}
+            <h2 className="text-lg font-bold text-white">{m.title}</h2>
+            <p className="text-gray-400 mb-3">{m.artist}</p>
+
+            {/* Preview + links */}
+            <div className="flex flex-wrap justify-center gap-3">
+              {m.preview_url && (
+                <audio controls src={m.preview_url} className="w-44 h-8" />
+              )}
+
               {m.spotify_url && (
                 <a
                   href={m.spotify_url}
                   target="_blank"
-                  rel="noreferrer"
-                  className="bg-green-600 hover:bg-green-700 px-3 py-1 rounded text-sm"
+                  className="bg-green-600 hover:bg-green-700 px-3 py-1 rounded text-white text-sm"
                 >
-                  Abrir no Spotify
+                  Spotify
                 </a>
               )}
+
               {m.genius_url && (
                 <a
                   href={m.genius_url}
                   target="_blank"
-                  rel="noreferrer"
-                  className="bg-yellow-500 hover:bg-yellow-600 px-3 py-1 rounded text-sm text-black font-semibold"
+                  className="bg-yellow-500 hover:bg-yellow-600 px-3 py-1 rounded text-white text-sm"
                 >
-                  Ver Letra
+                  Letra
                 </a>
               )}
             </div>
