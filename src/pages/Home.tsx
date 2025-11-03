@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import Sidebar from "../components/Sidebar";
 
 interface Track {
   id: string;
@@ -15,6 +14,8 @@ export default function Home() {
   const [liked, setLiked] = useState<string[]>([]);
   const [library, setLibrary] = useState<string[]>([]);
   const [loading, setLoading] = useState(true);
+
+  // 👤 ID do usuário logado (vem do token)
   const [userId, setUserId] = useState<number | null>(null);
 
   const API_URL =
@@ -131,76 +132,68 @@ export default function Home() {
   // 🎨 Renderização
   // ====================================
   return (
-    <div className="flex bg-[#0a0a0a] text-white min-h-screen">
-      {/* Sidebar fixa */}
-      <Sidebar />
+    <div className="p-8 text-white bg-[#0a0a0a] min-h-screen">
+      <h1 className="text-3xl font-bold mb-6 text-blue-400">Top 10 do Spotify 🎵</h1>
 
-      {/* Conteúdo principal */}
-      <main className="flex-1 p-10 overflow-y-auto">
-        <h1 className="text-4xl font-bold mb-6 text-blue-400">
-          Top 10 do Spotify 🎵
-        </h1>
+      {loading ? (
+        <p className="text-gray-400">Carregando músicas...</p>
+      ) : (
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-6">
+          {tracks.map((track) => (
+            <div
+              key={track.id}
+              className="bg-[#1a1a1a] rounded-2xl p-4 shadow-lg hover:bg-[#222] transition-all"
+            >
+              <img
+                src={track.image}
+                alt={track.title}
+                className="rounded-xl mb-3"
+              />
+              <h2 className="font-semibold text-sm">{track.title}</h2>
+              <p className="text-xs text-gray-400">{track.artist}</p>
 
-        {loading ? (
-          <p className="text-gray-400">Carregando músicas...</p>
-        ) : (
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-6">
-            {tracks.map((track) => (
-              <div
-                key={track.id}
-                className="bg-[#1a1a1a] rounded-2xl p-4 shadow-lg hover:bg-[#222] transition-all"
-              >
-                <img
-                  src={track.image}
-                  alt={track.title}
-                  className="rounded-xl mb-3 w-full h-40 object-cover"
-                />
-                <h2 className="font-semibold text-sm truncate">{track.title}</h2>
-                <p className="text-xs text-gray-400 truncate">{track.artist}</p>
+              <div className="flex justify-between mt-3">
+                {/* Botão Like */}
+                <button
+                  onClick={() => toggleLike(track)}
+                  className={`text-lg ${
+                    liked.includes(track.id)
+                      ? "text-red-500"
+                      : "text-gray-400 hover:text-red-400"
+                  }`}
+                  title="Curtir"
+                >
+                  ❤️
+                </button>
 
-                <div className="flex justify-between items-center mt-3">
-                  {/* Botão Like */}
-                  <button
-                    onClick={() => toggleLike(track)}
-                    className={`text-lg ${
-                      liked.includes(track.id)
-                        ? "text-red-500"
-                        : "text-gray-400 hover:text-red-400"
-                    }`}
-                    title="Curtir"
-                  >
-                    ❤️
-                  </button>
+                {/* Botão Adicionar à Biblioteca */}
+                <button
+                  onClick={() => toggleLibrary(track)}
+                  className={`text-lg ${
+                    library.includes(track.id)
+                      ? "text-green-400"
+                      : "text-gray-400 hover:text-green-400"
+                  }`}
+                  title="Adicionar à biblioteca"
+                >
+                  ➕
+                </button>
 
-                  {/* Botão Adicionar à Biblioteca */}
-                  <button
-                    onClick={() => toggleLibrary(track)}
-                    className={`text-lg ${
-                      library.includes(track.id)
-                        ? "text-green-400"
-                        : "text-gray-400 hover:text-green-400"
-                    }`}
-                    title="Adicionar à biblioteca"
-                  >
-                    ➕
-                  </button>
-
-                  {/* Abrir no Spotify */}
-                  <a
-                    href={track.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-gray-400 hover:text-blue-400 text-lg"
-                    title="Ouvir no Spotify"
-                  >
-                    🔗
-                  </a>
-                </div>
+                {/* Abrir no Spotify */}
+                <a
+                  href={track.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-gray-400 hover:text-blue-400 text-lg"
+                  title="Ouvir no Spotify"
+                >
+                  🔗
+                </a>
               </div>
-            ))}
-          </div>
-        )}
-      </main>
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 }
