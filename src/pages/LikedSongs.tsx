@@ -1,104 +1,67 @@
+// src/pages/LikedSongs.tsx
 import { useEffect, useState } from "react";
+import Sidebar from "../components/Sidebar";
 import axios from "axios";
 
-interface Track {
-  spotify_id: string;
-  titulo: string;
-  artista: string;
-  imagem: string;
-  url: string;
-}
-
 export default function LikedSongs() {
-  const [tracks, setTracks] = useState<Track[]>([]);
-  const [loading, setLoading] = useState(true);
-
-  const API_URL =
-    import.meta.env.VITE_API_URL ||
+  const [songs, setSongs] = useState<any[]>([]);
+  const API_BASE =
+    import.meta.env.VITE_API_BASE_URL ||
     "https://findmysong-backend.onrender.com";
 
-  const [userId, setUserId] = useState<number | null>(null);
-
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (!token) return;
-
-    try {
-      const payload = JSON.parse(atob(token.split(".")[1]));
-      setUserId(payload.id);
-    } catch {
-      console.warn("Token inválido.");
+    const likedIds = JSON.parse(localStorage.getItem("likedSongs") || "[]") as string[];
+    if (likedIds.length === 0) {
+      setSongs([]);
+      return;
     }
+
+    // vamos só buscar no spotify um por um (simples por enquanto)
+    const load = async () => {
+      const arr: any[] = [];
+      for (const id of likedIds) {
+        try {
+          const res = await axios.get(`${API_BASE}/api/spotify/search`, {
+            params: { q: id },
+          });
+          const item = Array.isArray(res.data)
+            ? res.data[0]
+            : res.data.tracks?.items?.[0];
+          if (item) arr.push(item);
+        } catch {}
+      }
+      setSongs(arr);
+    };
+
+    load();
   }, []);
 
-  useEffect(() => {
-    if (!userId) return;
-    const fetchLiked = async () => {
-      try {
-        const resp = await axios.get(`${API_URL}/api/likes/${userId}`);
-        setTracks(resp.data);
-      } catch (err) {
-        console.error("Erro ao carregar curtidas:", err);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchLiked();
-  }, [userId]);
-
-  const removeLike = async (spotify_id: string) => {
-    if (!userId) return;
-    try {
-      await axios.delete(`${API_URL}/api/likes/${spotify_id}/${userId}`);
-      setTracks(tracks.filter((t) => t.spotify_id !== spotify_id));
-    } catch (err) {
-      console.error("Erro ao remover curtida:", err);
-    }
-  };
-
   return (
-    <div className="p-8 bg-[#0a0a0a] text-white min-h-screen">
-      <h1 className="text-3xl font-bold mb-6 text-red-400">Músicas Curtidas ❤️</h1>
+    <div className="flex min-h-screen bg-white text-gray-800">
+      <Sidebar />
+      <main className="flex-1 p-10">
+        <h2 className="text-2xl font-semibold mb-6">Músicas curtidas ❤️</h2>
 
-      {loading ? (
-        <p className="text-gray-400">Carregando suas músicas curtidas...</p>
-      ) : tracks.length === 0 ? (
-        <p className="text-gray-500">Nenhuma música curtida ainda 😢</p>
-      ) : (
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-6">
-          {tracks.map((track) => (
-            <div
-              key={track.spotify_id}
-              className="bg-[#1a1a1a] rounded-2xl p-4 hover:bg-[#222] transition-all shadow-lg"
-            >
-              <img
-                src={track.imagem}
-                alt={track.titulo}
-                className="rounded-xl mb-3"
-              />
-              <h2 className="font-semibold text-sm">{track.titulo}</h2>
-              <p className="text-xs text-gray-400">{track.artista}</p>
-
-              <div className="flex justify-between mt-3">
-                <button
-                  onClick={() => removeLike(track.spotify_id)}
-                  className="text-sm text-red-400 hover:text-red-500"
-                >
-                  Remover ❤️
-                </button>
-                <a
-                  href={track.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-sm text-blue-400 hover:text-blue-500"
-                >
-                  Ouvir 🔗
-                </a>
+        {songs.length === 0 ? (
+          <p className="text-gray-400">Você ainda não curtiu nenhuma música.</p>
+        ) : (
+          <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6">
+            {songs.map((m: any) => (
+              <div key={m.id} className="bg-white border rounded-xl p-3 shadow-sm">
+                <img
+                  src={m.album?.images?.[0]?.url}
+                  alt={m.name}
+                  className="rounded-md w-full h-36 object-cover mb-2"
+                />
+                <h3 className="font-medium truncate">{m.name}</h3>
+                <p className="text-sm text-gray-500 truncate">
+                  {m.artists?.[0]?.name}
+                </p>
               </div>
-            </div>
-          ))}
-        </div>
-      )}
+            ))}
+          </div>
+        )}
+      </main>
     </div>
   );
 }

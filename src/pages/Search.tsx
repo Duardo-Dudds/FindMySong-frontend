@@ -1,134 +1,131 @@
+// src/pages/Search.tsx
 import { useState } from "react";
 import axios from "axios";
-
-interface Musica {
-  title: string;
-  artist: string;
-  image?: string;
-  spotify_url?: string;
-  genius_url?: string;
-  preview_url?: string;
-}
+import { Play } from "lucide-react";
+import Sidebar from "../components/Sidebar";
 
 export default function Search() {
   const [query, setQuery] = useState("");
-  const [musicas, setMusicas] = useState<Musica[]>([]);
+  const [musicas, setMusicas] = useState<any[]>([]);
+  const [liked, setLiked] = useState<string[]>([]);
   const [carregando, setCarregando] = useState(false);
-  const [erro, setErro] = useState("");
 
   const apiBaseUrl =
     import.meta.env.VITE_API_BASE_URL ||
     "https://findmysong-backend.onrender.com";
 
-  async function buscarMusicas(e: React.FormEvent) {
-    e.preventDefault();
+  async function buscarMusicas(e?: React.FormEvent) {
+    if (e) e.preventDefault();
     if (!query.trim()) return;
-
     setCarregando(true);
-    setErro("");
-    setMusicas([]);
 
     try {
-      const res = await axios.get(
-        `${apiBaseUrl}/api/search-lyrics?q=${encodeURIComponent(query)}`
-      );
-      setMusicas(res.data || []);
+      const res = await axios.get(`${apiBaseUrl}/api/spotify/search`, {
+        params: { q: query },
+      });
+      const data = Array.isArray(res.data)
+        ? res.data
+        : res.data.tracks?.items || [];
+      setMusicas(data);
     } catch (err) {
-      console.error(err);
-      setErro("Erro ao buscar músicas. Tente novamente mais tarde.");
+      console.error("Erro ao buscar músicas:", err);
     } finally {
       setCarregando(false);
     }
   }
 
+  function toggleLike(id: string) {
+    setLiked((prev) =>
+      prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]
+    );
+  }
+
   return (
-    <div className="min-h-screen bg-[#0a0a0a] text-white flex flex-col items-center py-10 px-4">
-      <h1 className="text-4xl font-bold mb-4 text-blue-400">🔎 Buscar Músicas</h1>
-      <p className="text-gray-400 mb-8 text-center max-w-lg">
-        Digite uma palavra, trecho da letra ou nome do artista para encontrar músicas.
-      </p>
+    <div className="flex bg-white text-gray-800 min-h-screen">
+      <Sidebar />
 
-      <form
-        onSubmit={buscarMusicas}
-        className="flex flex-col sm:flex-row gap-3 w-full max-w-lg"
-      >
-        <input
-          type="text"
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
-          placeholder="Ex: love, saudade, Justin Bieber..."
-          className="flex-1 p-3 rounded-lg text-black focus:outline-none focus:ring-2 focus:ring-blue-500"
-        />
-        <button
-          type="submit"
-          disabled={carregando || !query}
-          className="bg-blue-500 hover:bg-blue-600 px-5 py-3 rounded-lg font-semibold transition disabled:opacity-50"
-        >
-          {carregando ? "Buscando..." : "Buscar"}
-        </button>
-      </form>
+      <main className="flex-1 p-10 overflow-y-auto">
+        <h2 className="text-2xl font-semibold mb-6">Buscar músicas 🔎</h2>
 
-      {erro && <p className="text-red-400 mt-6">{erro}</p>}
-
-      {/* Resultados */}
-      <div className="mt-10 w-full max-w-5xl grid gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-        {musicas.length === 0 && !carregando && !erro && (
-          <p className="text-gray-400 text-center col-span-full">
-            Nenhum resultado encontrado.
-          </p>
-        )}
-
-        {musicas.map((m, i) => (
-          <div
-            key={i}
-            className="bg-[#1a1a1a] rounded-2xl p-4 shadow-lg hover:bg-[#222] transition-all flex flex-col items-center text-center"
+        <form onSubmit={buscarMusicas} className="mb-10 flex items-center">
+          <input
+            type="text"
+            placeholder="Digite nome, artista ou palavra..."
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            className="w-full max-w-md p-3 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-green-500"
+          />
+          <button
+            type="submit"
+            className="ml-3 bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg shadow"
           >
-            {m.image ? (
-              <img
-                src={m.image}
-                alt={m.title}
-                className="w-40 h-40 rounded-lg object-cover mb-3"
-              />
-            ) : (
-              <div className="w-40 h-40 bg-gray-700 rounded-lg mb-3 flex items-center justify-center text-gray-400">
-                🎵
+            Buscar
+          </button>
+        </form>
+
+        {carregando ? (
+          <p className="text-gray-500">Buscando...</p>
+        ) : musicas.length === 0 ? (
+          <p className="text-gray-400">Nenhuma música encontrada.</p>
+        ) : (
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            {musicas.map((m: any) => (
+              <div
+                key={m.id}
+                className="group bg-white p-3 rounded-xl shadow hover:shadow-lg transition-all cursor-pointer"
+              >
+                <div className="relative">
+                  <img
+                    src={m.album?.images?.[0]?.url}
+                    alt={m.name}
+                    className="rounded-lg w-full h-44 object-cover mb-3 group-hover:opacity-90"
+                  />
+                  <button
+                    onClick={() => {
+                      if (m.preview_url) {
+                        const audio = new Audio(m.preview_url);
+                        audio.play();
+                      } else if (m.external_urls?.spotify) {
+                        window.open(m.external_urls.spotify, "_blank");
+                      }
+                    }}
+                    className="absolute bottom-3 right-3 bg-green-500 text-white p-2 rounded-full opacity-0 group-hover:opacity-100 transition"
+                  >
+                    <Play size={18} />
+                  </button>
+                </div>
+                <h4 className="font-medium truncate">{m.name}</h4>
+                <p className="text-sm text-gray-600 truncate">
+                  {m.artists?.[0]?.name}
+                </p>
+                <div className="flex justify-between items-center mt-3">
+                  <button
+                    onClick={() => toggleLike(m.id)}
+                    className={`text-lg transition ${
+                      liked.includes(m.id)
+                        ? "text-red-500"
+                        : "text-gray-400 hover:text-red-400"
+                    }`}
+                    title="Curtir"
+                  >
+                    ♥
+                  </button>
+                  {m.external_urls?.spotify && (
+                    <a
+                      href={m.external_urls.spotify}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="text-sm text-green-600 hover:underline"
+                    >
+                      Spotify
+                    </a>
+                  )}
+                </div>
               </div>
-            )}
-            <h2 className="text-base font-semibold">{m.title}</h2>
-            <p className="text-sm text-gray-400 mb-3">{m.artist}</p>
-
-            <div className="flex gap-2 flex-wrap justify-center">
-              {m.preview_url && (
-                <audio
-                  controls
-                  src={m.preview_url}
-                  className="w-36 h-8 mb-2 rounded-md"
-                />
-              )}
-
-              {m.spotify_url && (
-                <a
-                  href={m.spotify_url}
-                  target="_blank"
-                  className="bg-green-600 hover:bg-green-700 px-3 py-1 rounded text-sm font-medium text-white"
-                >
-                  Spotify
-                </a>
-              )}
-
-              {m.genius_url && (
-                <a
-                  href={m.genius_url}
-                  target="_blank"
-                  className="bg-yellow-500 hover:bg-yellow-600 px-3 py-1 rounded text-sm font-medium text-white"
-                >
-                  Letra
-                </a>
-              )}
-            </div>
+            ))}
           </div>
-        ))}
-      </div>
+        )}
+      </main>
     </div>
   );
 }
