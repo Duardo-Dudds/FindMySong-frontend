@@ -1,35 +1,29 @@
+// src/App.tsx
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Home from "./pages/Home";
-import Search from "./pages/Search";
+import Top10 from "./pages/Top10";
 import LikedSongs from "./pages/LikedSongs";
-import Library from "./pages/Library";
+// se quiser manter a página de busca separada:
+import Search from "./pages/Search";
 
 function App() {
   return (
     <Router>
       <Routes>
-        {/* Página inicial (Login) */}
+        {/* auth */}
         <Route path="/" element={<Login />} />
-
-        {/* Cadastro */}
         <Route path="/register" element={<Register />} />
 
-        {/* Página principal (usuário logado) */}
+        {/* páginas internas */}
         <Route path="/home" element={<Home />} />
-
-        {/* Página de busca de letras */}
+        <Route path="/top10" element={<Top10 />} />
+        <Route path="/liked" element={<LikedSongs />} />
         <Route path="/search" element={<Search />} />
 
-        {/* Página de músicas curtidas */}
-        <Route path="/liked" element={<LikedSongs />} />
-
-        {/* Página da biblioteca do usuário */}
-        <Route path="/library" element={<Library />} />
-
-        {/* Rota coringa (caso não encontre) */}
-        <Route path="*" element={<Login />} />
+        {/* fallback */}
+        <Route path="*" element={<Home />} />
       </Routes>
     </Router>
   );
