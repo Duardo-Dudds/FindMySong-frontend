@@ -1,199 +1,148 @@
-import { useEffect, useState } from "react";
+// src/pages/Home.tsx
+import { useState } from "react";
 import axios from "axios";
-
-interface Track {
-  id: string;
-  title: string;
-  artist: string;
-  image: string;
-  url: string;
-}
+import { Play } from "lucide-react";
+import Sidebar from "../components/Sidebar";
 
 export default function Home() {
-  const [tracks, setTracks] = useState<Track[]>([]);
+  const [query, setQuery] = useState("");
+  const [musicas, setMusicas] = useState<any[]>([]);
   const [liked, setLiked] = useState<string[]>([]);
-  const [library, setLibrary] = useState<string[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [carregando, setCarregando] = useState(false);
 
-  // 👤 ID do usuário logado (vem do token)
-  const [userId, setUserId] = useState<number | null>(null);
-
-  const API_URL =
-    import.meta.env.VITE_API_URL ||
+  const apiBaseUrl =
+    import.meta.env.VITE_API_BASE_URL ||
     "https://findmysong-backend.onrender.com";
 
-  // ====================================
-  // 🔹 Decodifica token JWT para pegar ID
-  // ====================================
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (!token) return;
+  async function buscarMusicas() {
+    if (!query.trim()) return;
+    setCarregando(true);
 
     try {
-      const payload = JSON.parse(atob(token.split(".")[1]));
-      setUserId(payload.id);
-    } catch {
-      console.warn("Token inválido.");
-    }
-  }, []);
+      // VOLTOU PRO SPOTIFY
+      const res = await axios.get(`${apiBaseUrl}/api/spotify/search`, {
+        params: { q: query },
+      });
 
-  // ====================================
-  // 🔹 Busca Top 10 do Spotify
-  // ====================================
-  useEffect(() => {
-    const fetchTop10 = async () => {
-      try {
-        setLoading(true);
-        const resp = await axios.get(`${API_URL}/api/spotify/top10`);
-        setTracks(resp.data);
-      } catch (err) {
-        console.error("Erro ao buscar Top 10:", err);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchTop10();
-  }, []);
+      // no backend você tá mandando direto os items, mas pra garantir:
+      const data = Array.isArray(res.data)
+        ? res.data
+        : res.data.tracks?.items || [];
 
-  // ====================================
-  // 🔹 Busca curtidas e biblioteca do usuário
-  // ====================================
-  useEffect(() => {
-    if (!userId) return;
-    const loadUserData = async () => {
-      try {
-        const likesResp = await axios.get(`${API_URL}/api/likes/${userId}`);
-        const libResp = await axios.get(`${API_URL}/api/library/${userId}`);
-
-        setLiked(likesResp.data.map((m: any) => m.spotify_id));
-        setLibrary(libResp.data.map((m: any) => m.spotify_id));
-      } catch (err) {
-        console.error("Erro ao carregar curtidas/biblioteca:", err);
-      }
-    };
-    loadUserData();
-  }, [userId]);
-
-  // ====================================
-  // ❤️ Curtir / Descurtir
-  // ====================================
-  const toggleLike = async (track: Track) => {
-    if (!userId) return alert("Faça login primeiro!");
-    const isLiked = liked.includes(track.id);
-
-    try {
-      if (isLiked) {
-        await axios.delete(`${API_URL}/api/likes/${track.id}/${userId}`);
-        setLiked(liked.filter((id) => id !== track.id));
-      } else {
-        await axios.post(`${API_URL}/api/likes`, {
-          usuario_id: userId,
-          spotify_id: track.id,
-          titulo: track.title,
-          artista: track.artist,
-          imagem: track.image,
-          url: track.url,
-        });
-        setLiked([...liked, track.id]);
-      }
+      setMusicas(data);
     } catch (err) {
-      console.error("Erro ao atualizar curtida:", err);
+      console.error("Erro ao buscar músicas:", err);
+      alert("Erro ao buscar músicas.");
+    } finally {
+      setCarregando(false);
     }
-  };
+  }
 
-  // ====================================
-  // ➕ Adicionar / Remover da biblioteca
-  // ====================================
-  const toggleLibrary = async (track: Track) => {
-    if (!userId) return alert("Faça login primeiro!");
-    const inLibrary = library.includes(track.id);
+  function toggleLike(id: string) {
+    setLiked((prev) =>
+      prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]
+    );
+  }
 
-    try {
-      if (inLibrary) {
-        await axios.delete(`${API_URL}/api/library/${track.id}/${userId}`);
-        setLibrary(library.filter((id) => id !== track.id));
-      } else {
-        await axios.post(`${API_URL}/api/library`, {
-          usuario_id: userId,
-          spotify_id: track.id,
-          titulo: track.title,
-          artista: track.artist,
-          imagem: track.image,
-          url: track.url,
-        });
-        setLibrary([...library, track.id]);
-      }
-    } catch (err) {
-      console.error("Erro ao atualizar biblioteca:", err);
-    }
-  };
-
-  // ====================================
-  // 🎨 Renderização
-  // ====================================
   return (
-    <div className="p-8 text-white bg-[#0a0a0a] min-h-screen">
-      <h1 className="text-3xl font-bold mb-6 text-blue-400">Top 10 do Spotify 🎵</h1>
+    <div className="flex bg-white text-gray-800 min-h-screen">
+      {/* sidebar fixa */}
+      <Sidebar />
 
-      {loading ? (
-        <p className="text-gray-400">Carregando músicas...</p>
-      ) : (
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-6">
-          {tracks.map((track) => (
-            <div
-              key={track.id}
-              className="bg-[#1a1a1a] rounded-2xl p-4 shadow-lg hover:bg-[#222] transition-all"
-            >
-              <img
-                src={track.image}
-                alt={track.title}
-                className="rounded-xl mb-3"
-              />
-              <h2 className="font-semibold text-sm">{track.title}</h2>
-              <p className="text-xs text-gray-400">{track.artist}</p>
+      {/* conteúdo principal */}
+      <main className="flex-1 p-10 overflow-y-auto">
+        {/* título */}
+        <h2 className="text-2xl font-semibold mb-8">Explore músicas 🎵</h2>
 
-              <div className="flex justify-between mt-3">
-                {/* Botão Like */}
-                <button
-                  onClick={() => toggleLike(track)}
-                  className={`text-lg ${
-                    liked.includes(track.id)
-                      ? "text-red-500"
-                      : "text-gray-400 hover:text-red-400"
-                  }`}
-                  title="Curtir"
-                >
-                  ❤️
-                </button>
-
-                {/* Botão Adicionar à Biblioteca */}
-                <button
-                  onClick={() => toggleLibrary(track)}
-                  className={`text-lg ${
-                    library.includes(track.id)
-                      ? "text-green-400"
-                      : "text-gray-400 hover:text-green-400"
-                  }`}
-                  title="Adicionar à biblioteca"
-                >
-                  ➕
-                </button>
-
-                {/* Abrir no Spotify */}
-                <a
-                  href={track.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-gray-400 hover:text-blue-400 text-lg"
-                  title="Ouvir no Spotify"
-                >
-                  🔗
-                </a>
-              </div>
-            </div>
-          ))}
+        {/* barra de busca */}
+        <div className="mb-10 flex items-center">
+          <input
+            type="text"
+            placeholder="Digite uma palavra da letra ou nome da música..."
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            className="w-full max-w-md p-3 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-green-500"
+          />
+          <button
+            onClick={buscarMusicas}
+            className="ml-3 bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg shadow"
+          >
+            Buscar
+          </button>
         </div>
-      )}
+
+        {/* resultados */}
+        {carregando ? (
+          <p className="text-gray-500">Carregando músicas...</p>
+        ) : musicas.length === 0 ? (
+          <p className="text-gray-400">
+            Faça uma busca para ver os resultados.
+          </p>
+        ) : (
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            {musicas.map((m: any) => (
+              <div
+                key={m.id}
+                className="group bg-white p-3 rounded-xl shadow hover:shadow-lg transition-all cursor-pointer"
+              >
+                <div className="relative">
+                  <img
+                    src={m.album?.images?.[0]?.url}
+                    alt={m.name}
+                    className="rounded-lg w-full h-44 object-cover mb-3 group-hover:opacity-90"
+                  />
+                  {/* botão de play no hover */}
+                  <button
+                    onClick={() => {
+                      if (m.preview_url) {
+                        const audio = new Audio(m.preview_url);
+                        audio.play();
+                      } else if (m.external_urls?.spotify) {
+                        window.open(m.external_urls.spotify, "_blank");
+                      }
+                    }}
+                    className="absolute bottom-3 right-3 bg-green-500 text-white p-2 rounded-full opacity-0 group-hover:opacity-100 transition"
+                  >
+                    <Play size={18} />
+                  </button>
+                </div>
+
+                <h4 className="font-medium truncate">{m.name}</h4>
+                <p className="text-sm text-gray-600 truncate">
+                  {m.artists?.[0]?.name}
+                </p>
+
+                <div className="flex justify-between items-center mt-3">
+                  {/* like */}
+                  <button
+                    onClick={() => toggleLike(m.id)}
+                    className={`text-lg transition ${
+                      liked.includes(m.id)
+                        ? "text-red-500"
+                        : "text-gray-400 hover:text-red-400"
+                    }`}
+                    title="Curtir"
+                  >
+                    ♥
+                  </button>
+
+                  {/* abrir no spotify */}
+                  {m.external_urls?.spotify && (
+                    <a
+                      href={m.external_urls.spotify}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="text-sm text-green-600 hover:underline"
+                    >
+                      Spotify
+                    </a>
+                  )}
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+      </main>
     </div>
   );
 }
