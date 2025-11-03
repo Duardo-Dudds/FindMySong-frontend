@@ -1,5 +1,5 @@
 // src/pages/Home.tsx
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import { Play } from "lucide-react";
 import Sidebar from "../components/Sidebar";
@@ -9,26 +9,36 @@ export default function Home() {
   const [musicas, setMusicas] = useState<any[]>([]);
   const [liked, setLiked] = useState<string[]>([]);
   const [carregando, setCarregando] = useState(false);
-
+  const [top10, setTop10] = useState<any[]>([]);
   const apiBaseUrl =
     import.meta.env.VITE_API_BASE_URL ||
     "https://findmysong-backend.onrender.com";
 
+  // 🔹 Carrega o Top 10 da Semana ao abrir a página
+  useEffect(() => {
+    const loadTop10 = async () => {
+      try {
+        const res = await axios.get(`${apiBaseUrl}/api/spotify/top10`);
+        setTop10(res.data || []);
+      } catch (err) {
+        console.error("Erro ao carregar Top 10:", err);
+      }
+    };
+    loadTop10();
+  }, []);
+
+  // 🔹 Buscar músicas digitadas
   async function buscarMusicas() {
     if (!query.trim()) return;
     setCarregando(true);
 
     try {
-      // VOLTOU PRO SPOTIFY
       const res = await axios.get(`${apiBaseUrl}/api/spotify/search`, {
         params: { q: query },
       });
-
-      // no backend você tá mandando direto os items, mas pra garantir:
       const data = Array.isArray(res.data)
         ? res.data
         : res.data.tracks?.items || [];
-
       setMusicas(data);
     } catch (err) {
       console.error("Erro ao buscar músicas:", err);
@@ -38,27 +48,40 @@ export default function Home() {
     }
   }
 
-  function toggleLike(id: string) {
-    setLiked((prev) =>
-      prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]
-    );
+  // 🔹 Curtir e enviar pra aba de "Liked Songs"
+  function toggleLike(musica: any) {
+    const jaCurtiu = liked.includes(musica.id);
+    if (jaCurtiu) {
+      setLiked((prev) => prev.filter((id) => id !== musica.id));
+    } else {
+      setLiked((prev) => [...prev, musica.id]);
+      localStorage.setItem(
+        "likedSongs",
+        JSON.stringify([...liked, musica.id])
+      );
+      // Redireciona automaticamente para a página de curtidas
+      window.location.href = "/liked";
+    }
   }
+
+  // 🔹 Renderização principal
+  const lista = query.trim() ? musicas : top10;
 
   return (
     <div className="flex bg-white text-gray-800 min-h-screen">
-      {/* sidebar fixa */}
       <Sidebar />
 
-      {/* conteúdo principal */}
       <main className="flex-1 p-10 overflow-y-auto">
         {/* título */}
-        <h2 className="text-2xl font-semibold mb-8">Explore músicas 🎵</h2>
+        <h2 className="text-2xl font-semibold mb-8 flex items-center gap-2">
+          {query.trim() ? "Resultados da Busca 🔍" : "Top 10 da Semana 🎧"}
+        </h2>
 
         {/* barra de busca */}
         <div className="mb-10 flex items-center">
           <input
             type="text"
-            placeholder="Digite uma palavra da letra ou nome da música..."
+            placeholder="Buscar por música, artista ou letra..."
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             className="w-full max-w-md p-3 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-green-500"
@@ -71,16 +94,14 @@ export default function Home() {
           </button>
         </div>
 
-        {/* resultados */}
+        {/* lista de músicas */}
         {carregando ? (
           <p className="text-gray-500">Carregando músicas...</p>
-        ) : musicas.length === 0 ? (
-          <p className="text-gray-400">
-            Faça uma busca para ver os resultados.
-          </p>
+        ) : lista.length === 0 ? (
+          <p className="text-gray-400">Nenhuma música encontrada.</p>
         ) : (
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-            {musicas.map((m: any) => (
+            {lista.map((m: any) => (
               <div
                 key={m.id}
                 className="group bg-white p-3 rounded-xl shadow hover:shadow-lg transition-all cursor-pointer"
@@ -91,7 +112,7 @@ export default function Home() {
                     alt={m.name}
                     className="rounded-lg w-full h-44 object-cover mb-3 group-hover:opacity-90"
                   />
-                  {/* botão de play no hover */}
+                  {/* botão de play */}
                   <button
                     onClick={() => {
                       if (m.preview_url) {
@@ -113,9 +134,8 @@ export default function Home() {
                 </p>
 
                 <div className="flex justify-between items-center mt-3">
-                  {/* like */}
                   <button
-                    onClick={() => toggleLike(m.id)}
+                    onClick={() => toggleLike(m)}
                     className={`text-lg transition ${
                       liked.includes(m.id)
                         ? "text-red-500"
@@ -126,7 +146,6 @@ export default function Home() {
                     ♥
                   </button>
 
-                  {/* abrir no spotify */}
                   {m.external_urls?.spotify && (
                     <a
                       href={m.external_urls.spotify}
