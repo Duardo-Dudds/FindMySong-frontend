@@ -23,13 +23,30 @@ export default function Home() {
     import.meta.env.VITE_API_BASE_URL ||
     "https://findmysong-backend.onrender.com";
 
-  // carrega curtidas salvas (local ou depois do back)
+  // identifica o usuário logado
+  const [userId, setUserId] = useState<number | null>(null);
   useEffect(() => {
-    const saved = localStorage.getItem("likedSongs");
-    if (saved) {
-      setLiked(JSON.parse(saved));
+    const token = localStorage.getItem("token");
+    if (token) {
+      try {
+        const payload = JSON.parse(atob(token.split(".")[1]));
+        setUserId(payload.id);
+      } catch {
+        console.warn("Token inválido");
+      }
     }
   }, []);
+
+  // carrega curtidas salvas do banco
+  useEffect(() => {
+    if (!userId) return;
+    axios
+      .get(`${API_BASE}/api/likes/${userId}`)
+      .then((res) => {
+        setLiked(res.data.map((m: any) => m.spotify_id));
+      })
+      .catch(() => console.log("Erro ao carregar curtidas"));
+  }, [userId]);
 
   async function buscar() {
     if (!query.trim()) return;
@@ -52,19 +69,31 @@ export default function Home() {
     }
   }
 
-  function toggleLike(track: Track) {
-    const jaCurtiu = liked.includes(track.id);
-    let novo: string[];
-
-    if (jaCurtiu) {
-      novo = liked.filter((id) => id !== track.id);
-    } else {
-      novo = [...liked, track.id];
+  async function toggleLike(track: Track) {
+    if (!userId) {
+      alert("Faça login para curtir músicas.");
+      return;
     }
 
-    setLiked(novo);
-    localStorage.setItem("likedSongs", JSON.stringify(novo));
-    // ⚠️ não redireciona – só salva
+    const jaCurtiu = liked.includes(track.id);
+    try {
+      if (jaCurtiu) {
+        await axios.delete(`${API_BASE}/api/likes/${track.id}/${userId}`);
+        setLiked(liked.filter((id) => id !== track.id));
+      } else {
+        await axios.post(`${API_BASE}/api/likes`, {
+          usuario_id: userId,
+          spotify_id: track.id,
+          titulo: track.name,
+          artista: track.artists?.[0]?.name,
+          imagem: track.album?.images?.[0]?.url,
+          url: track.external_urls?.spotify,
+        });
+        setLiked([...liked, track.id]);
+      }
+    } catch (err) {
+      console.error("Erro ao atualizar curtida:", err);
+    }
   }
 
   return (
