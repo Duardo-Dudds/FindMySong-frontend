@@ -1,4 +1,3 @@
-// src/components/Sidebar.tsx
 import React from "react";
 import {
   Home,
@@ -24,7 +23,7 @@ const Sidebar: React.FC = () => {
 
       <nav className="flex flex-col gap-4 text-gray-700">
         <button
-          onClick={() => navigate("/home")}
+          onClick={() => navigate("/")}
           className="flex items-center gap-3 font-medium hover:text-green-600"
         >
           <Home size={20} /> Home
