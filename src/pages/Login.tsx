@@ -1,15 +1,22 @@
-// Página de login — feita pra autenticar e salvar o token do usuário
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+// src/pages/Login.tsx
+import { useEffect, useState } from "react";
+import { useNavigate, Link } from "react-router-dom";
 import axios from "axios";
 
-export default function Login() {
+const Login = () => {
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
   const [erro, setErro] = useState("");
   const navigate = useNavigate();
 
-  // Quando envia o formulário de login
+  // se já tiver token salvo, manda direto pra home
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token && token !== "undefined") {
+      navigate("/home", { replace: true });
+    }
+  }, [navigate]);
+
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setErro("");
@@ -20,35 +27,31 @@ export default function Login() {
     }
 
     try {
-      // pega do .env ou do backend em produção
-      const API_BASE =
+      const apiBase =
         import.meta.env.VITE_API_BASE_URL ||
         "https://findmysong-backend.onrender.com";
 
-      // requisição de login
-      const resp = await axios.post(`${API_BASE}/api/usuarios/login`, {
-        email,
-        senha,
-      });
+      const resp = await axios.post(
+        `${apiBase}/api/usuarios/login`,
+        { email, senha },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
 
       const token = resp.data?.token;
-
-      // se não veio token, já cancela
       if (!token) {
         setErro("Resposta inválida do servidor.");
         return;
       }
 
-      // salva o token pra usar nas outras rotas
       localStorage.setItem("token", token);
-
-      // vai pra home se tudo der certo
-      navigate("/home");
+      navigate("/home", { replace: true });
     } catch (err: any) {
-      // mostra erro direto da API
       const msg =
-        err.response?.data?.message ||
-        "Erro ao fazer login. Verifique seus dados.";
+        err.response?.data?.message || "Não foi possível fazer login.";
       setErro(msg);
     }
   }
@@ -74,7 +77,6 @@ export default function Login() {
           onChange={(e) => setEmail(e.target.value)}
           className="w-full p-2 mb-4 text-black rounded focus:outline-none focus:ring-2 focus:ring-green-500"
           placeholder="Digite seu e-mail"
-          autoComplete="email"
         />
 
         <label htmlFor="senha" className="block mb-2">
@@ -88,10 +90,11 @@ export default function Login() {
           onChange={(e) => setSenha(e.target.value)}
           className="w-full p-2 mb-4 text-black rounded focus:outline-none focus:ring-2 focus:ring-green-500"
           placeholder="Digite sua senha"
-          autoComplete="current-password"
         />
 
-        {erro && <p className="mb-3 text-red-300 text-sm">{erro}</p>}
+        {erro && (
+          <p className="mb-3 text-red-300 text-sm">{erro}</p>
+        )}
 
         <button
           type="submit"
@@ -102,14 +105,16 @@ export default function Login() {
 
         <p className="mt-4 text-center text-sm">
           Ainda não tem conta?{" "}
-          <a
-            href="/register"
+          <Link
+            to="/register"
             className="text-green-400 hover:text-green-500 underline"
           >
             Cadastrar
-          </a>
+          </Link>
         </p>
       </form>
     </div>
   );
-}
+};
+
+export default Login;

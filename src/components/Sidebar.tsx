@@ -1,3 +1,4 @@
+// src/components/Sidebar.tsx
 import React from "react";
 import {
   Home,
@@ -7,14 +8,14 @@ import {
   Heart,
   LogOut,
 } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const Sidebar: React.FC = () => {
   const navigate = useNavigate();
 
   const handleLogout = () => {
     localStorage.removeItem("token");
-    navigate("/login");
+    navigate("/login", { replace: true });
   };
 
   return (
@@ -22,41 +23,40 @@ const Sidebar: React.FC = () => {
       <h1 className="text-2xl font-semibold mb-8 text-black">FindMySong</h1>
 
       <nav className="flex flex-col gap-4 text-gray-700">
-        <button
-          onClick={() => navigate("/")}
+        <Link
+          to="/home"
           className="flex items-center gap-3 font-medium hover:text-green-600"
         >
           <Home size={20} /> Home
-        </button>
-
-        <button
-          onClick={() => navigate("/top10")}
+        </Link>
+        <Link
+          to="/top10"
           className="flex items-center gap-3 font-medium hover:text-green-600"
         >
           <Music2 size={20} /> Top 10 da Semana
-        </button>
-
-        <button
-          onClick={() => navigate("/library")}
+        </Link>
+        <Link
+          to="/library"
           className="flex items-center gap-3 font-medium hover:text-green-600"
         >
           <Library size={20} /> Your Library
-        </button>
-
-        <button
-          onClick={() => navigate("/likedsongs")}
+        </Link>
+        <Link
+          to="/likedsongs"
           className="flex items-center gap-3 font-medium hover:text-green-600"
         >
           <Heart size={20} /> Liked Songs
-        </button>
+        </Link>
+      </nav>
 
-        <button
-          onClick={() => navigate("/createplaylist")}
-          className="flex items-center gap-3 font-medium hover:text-green-600"
+      <div className="mt-8 flex flex-col gap-4 text-gray-700">
+        <Link
+          to="/createplaylist"
+          className="flex items-center gap-3 hover:text-green-600"
         >
           <PlusSquare size={20} /> Create Playlist
-        </button>
-      </nav>
+        </Link>
+      </div>
 
       <div className="mt-auto pt-8 text-sm text-gray-500">
         <button

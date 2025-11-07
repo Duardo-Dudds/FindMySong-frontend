@@ -1,6 +1,7 @@
-import { useState, useEffect } from "react";
+// src/pages/Register.tsx
+import { useEffect, useState } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
 export default function Register() {
   const [nome, setNome] = useState("");
@@ -9,47 +10,39 @@ export default function Register() {
   const [mensagem, setMensagem] = useState("");
   const navigate = useNavigate();
 
-  // Protege contra erro no import.meta.env durante build
-  const API_BASE =
-    (import.meta.env && import.meta.env.VITE_API_BASE_URL) ||
-    "https://findmysong-backend.onrender.com";
-
-  // Evita tela branca se token estiver inválido
+  // se já estiver logado, não faz sentido ficar no cadastro
   useEffect(() => {
-    try {
-      const token = localStorage.getItem("token");
-      if (token && token !== "undefined") {
-        navigate("/home");
-      }
-    } catch (e) {
-      console.error("Erro ao verificar token:", e);
-      localStorage.removeItem("token");
+    const token = localStorage.getItem("token");
+    if (token && token !== "undefined") {
+      navigate("/home", { replace: true });
     }
   }, [navigate]);
 
-  // Submete cadastro com fallback de erro
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!nome || !email || !senha) {
-      setMensagem("Preencha todos os campos antes de continuar.");
-      return;
-    }
+    setMensagem("");
 
     try {
-      const res = await axios.post(`${API_BASE}/api/usuarios/register`, {
+      const apiBase =
+        import.meta.env.VITE_API_BASE_URL ||
+        "https://findmysong-backend.onrender.com";
+
+      const res = await axios.post(`${apiBase}/api/usuarios/register`, {
         nome,
         email,
         senha,
       });
 
-      console.log("✅ Cadastro:", res.data);
       setMensagem(res.data.message || "Usuário cadastrado com sucesso!");
-      setTimeout(() => navigate("/login"), 1500);
+
+      // depois de cadastrar, manda pro login
+      setTimeout(() => {
+        navigate("/login", { replace: true });
+      }, 1500);
     } catch (err: any) {
-      console.error("❌ Erro ao cadastrar:", err);
-      const msg =
-        err?.response?.data?.message || "Erro ao cadastrar. Tente novamente.";
-      setMensagem(msg);
+      setMensagem(
+        err.response?.data?.message || "Erro ao cadastrar usuário."
+      );
     }
   };
 
@@ -64,7 +57,7 @@ export default function Register() {
           value={nome}
           onChange={(e) => setNome(e.target.value)}
           className="p-2 rounded text-black"
-          autoComplete="name"
+          tabIndex={1}
         />
         <input
           type="email"
@@ -72,7 +65,7 @@ export default function Register() {
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           className="p-2 rounded text-black"
-          autoComplete="email"
+          tabIndex={2}
         />
         <input
           type="password"
@@ -80,7 +73,7 @@ export default function Register() {
           value={senha}
           onChange={(e) => setSenha(e.target.value)}
           className="p-2 rounded text-black"
-          autoComplete="new-password"
+          tabIndex={3}
         />
 
         <button
@@ -95,9 +88,9 @@ export default function Register() {
 
       <p className="mt-4">
         Já tem conta?{" "}
-        <a href="/login" className="text-blue-400 hover:underline">
+        <Link to="/login" className="text-blue-400 hover:underline">
           Fazer login
-        </a>
+        </Link>
       </p>
     </div>
   );

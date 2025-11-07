@@ -7,6 +7,7 @@ import {
   Route,
   Navigate,
 } from "react-router-dom";
+
 import Home from "./pages/Home";
 import Top10 from "./pages/Top10";
 import Library from "./pages/Library";
@@ -17,7 +18,7 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import AdminPanel from "./pages/AdminPanel";
 
-// Componente de rota protegida
+// rota protegida: só deixa entrar se tiver token
 function PrivateRoute({ element }: { element: JSX.Element }) {
   const token = localStorage.getItem("token");
   if (!token || token === "undefined") {
@@ -27,7 +28,7 @@ function PrivateRoute({ element }: { element: JSX.Element }) {
 }
 
 export default function App() {
-  // Carrega tema do admin (ex: halloween/natal)
+  // carrega config de tema (halloween / natal)
   useEffect(() => {
     const API_BASE =
       import.meta.env.VITE_API_BASE_URL ||
@@ -43,20 +44,22 @@ export default function App() {
           document.body.classList.add("theme-natal");
         }
       })
-      .catch((err) =>
-        console.warn("Erro ao carregar tema do painel admin:", err.message)
-      );
+      .catch((err) => {
+        console.warn("Erro ao carregar tema admin:", err.message);
+      });
   }, []);
 
   return (
     <Router>
       <Routes>
-        {/* Páginas públicas */}
+        {/* rota raiz manda sempre pro login */}
         <Route path="/" element={<Navigate to="/login" replace />} />
+
+        {/* públicas */}
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
 
-        {/* Páginas protegidas */}
+        {/* protegidas */}
         <Route path="/home" element={<PrivateRoute element={<Home />} />} />
         <Route path="/top10" element={<PrivateRoute element={<Top10 />} />} />
         <Route
@@ -73,13 +76,13 @@ export default function App() {
           element={<PrivateRoute element={<CreatePlaylist />} />}
         />
 
-        {/* Painel Admin */}
+        {/* admin também é protegido (e o AdminPanel em si confere o e-mail) */}
         <Route
           path="/admin"
           element={<PrivateRoute element={<AdminPanel />} />}
         />
 
-        {/* Fallback */}
+        {/* qualquer coisa bizarra cai em /home (se logado) */}
         <Route path="*" element={<Navigate to="/home" replace />} />
       </Routes>
     </Router>
