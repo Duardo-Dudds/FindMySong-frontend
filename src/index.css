@@ -35,8 +35,8 @@ body {
 /* ============================= */
 
 .theme-halloween {
-  background-color: #120707; /* fundo geral escuro */
-  color: #e9c79a; /* texto padrão em bege */
+  background-color: #120707;
+  color: #e9c79a;
 }
 
 /* ============================= */
@@ -45,7 +45,7 @@ body {
 
 .theme-halloween .sidebar,
 .theme-halloween aside {
-  background: linear-gradient(to bottom, #f27c21, #a6480e); /* laranja vivo e agradável */
+  background: linear-gradient(to bottom, #f27c21, #a6480e);
   color: #fbe3c4;
   border-color: #662400;
   box-shadow: inset 0 0 35px rgba(0, 0, 0, 0.6);
@@ -139,7 +139,7 @@ body {
 .theme-halloween .track-card,
 .theme-halloween .playlist-card,
 .theme-halloween .card {
-  background: linear-gradient(to bottom, #f27c21, #a6480e); /* laranja igual sidebar */
+  background: linear-gradient(to bottom, #f27c21, #a6480e);
   border: 1px solid #662400;
   box-shadow: 0 0 8px rgba(255, 120, 40, 0.4);
   transition: transform 0.2s ease, box-shadow 0.3s ease;
@@ -170,36 +170,40 @@ body {
 /* ÍCONE DE FAVORITO */
 /* ============================= */
 
-/* coração marrom claro */
 .theme-halloween .liked-icon,
 .theme-halloween .heart-icon {
-  color: #8b4513; /* marrom claro */
-  transition: color 0.2s ease;
+  color: #8b4513;
+  transition: color 0.2s ease, transform 0.2s ease;
 }
 
-/* escurece ao clicar */
+.theme-halloween .liked-icon:hover,
+.theme-halloween .heart-icon:hover {
+  color: #b92b22;
+  transform: scale(1.05);
+}
+
 .theme-halloween .liked-icon.active,
 .theme-halloween .heart-icon.active {
-  color: #3b1603; /* marrom escuro */
+  color: #3b1603;
 }
 
 /* ============================= */
-/* 🎄 TEMA DE NATAL (CORRIGIDO E COMPLETO) */
+/* 🎄 TEMA DE NATAL */
 /* ============================= */
 
 .theme-natal {
-  background-color: #eaf2f2; /* fundo geral claro */
-  color: #1e4d2b; /* verde musgo */
+  background-color: #eaf2f2;
+  color: #1e4d2b;
 }
 
 /* ============================= */
-/* 🌿 SIDEBAR NATAL */
+/* SIDEBAR NATAL */
 /* ============================= */
 
 .theme-natal .sidebar,
 .theme-natal aside {
-  background: linear-gradient(to bottom, #1e4d2b, #0e2b19); /* verde elegante */
-  color: #d9f6ff; /* azul gelo */
+  background: linear-gradient(to bottom, #1e4d2b, #0e2b19);
+  color: #d9f6ff;
   border-color: #a7d4c1;
   box-shadow: inset 0 0 35px rgba(0, 0, 0, 0.4);
   position: relative;
@@ -215,7 +219,7 @@ body {
   text-shadow: 0 0 6px rgba(210, 184, 111, 0.6);
 }
 
-/* Textos e ícones da sidebar em azul gelo ❄️ */
+/* Textos e ícones da sidebar em azul gelo */
 .theme-natal .sidebar a,
 .theme-natal .sidebar li,
 .theme-natal .sidebar span,
@@ -224,7 +228,7 @@ body {
 }
 
 /* ============================= */
-/* 🎄 DECORAÇÕES LATERAIS */
+/* DECORAÇÕES LATERAIS */
 /* ============================= */
 
 .theme-natal .sidebar::before,
@@ -247,13 +251,12 @@ body {
 }
 
 /* ============================= */
-/* 🎅 BOTÕES */
+/* BOTÕES */
 /* ============================= */
 
-/* Botão principal (Buscar) */
 .theme-natal button {
-  background-color: #1e4d2b; /* verde escuro */
-  color: #8ed4ff; /* azul gelo */
+  background-color: #1e4d2b;
+  color: #8ed4ff;
   border: none;
   transition: all 0.2s ease;
   font-weight: 600;
@@ -281,7 +284,7 @@ body {
 }
 
 /* ============================= */
-/* ✨ ÍCONES NO TOPO */
+/* ÍCONES NO TOPO */
 /* ============================= */
 
 .theme-natal::after {
@@ -306,7 +309,7 @@ body {
 }
 
 /* ============================= */
-/* 🎶 CARDS DE MÚSICAS */
+/* CARDS DE MÚSICAS */
 /* ============================= */
 
 .theme-natal .music-card,
@@ -314,7 +317,7 @@ body {
 .theme-natal .track-card,
 .theme-natal .playlist-card,
 .theme-natal .card {
-  background: #ffffff; /* mantém branco para contraste */
+  background: #ffffff;
   border: 1px solid #d2b86f;
   box-shadow: 0 0 8px rgba(210, 184, 111, 0.4);
   transition: transform 0.2s ease, box-shadow 0.3s ease;
@@ -338,54 +341,41 @@ body {
 .theme-natal h4,
 .theme-natal p,
 .theme-natal span {
-  color: #8ed4ff; /* azul do emoji de gelo */
+  color: #8ed4ff;
 }
 
 /* ============================= */
-/* ❤️ ÍCONE DE FAVORITO (CORRIGIDO) */
+/* ÍCONE DE FAVORITO */
 /* ============================= */
 
 .theme-natal .liked-icon,
 .theme-natal .heart-icon {
-  color: transparent; /* remove o fundo quadrado */
+  color: #b92b22;
   font-size: 20px;
-  border: none;
-  background: none;
-  transition: transform 0.3s ease, color 0.3s ease;
-  cursor: pointer;
-  -webkit-text-stroke: 1px #1e4d2b; /* contorno verde escuro */
+  -webkit-text-stroke: 1px #1e4d2b;
+  transition: color 0.2s ease, transform 0.2s ease;
 }
 
-/* Hover (vermelho natalino) */
 .theme-natal .liked-icon:hover,
 .theme-natal .heart-icon:hover {
-  color: #b92b22; /* vermelho vinho */
-  transform: scale(1.15);
+  transform: scale(1.1);
 }
 
-/* Coração ativo (favoritado) */
 .theme-natal .liked-icon.active,
 .theme-natal .heart-icon.active {
-  color: #d2b86f; /* dourado */
+  color: #d2b86f;
   -webkit-text-stroke: 0;
   animation: pulseHeart 0.3s ease;
 }
 
-/* Animação do clique */
 @keyframes pulseHeart {
-  0% {
-    transform: scale(1);
-  }
-  50% {
-    transform: scale(1.3);
-  }
-  100% {
-    transform: scale(1);
-  }
+  0% { transform: scale(1); }
+  50% { transform: scale(1.3); }
+  100% { transform: scale(1); }
 }
 
 /* ============================= */
-/* ❄️ NEVE SUAVE */
+/* NEVE SUAVE */
 /* ============================= */
 
 .theme-natal::before {
@@ -418,4 +408,3 @@ body {
   position: relative;
   z-index: 1;
 }
-
