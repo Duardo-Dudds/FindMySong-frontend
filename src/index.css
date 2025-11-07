@@ -185,40 +185,192 @@ body {
 
 
 
-/* Tema de Natal 🎄 */
+/* ============================= */
+/* 🎄 TEMA DE NATAL  */
+/* ============================= */
+
 .theme-natal {
-  background-color: #e6f3f3;
-  color: #1e4d2b;
-  background-image: url("https://i.imgur.com/kPK2rlt.png"),
-    url("https://i.imgur.com/zP3d6h1.png");
-  background-repeat: no-repeat, no-repeat;
-  background-position: top right, bottom left;
-  background-size: 200px, 200px;
-  animation: snowFall 20s linear infinite;
+  background-color: #e6f3f3; /* fundo geral claro */
+  color: #1e4d2b; /* verde musgo */
 }
+
+/* ============================= */
+/* SIDEBAR NATAL */
+/* ============================= */
 
 .theme-natal .sidebar,
 .theme-natal aside {
-  background-color: #f9fdfc;
-  color: #1e4d2b;
+  background: linear-gradient(to bottom, #1e4d2b, #11331c); /* verde escuro festivo */
+  color: #fdf8f1; /* texto bege neve */
   border-color: #a7d4c1;
+  box-shadow: inset 0 0 35px rgba(0, 0, 0, 0.4);
+  position: relative;
+  overflow: hidden;
 }
+
+/* Logo dourada com brilho */
+.theme-natal .sidebar h1,
+.theme-natal .sidebar .logo,
+.theme-natal .sidebar .brand {
+  color: #d2b86f !important; /* dourado */
+  font-weight: 700;
+  text-shadow: 0 0 6px rgba(210, 184, 111, 0.6);
+}
+
+/* Textos da sidebar em bege suave */
+.theme-natal .sidebar a,
+.theme-natal .sidebar li,
+.theme-natal .sidebar span,
+.theme-natal .sidebar p {
+  color: #fdf8f1;
+}
+
+/* ============================= */
+/* BOTÕES */
+/* ============================= */
 
 .theme-natal button {
-  background-color: #1e4d2b;
-  color: white;
+  background-color: #d9483b; /* vermelho natalino */
+  color: #fff9e9; /* branco suave */
+  border: none;
+  transition: background-color 0.2s ease, transform 0.1s ease;
 }
-
 .theme-natal button:hover {
-  background-color: #2a693d;
+  background-color: #b92b22; /* vermelho mais escuro */
+  transform: translateY(-1px);
 }
 
-/* Animação da neve no tema de Natal */
+/* ============================= */
+/* DECORAÇÕES DA SIDEBAR */
+/* ============================= */
+
+.theme-natal .sidebar::before,
+.theme-natal .sidebar::after {
+  content: "🎄❄️🦌";
+  position: absolute;
+  font-size: 75px;
+  opacity: 0.12;
+  pointer-events: none;
+}
+
+.theme-natal .sidebar::before {
+  top: 70px;
+  right: -10px;
+}
+
+.theme-natal .sidebar::after {
+  bottom: 50px;
+  left: 10px;
+}
+
+/* Emojis flutuando no topo */
+.theme-natal::after {
+  content: "❄️ 🎁 🌟";
+  position: fixed;
+  top: 10px;
+  right: 15px;
+  font-size: 22px;
+  display: flex;
+  gap: 8px;
+  animation: floatNatal 3s ease-in-out infinite alternate;
+}
+
+@keyframes floatNatal {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(-6px);
+  }
+}
+
+/* ============================= */
+/* CARDS DE MÚSICAS */
+/* ============================= */
+
+/* Fundo vermelho-vinho com brilho dourado */
+.theme-natal .music-card,
+.theme-natal .song-card,
+.theme-natal .track-card,
+.theme-natal .playlist-card,
+.theme-natal .card {
+  background: linear-gradient(to bottom, #b92b22, #7a1c16); /* gradiente vermelho quente */
+  border: 1px solid #d2b86f; /* dourado nas bordas */
+  box-shadow: 0 0 8px rgba(210, 184, 111, 0.4);
+  transition: transform 0.2s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+/* Brilho natalino ao passar o mouse */
+.theme-natal .music-card:hover,
+.theme-natal .song-card:hover,
+.theme-natal .track-card:hover,
+.theme-natal .playlist-card:hover,
+.theme-natal .card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 0 15px rgba(250, 225, 150, 0.7);
+  border-color: #fff2b0;
+}
+
+/* Textos em branco-neve */
+.theme-natal h1,
+.theme-natal h2,
+.theme-natal h3,
+.theme-natal h4,
+.theme-natal p,
+.theme-natal span {
+  color: #fffaf0;
+}
+
+/* ============================= */
+/* ÍCONE DE FAVORITO */
+/* ============================= */
+
+/* coração dourado claro */
+.theme-natal .liked-icon,
+.theme-natal .heart-icon {
+  color: #d2b86f; /* dourado */
+  transition: color 0.2s ease;
+}
+
+/* muda pra vermelho vinho ao clicar */
+.theme-natal .liked-icon.active,
+.theme-natal .heart-icon.active {
+  color: #7a1c16;
+}
+
+/* ============================= */
+/*  NEVE SUAVE NO FUNDO */
+/* ============================= */
+
+.theme-natal::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  background-image: url("https://i.imgur.com/zP3d6h1.png");
+  background-repeat: repeat;
+  background-size: 200px 200px;
+  opacity: 0.12;
+  animation: snowFall 25s linear infinite;
+  z-index: 0;
+}
+
 @keyframes snowFall {
-  0% {
+  from {
     background-position: 0 0;
   }
-  100% {
+  to {
     background-position: 0 1000px;
   }
 }
+
+/* Garante que o conteúdo fique sobre a neve */
+.theme-natal * {
+  position: relative;
+  z-index: 1;
+}
+
+
