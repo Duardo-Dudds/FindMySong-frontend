@@ -183,15 +183,13 @@ body {
   color: #3b1603; /* marrom escuro */
 }
 
-
-
 /* ============================= */
 /* 🎄 TEMA DE NATAL  */
 /* ============================= */
 
 .theme-natal {
-  background-color: #e6f3f3; /* fundo geral claro */
-  color: #1e4d2b; /* verde musgo */
+  background-color: #eaf2f2; /* fundo geral claro com tom frio */
+  color: #1e4d2b; /* verde musgo elegante */
 }
 
 /* ============================= */
@@ -201,77 +199,76 @@ body {
 .theme-natal .sidebar,
 .theme-natal aside {
   background: linear-gradient(to bottom, #1e4d2b, #11331c); /* verde escuro festivo */
-  color: #fdf8f1; /* texto bege neve */
+  color: #d9f6ff; /* azul gelo suave */
   border-color: #a7d4c1;
   box-shadow: inset 0 0 35px rgba(0, 0, 0, 0.4);
   position: relative;
   overflow: hidden;
 }
 
-/* Logo dourada com brilho */
+/* Logo dourada */
 .theme-natal .sidebar h1,
 .theme-natal .sidebar .logo,
 .theme-natal .sidebar .brand {
-  color: #d2b86f !important; /* dourado */
+  color: #d2b86f !important;
   font-weight: 700;
   text-shadow: 0 0 6px rgba(210, 184, 111, 0.6);
 }
 
-/* Textos da sidebar em bege suave */
+/* Textos e ícones da sidebar em azul gelo ❄️ */
 .theme-natal .sidebar a,
 .theme-natal .sidebar li,
 .theme-natal .sidebar span,
 .theme-natal .sidebar p {
-  color: #fdf8f1;
+  color: #d9f6ff;
 }
 
 /* ============================= */
 /* BOTÕES */
 /* ============================= */
 
+/* Botão principal (buscar) */
 .theme-natal button {
-  background-color: #d9483b; /* vermelho natalino */
-  color: #fff9e9; /* branco suave */
+  background-color: #1e4d2b; /* fundo verde escuro */
+  color: #d9f6ff; /* azul gelo */
   border: none;
-  transition: background-color 0.2s ease, transform 0.1s ease;
+  transition: all 0.2s ease;
 }
+
 .theme-natal button:hover {
-  background-color: #b92b22; /* vermelho mais escuro */
+  background-color: #2c7353;
+  color: #fff;
   transform: translateY(-1px);
 }
 
+/* Botão de sair dourado */
+.theme-natal .logout-button,
+.theme-natal .btn-logout {
+  background-color: #d2b86f !important;
+  color: #1e4d2b !important;
+  font-weight: 600;
+  transition: 0.3s ease;
+}
+
+.theme-natal .logout-button:hover,
+.theme-natal .btn-logout:hover {
+  background-color: #e8d186 !important;
+  transform: scale(1.05);
+}
+
 /* ============================= */
-/* DECORAÇÕES DA SIDEBAR */
+/* DECORAÇÕES */
 /* ============================= */
 
-.theme-natal .sidebar::before,
-.theme-natal .sidebar::after {
-  content: "🎄❄️🦌";
-  position: absolute;
-  font-size: 75px;
-  opacity: 0.12;
-  pointer-events: none;
-}
-
-.theme-natal .sidebar::before {
-  top: 70px;
-  right: -10px;
-}
-
-.theme-natal .sidebar::after {
-  bottom: 50px;
-  left: 10px;
-}
-
-/* Emojis flutuando no topo */
+/* Emojis decorativos no canto superior */
 .theme-natal::after {
-  content: "❄️ 🎁 🌟";
+  content: "🎄 ❄️ 🎅";
   position: fixed;
   top: 10px;
   right: 15px;
   font-size: 22px;
   display: flex;
-  gap: 8px;
+  gap: 10px;
   animation: floatNatal 3s ease-in-out infinite alternate;
 }
 
@@ -288,19 +285,18 @@ body {
 /* CARDS DE MÚSICAS */
 /* ============================= */
 
-/* Fundo vermelho-vinho com brilho dourado */
 .theme-natal .music-card,
 .theme-natal .song-card,
 .theme-natal .track-card,
 .theme-natal .playlist-card,
 .theme-natal .card {
-  background: linear-gradient(to bottom, #b92b22, #7a1c16); /* gradiente vermelho quente */
-  border: 1px solid #d2b86f; /* dourado nas bordas */
+  background: #ffffff; /* mantém branco pra garantir contraste */
+  border: 1px solid #d2b86f; /* dourado leve */
   box-shadow: 0 0 8px rgba(210, 184, 111, 0.4);
-  transition: transform 0.2s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+  transition: transform 0.2s ease, box-shadow 0.3s ease;
 }
 
-/* Brilho natalino ao passar o mouse */
+/* Hover com brilho dourado */
 .theme-natal .music-card:hover,
 .theme-natal .song-card:hover,
 .theme-natal .track-card:hover,
@@ -308,38 +304,58 @@ body {
 .theme-natal .card:hover {
   transform: translateY(-3px);
   box-shadow: 0 0 15px rgba(250, 225, 150, 0.7);
-  border-color: #fff2b0;
 }
 
-/* Textos em branco-neve */
+/* Títulos e artistas azul de gelo ❄️ */
 .theme-natal h1,
 .theme-natal h2,
 .theme-natal h3,
 .theme-natal h4,
 .theme-natal p,
 .theme-natal span {
-  color: #fffaf0;
+  color: #8ed4ff; /* azul do emoji de gelo */
 }
 
 /* ============================= */
 /* ÍCONE DE FAVORITO */
 /* ============================= */
 
-/* coração dourado claro */
+/* Corrigido — transição suave e sem glitch */
 .theme-natal .liked-icon,
 .theme-natal .heart-icon {
-  color: #d2b86f; /* dourado */
-  transition: color 0.2s ease;
+  color: #b92b22; /* vermelho padrão */
+  transition: transform 0.2s ease, color 0.3s ease;
+  cursor: pointer;
 }
 
-/* muda pra vermelho vinho ao clicar */
+/* Hover mais escuro */
+.theme-natal .liked-icon:hover,
+.theme-natal .heart-icon:hover {
+  color: #821a16;
+  transform: scale(1.15);
+}
+
+/* Estado ativo (favoritado) com pulsar dourado */
 .theme-natal .liked-icon.active,
 .theme-natal .heart-icon.active {
-  color: #7a1c16;
+  color: #d2b86f;
+  animation: pulseHeart 0.4s ease;
+}
+
+@keyframes pulseHeart {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.3);
+  }
+  100% {
+    transform: scale(1);
+  }
 }
 
 /* ============================= */
-/*  NEVE SUAVE NO FUNDO */
+/* NEVE SUAVE */
 /* ============================= */
 
 .theme-natal::before {
@@ -367,10 +383,8 @@ body {
   }
 }
 
-/* Garante que o conteúdo fique sobre a neve */
 .theme-natal * {
   position: relative;
   z-index: 1;
 }
-
 
