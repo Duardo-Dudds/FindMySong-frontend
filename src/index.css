@@ -35,8 +35,8 @@ body {
 /* ============================= */
 
 .theme-halloween {
-  background-color: #120707; /* fundo geral escuro, quase preto */
-  color: #e9c79a; /* tom bege dourado para contraste */
+  background-color: #120707; /* fundo geral escuro */
+  color: #e9c79a; /* texto padrão em bege */
 }
 
 /* ============================= */
@@ -45,29 +45,29 @@ body {
 
 .theme-halloween .sidebar,
 .theme-halloween aside {
-  background: linear-gradient(to bottom, #f27c21, #a6480e); /* laranja mais vivo e agradável */
-  color: #fbe3c4; /* texto em bege claro */
-  border-color: #662400; /* borda laranja escura */
-  box-shadow: inset 0 0 35px rgba(0, 0, 0, 0.6); /* profundidade interna */
+  background: linear-gradient(to bottom, #f27c21, #a6480e); /* laranja vivo e agradável */
+  color: #fbe3c4;
+  border-color: #662400;
+  box-shadow: inset 0 0 35px rgba(0, 0, 0, 0.6);
   position: relative;
-  overflow: hidden; /* impede os emojis de vazarem */
+  overflow: hidden;
 }
 
-/* Logo "FindMySong" roxa e brilhante */
+/* Logo roxa brilhante */
 .theme-halloween .sidebar h1,
 .theme-halloween .sidebar .logo,
 .theme-halloween .sidebar .brand {
-  color: #c392ff !important; /* roxo suave */
+  color: #c392ff !important;
   font-weight: 700;
-  text-shadow: 0 0 6px rgba(195, 146, 255, 0.7); /* brilho leve */
+  text-shadow: 0 0 6px rgba(195, 146, 255, 0.7);
 }
 
-/* Textos e links da sidebar */
+/* Textos, ícones e links em marrom escuro */
 .theme-halloween .sidebar a,
 .theme-halloween .sidebar li,
 .theme-halloween .sidebar span,
 .theme-halloween .sidebar p {
-  color: #3b1603; /* marrom escuro */
+  color: #3b1603;
 }
 
 /* ============================= */
@@ -75,13 +75,12 @@ body {
 /* ============================= */
 
 .theme-halloween button {
-  background-color: #3b1603; /* marrom escuro */
-  color: #ffbf73; /* laranja claro no texto */
+  background-color: #3b1603;
+  color: #ffbf73;
   transition: background-color 0.2s ease, transform 0.1s ease;
 }
-
 .theme-halloween button:hover {
-  background-color: #c392ff; /* muda pra roxo no hover */
+  background-color: #c392ff;
   color: #1a0b0b;
   transform: translateY(-1px);
 }
@@ -90,14 +89,13 @@ body {
 /* DECORAÇÕES DA SIDEBAR */
 /* ============================= */
 
-/* Emojis decorativos dentro da sidebar */
 .theme-halloween .sidebar::before,
 .theme-halloween .sidebar::after {
-  content: "🎃🕸️🦇"; /* emojis que representam halloween */
+  content: "🎃🕸️🦇";
   position: absolute;
   font-size: 80px;
-  opacity: 0.12; /* transparência para não distrair */
-  pointer-events: none; /* não interferem em cliques */
+  opacity: 0.12;
+  pointer-events: none;
 }
 
 .theme-halloween .sidebar::before {
@@ -110,7 +108,7 @@ body {
   left: 10px;
 }
 
-/* Emojis flutuando no topo da tela */
+/* Emojis flutuando no topo */
 .theme-halloween::after {
   content: "🕸️  🦇  🎃";
   position: fixed;
@@ -122,7 +120,6 @@ body {
   animation: floatHalloween 3s ease-in-out infinite alternate;
 }
 
-/* Animação leve dos emojis do topo */
 @keyframes floatHalloween {
   from {
     transform: translateY(0);
@@ -136,47 +133,56 @@ body {
 /* CARDS DE MÚSICAS */
 /* ============================= */
 
+/* Fundo alaranjado igual à sidebar */
 .theme-halloween .music-card,
 .theme-halloween .song-card,
 .theme-halloween .track-card,
 .theme-halloween .playlist-card,
 .theme-halloween .card {
-  background-color: #2a0f0f; /* fundo vinho escuro */
-  border: 1px solid #c85e10; /* borda laranja */
-  box-shadow: 0 0 10px rgba(200, 94, 16, 0.4); /* brilho laranja */
-  transition: transform 0.2s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+  background: linear-gradient(to bottom, #f27c21, #a6480e); /* laranja igual sidebar */
+  border: 1px solid #662400;
+  box-shadow: 0 0 8px rgba(255, 120, 40, 0.4);
+  transition: transform 0.2s ease, box-shadow 0.3s ease;
 }
 
-/* Efeito de brilho roxo ao passar o mouse */
+/* Efeito hover com brilho roxo */
 .theme-halloween .music-card:hover,
 .theme-halloween .song-card:hover,
 .theme-halloween .track-card:hover,
 .theme-halloween .playlist-card:hover,
 .theme-halloween .card:hover {
   transform: translateY(-3px);
-  box-shadow: 0 0 18px rgba(185, 125, 242, 0.6);
+  box-shadow: 0 0 15px rgba(185, 125, 242, 0.6);
   border-color: #b97df2;
 }
 
-/* Nome do artista e título dos cards */
+/* Textos todos em marrom escuro */
+.theme-halloween h1,
+.theme-halloween h2,
 .theme-halloween h3,
 .theme-halloween h4,
-.theme-halloween p {
-  color: #f6e5c3; /* bege claro */
+.theme-halloween p,
+.theme-halloween span {
+  color: #3b1603;
 }
 
-/* Botões dentro dos cards */
-.theme-halloween .music-card button,
-.theme-halloween .card button {
-  background-color: #3b1603;
-  color: #ffbf73;
+/* ============================= */
+/* ÍCONE DE FAVORITO */
+/* ============================= */
+
+/* coração marrom claro */
+.theme-halloween .liked-icon,
+.theme-halloween .heart-icon {
+  color: #8b4513; /* marrom claro */
+  transition: color 0.2s ease;
 }
 
-.theme-halloween .music-card button:hover,
-.theme-halloween .card button:hover {
-  background-color: #b97df2;
-  color: #fff;
+/* escurece ao clicar */
+.theme-halloween .liked-icon.active,
+.theme-halloween .heart-icon.active {
+  color: #3b1603; /* marrom escuro */
 }
+
 
 
 /* Tema de Natal 🎄 */
