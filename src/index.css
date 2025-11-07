@@ -31,78 +31,78 @@ body {
 /* ============================= */
 
 /* ============================= */
-/* 🎃 Tema de Halloween - Atualizado */
+/* 🎃 Tema de Halloween */
 /* ============================= */
 
 .theme-halloween {
   background-color: #1a0b0b;
-  color: #5a2d0c;
-  background-image: url("https://i.imgur.com/qVb5XzT.png"),
-    url("https://i.imgur.com/9wT7zEb.png");
+  color: #e0b27c;
+  background-image: 
+    url("https://i.imgur.com/bV6gZf2.png"),  /* teia */
+    url("https://i.imgur.com/4J4x1cm.png");  /* morcegos */
   background-repeat: no-repeat, no-repeat;
   background-position: top right, bottom left;
-  background-size: 160px, 160px;
+  background-size: 180px, 200px;
 }
 
-/* Sidebar com laranja escuro e ícones flutuando */
+/* Sidebar escura e temática */
 .theme-halloween .sidebar,
 .theme-halloween aside {
-  background-color: #ff7518;
-  color: #5a2d0c;
-  border-color: #b95100;
+  background-color: #a84300; /* laranja escuro queimado */
+  color: #f5d6b3;
+  border-color: #662900;
   background-image: 
-    url("https://i.imgur.com/Z9oEJ9S.png"), /* abóbora */
-    url("https://i.imgur.com/qbI4ZqH.png"), /* morcego */
-    url("https://i.imgur.com/MeQSmvU.png"); /* teia */
+    url("https://i.imgur.com/rT62Fqv.png"),  /* abóbora */
+    url("https://i.imgur.com/2x5dDNy.png"),  /* morcego */
+    url("https://i.imgur.com/LrYqDR4.png");  /* teia */
   background-repeat: no-repeat, no-repeat, no-repeat;
-  background-position: top 15px right 25px, bottom 20px left 15px, center;
-  background-size: 50px, 60px, 120px;
+  background-position: top 25px right 25px, bottom 35px left 25px, center;
+  background-size: 60px, 70px, 140px;
+  box-shadow: inset 0 0 40px rgba(0, 0, 0, 0.4);
   animation: floatSpooky 6s ease-in-out infinite alternate;
 }
 
 /* Animação sutil dos ícones */
 @keyframes floatSpooky {
   from {
-    background-position: top 15px right 25px, bottom 20px left 15px, center;
+    background-position: top 25px right 25px, bottom 35px left 25px, center;
   }
   to {
-    background-position: top 25px right 15px, bottom 10px left 25px, center;
+    background-position: top 35px right 15px, bottom 25px left 35px, center;
   }
 }
 
-/* Logo "FindMySong" roxa */
+/* Logo "FindMySong" em roxo */
 .theme-halloween .sidebar h1,
 .theme-halloween .sidebar .logo,
-.theme-halloween .sidebar .brand,
-.theme-halloween .sidebar h2,
-.theme-halloween .sidebar a[href="/home"] {
-  color: #8e44ad !important;
+.theme-halloween .sidebar .brand {
+  color: #b97df2 !important;
   font-weight: 700;
-  text-shadow: 0 0 4px rgba(142, 68, 173, 0.6);
+  text-shadow: 0 0 6px rgba(185, 125, 242, 0.7);
 }
 
-/* Itens e textos marrons */
+/* Textos em marrom mais escuro */
 .theme-halloween .sidebar a,
 .theme-halloween .sidebar li,
 .theme-halloween .sidebar span,
 .theme-halloween .sidebar p {
-  color: #5a2d0c;
+  color: #3b1603;
 }
 
-/* Botões com contraste e hover animado */
+/* Botões e hover */
 .theme-halloween button {
-  background-color: #5a2d0c;
-  color: #fff5e1;
+  background-color: #3b1603;
+  color: #ffbf73;
   transition: background-color 0.3s ease;
 }
 .theme-halloween button:hover {
-  background-color: #8e44ad;
+  background-color: #b97df2;
   color: white;
 }
 
 /* Ícones do tema no canto superior */
 .theme-halloween::after {
-  content: "🎃🕸️🦇";
+  content: "🕸️🦇🎃";
   position: fixed;
   top: 10px;
   right: 15px;
@@ -110,6 +110,42 @@ body {
   display: flex;
   gap: 8px;
   animation: floatHalloween 3s ease-in-out infinite alternate;
+}
+
+
+/* Névoa Sombria (efeito animado) */
+
+@keyframes fogMove {
+  from {
+    background-position: 0 0, 0 0;
+  }
+  to {
+    background-position: 1000px 0, -1000px 0;
+  }
+}
+
+.theme-halloween::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  background-image: 
+    url("https://i.imgur.com/LxQL2zT.png"), 
+    url("https://i.imgur.com/LxQL2zT.png");
+  background-repeat: repeat, repeat;
+  background-size: 1200px 600px, 1400px 700px;
+  opacity: 0.15;
+  animation: fogMove 90s linear infinite;
+  z-index: 0;
+}
+
+/* Garante que o conteúdo fique acima da névoa */
+.theme-halloween * {
+  position: relative;
+  z-index: 1;
 }
 
 @keyframes floatHalloween {
@@ -120,6 +156,7 @@ body {
     transform: translateY(-5px);
   }
 }
+
 
 /* Tema de Natal 🎄 */
 .theme-natal {
