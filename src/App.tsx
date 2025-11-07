@@ -1,5 +1,12 @@
 // src/App.tsx
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { useEffect } from "react";
+import axios from "axios";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from "react-router-dom";
 import Home from "./pages/Home";
 import Top10 from "./pages/Top10";
 import Library from "./pages/Library";
@@ -10,38 +17,70 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import AdminPanel from "./pages/AdminPanel";
 
-useEffect(() => {
-  axios.get(`${API_BASE}/api/admin/config`).then((res) => {
-    document.body.classList.remove("theme-halloween", "theme-natal");
-    if (res.data.theme === "halloween") {
-      document.body.classList.add("theme-halloween");
-    } else if (res.data.theme === "natal") {
-      document.body.classList.add("theme-natal");
-    }
-  });
-}, []);
+// Componente de rota protegida
+function PrivateRoute({ element }: { element: JSX.Element }) {
+  const token = localStorage.getItem("token");
+  if (!token || token === "undefined") {
+    return <Navigate to="/login" replace />;
+  }
+  return element;
+}
 
 export default function App() {
+  // Carrega tema do admin (ex: halloween/natal)
+  useEffect(() => {
+    const API_BASE =
+      import.meta.env.VITE_API_BASE_URL ||
+      "https://findmysong-backend.onrender.com";
+
+    axios
+      .get(`${API_BASE}/api/admin/config`)
+      .then((res) => {
+        document.body.classList.remove("theme-halloween", "theme-natal");
+        if (res.data.theme === "halloween") {
+          document.body.classList.add("theme-halloween");
+        } else if (res.data.theme === "natal") {
+          document.body.classList.add("theme-natal");
+        }
+      })
+      .catch((err) =>
+        console.warn("Erro ao carregar tema do painel admin:", err.message)
+      );
+  }, []);
+
   return (
     <Router>
       <Routes>
-        {/* Login / cadastro */}
+        {/* Páginas públicas */}
+        <Route path="/" element={<Navigate to="/login" replace />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
 
-        {/* Home em / e /home (Home já redireciona pra /login se não tiver token) */}
-        <Route path="/" element={<Home />} />
-        <Route path="/home" element={<Home />} />
+        {/* Páginas protegidas */}
+        <Route path="/home" element={<PrivateRoute element={<Home />} />} />
+        <Route path="/top10" element={<PrivateRoute element={<Top10 />} />} />
+        <Route
+          path="/library"
+          element={<PrivateRoute element={<Library />} />}
+        />
+        <Route
+          path="/likedsongs"
+          element={<PrivateRoute element={<LikedSongs />} />}
+        />
+        <Route path="/search" element={<PrivateRoute element={<Search />} />} />
+        <Route
+          path="/createplaylist"
+          element={<PrivateRoute element={<CreatePlaylist />} />}
+        />
 
-        {/* Outras páginas logadas */}
-        <Route path="/top10" element={<Top10 />} />
-        <Route path="/library" element={<Library />} />
-        <Route path="/likedsongs" element={<LikedSongs />} />
-        <Route path="/search" element={<Search />} />
-        <Route path="/createplaylist" element={<CreatePlaylist />} />
+        {/* Painel Admin */}
+        <Route
+          path="/admin"
+          element={<PrivateRoute element={<AdminPanel />} />}
+        />
 
-        {/* Painel admin */}
-        <Route path="/admin" element={<AdminPanel />} />
+        {/* Fallback */}
+        <Route path="*" element={<Navigate to="/home" replace />} />
       </Routes>
     </Router>
   );
