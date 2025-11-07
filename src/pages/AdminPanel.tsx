@@ -8,6 +8,7 @@ export default function AdminPanel() {
   const [activeTab, setActiveTab] = useState("interface");
   const [config, setConfig] = useState<any>({});
   const [message, setMessage] = useState("");
+  const [previewTheme, setPreviewTheme] = useState<string>("");
 
   const API_BASE =
     import.meta.env.VITE_API_BASE_URL ||
@@ -38,25 +39,23 @@ export default function AdminPanel() {
     }
   }, []);
 
-  // Carrega configurações atuais
   async function carregarConfiguracoes() {
     try {
       const res = await axios.get(`${API_BASE}/api/admin/config`);
       setConfig(res.data || {});
+      setPreviewTheme(res.data.theme || "light");
     } catch (err) {
       console.error("Erro ao carregar configurações:", err);
       setMessage("⚠️ Erro ao carregar configurações.");
     }
   }
 
-  // Atualiza campos do formulário
   function handleChange(
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
   ) {
     setConfig({ ...config, [e.target.name]: e.target.value });
   }
 
-  // Salva alterações no backend
   async function salvarConfiguracoes() {
     try {
       setMessage("Salvando...");
@@ -77,28 +76,37 @@ export default function AdminPanel() {
           Painel Administrativo ⚙️
         </h1>
 
-        <div className="flex gap-3 mb-6">
-          {["interface", "eventos", "feriados", "backend", "frontend"].map(
-            (tab) => (
-              <button
-                key={tab}
-                onClick={() => setActiveTab(tab)}
-                className={`px-4 py-2 rounded-md font-medium transition ${
-                  activeTab === tab
-                    ? "bg-green-500 text-white"
-                    : "bg-white border hover:bg-gray-100"
-                }`}
-              >
-                {tab.charAt(0).toUpperCase() + tab.slice(1)}
-              </button>
-            )
-          )}
+        <div className="flex gap-3 mb-6 flex-wrap">
+          {[
+            "interface",
+            "eventos",
+            "feriados",
+            "temas",
+            "backend",
+            "frontend",
+          ].map((tab) => (
+            <button
+              key={tab}
+              onClick={() => setActiveTab(tab)}
+              className={`px-4 py-2 rounded-md font-medium transition ${
+                activeTab === tab
+                  ? "bg-green-500 text-white"
+                  : "bg-white border hover:bg-gray-100"
+              }`}
+            >
+              {tab.charAt(0).toUpperCase() + tab.slice(1)}
+            </button>
+          ))}
         </div>
 
         <form className="bg-white p-6 rounded-2xl shadow-md border max-w-3xl flex flex-col gap-4">
-          {/* ====== ABA INTERFACE ====== */}
+          {/* Interface */}
           {activeTab === "interface" && (
             <>
+              <h2 className="text-lg font-semibold mb-2">
+                Configurações da Interface
+              </h2>
+
               <label className="font-medium text-sm">Nome do site</label>
               <input
                 name="site_name"
@@ -116,35 +124,21 @@ export default function AdminPanel() {
               >
                 <option value="light">Claro</option>
                 <option value="dark">Escuro</option>
-                <option value="halloween">🎃 Tema de Halloween</option>
-                <option value="natal">🎄 Tema de Natal</option>
               </select>
-
-              {config.theme === "halloween" && (
-                <p className="text-orange-600 text-sm font-medium mt-2">
-                  🎃 Tema de Halloween ativo! Aproveite as músicas sombrias!
-                </p>
-              )}
-              {config.theme === "natal" && (
-                <p className="text-green-600 text-sm font-medium mt-2">
-                  🎄 Tema de Natal ativo! Curta as músicas festivas!
-                </p>
-              )}
             </>
           )}
 
-          {/* ====== ABA EVENTOS ====== */}
+          {/* Eventos */}
           {activeTab === "eventos" && (
             <>
-              <label className="font-medium text-sm">Evento / Feriado</label>
+              <h2 className="text-lg font-semibold mb-2">Eventos</h2>
               <input
                 name="evento_feriado"
                 value={config.evento_feriado || ""}
                 onChange={handleChange}
+                placeholder="Nome do evento"
                 className="border p-2 rounded-lg"
               />
-
-              <label className="font-medium text-sm">Data</label>
               <input
                 name="data_evento"
                 type="date"
@@ -155,25 +149,103 @@ export default function AdminPanel() {
             </>
           )}
 
-          {/* ====== ABA FERIADOS ====== */}
-          {activeTab === "feriados" && (
+          {/* NOVA ABA: TEMAS / HOLIDAYS */}
+          {activeTab === "temas" && (
             <>
-              <label className="font-medium text-sm">Lista de feriados</label>
-              <textarea
-                name="feriados_lista"
-                value={config.feriados_lista || ""}
-                onChange={handleChange}
-                className="border p-2 rounded-lg h-32"
-              />
+              <h2 className="text-lg font-semibold mb-2">
+                Temas Sazonais / Holidays
+              </h2>
+              <p className="text-sm text-gray-600 mb-3">
+                Escolha o tema visual do site (somente administradores podem
+                alterar).
+              </p>
+
+              <select
+                name="theme"
+                value={config.theme || "light"}
+                onChange={(e) => {
+                  handleChange(e);
+                  setPreviewTheme(e.target.value);
+                }}
+                className="border p-2 rounded-lg"
+              >
+                <option value="light">Nenhum (padrão)</option>
+                <option value="halloween">Halloween 🎃</option>
+                <option value="natal">Natal 🎄</option>
+              </select>
+
+              <p className="text-xs text-gray-500 mt-2">
+                O tema selecionado será aplicado ao público após salvar.
+              </p>
+
+              {/* Miniaturas de prévia */}
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 mt-6">
+                <div
+                  onClick={() => {
+                    setConfig({ ...config, theme: "halloween" });
+                    setPreviewTheme("halloween");
+                  }}
+                  className={`cursor-pointer border-2 rounded-lg p-3 text-center transition ${
+                    previewTheme === "halloween"
+                      ? "border-orange-500 scale-105"
+                      : "border-gray-200 hover:scale-105"
+                  }`}
+                >
+                  <div className="w-full h-20 bg-[#2b0d0d] rounded mb-2 flex items-center justify-center text-orange-400 text-xl">
+                    🎃
+                  </div>
+                  <p className="text-sm font-medium text-orange-700">
+                    Tema Halloween
+                  </p>
+                </div>
+
+                <div
+                  onClick={() => {
+                    setConfig({ ...config, theme: "natal" });
+                    setPreviewTheme("natal");
+                  }}
+                  className={`cursor-pointer border-2 rounded-lg p-3 text-center transition ${
+                    previewTheme === "natal"
+                      ? "border-green-600 scale-105"
+                      : "border-gray-200 hover:scale-105"
+                  }`}
+                >
+                  <div className="w-full h-20 bg-[#e6f3f3] rounded mb-2 flex items-center justify-center text-green-700 text-xl">
+                    🎄
+                  </div>
+                  <p className="text-sm font-medium text-green-700">
+                    Tema de Natal
+                  </p>
+                </div>
+
+                <div
+                  onClick={() => {
+                    setConfig({ ...config, theme: "light" });
+                    setPreviewTheme("light");
+                  }}
+                  className={`cursor-pointer border-2 rounded-lg p-3 text-center transition ${
+                    previewTheme === "light"
+                      ? "border-blue-500 scale-105"
+                      : "border-gray-200 hover:scale-105"
+                  }`}
+                >
+                  <div className="w-full h-20 bg-white rounded mb-2 flex items-center justify-center text-gray-700 text-xl">
+                    ☀️
+                  </div>
+                  <p className="text-sm font-medium text-gray-700">
+                    Padrão (Claro)
+                  </p>
+                </div>
+              </div>
             </>
           )}
 
-          {/* ====== ABA BACKEND ====== */}
+          {/* Backend */}
           {activeTab === "backend" && (
             <>
-              <label className="font-medium text-sm">
-                Configuração Backend
-              </label>
+              <h2 className="text-lg font-semibold mb-2">
+                Configurações de Backend
+              </h2>
               <textarea
                 name="config_backend"
                 value={config.config_backend || ""}
@@ -183,12 +255,12 @@ export default function AdminPanel() {
             </>
           )}
 
-          {/* ====== ABA FRONTEND ====== */}
+          {/* Frontend */}
           {activeTab === "frontend" && (
             <>
-              <label className="font-medium text-sm">
-                Configuração Frontend
-              </label>
+              <h2 className="text-lg font-semibold mb-2">
+                Configurações de Frontend
+              </h2>
               <textarea
                 name="config_frontend"
                 value={config.config_frontend || ""}
