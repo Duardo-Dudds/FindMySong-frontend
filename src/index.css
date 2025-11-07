@@ -37,9 +37,9 @@ body {
 .theme-halloween {
   background-color: #1a0b0b;
   color: #e0b27c;
-  background-image: 
-    url("https://i.imgur.com/bV6gZf2.png"),  /* teia */
-    url("https://i.imgur.com/4J4x1cm.png");  /* morcegos */
+  background-image:
+    url("https://i.ibb.co/k1ks6Rh/web.png"),  /* teia */
+    url("https://i.ibb.co/MGTkjsH/bats.png"); /* morcegos */
   background-repeat: no-repeat, no-repeat;
   background-position: top right, bottom left;
   background-size: 180px, 200px;
@@ -48,17 +48,17 @@ body {
 /* Sidebar escura e temática */
 .theme-halloween .sidebar,
 .theme-halloween aside {
-  background-color: #a84300; /* laranja escuro queimado */
+  background-color: #c85e10; /* 🍊 Laranja queimado, visível mas não gritante */
   color: #f5d6b3;
   border-color: #662900;
-  background-image: 
-    url("https://i.imgur.com/rT62Fqv.png"),  /* abóbora */
-    url("https://i.imgur.com/2x5dDNy.png"),  /* morcego */
-    url("https://i.imgur.com/LrYqDR4.png");  /* teia */
+  background-image:
+    url("https://i.ibb.co/dkzHBYy/pumpkin.png"),  /* abóbora */
+    url("https://i.ibb.co/9b8Vfzk/bat2.png"),     /* morcego */
+    url("https://i.ibb.co/3TXKXQH/spiderweb.png");/* teia */
   background-repeat: no-repeat, no-repeat, no-repeat;
   background-position: top 25px right 25px, bottom 35px left 25px, center;
   background-size: 60px, 70px, 140px;
-  box-shadow: inset 0 0 40px rgba(0, 0, 0, 0.4);
+  box-shadow: inset 0 0 40px rgba(0, 0, 0, 0.5);
   animation: floatSpooky 6s ease-in-out infinite alternate;
 }
 
@@ -106,14 +106,24 @@ body {
   position: fixed;
   top: 10px;
   right: 15px;
-  font-size: 20px;
+  font-size: 22px;
   display: flex;
   gap: 8px;
   animation: floatHalloween 3s ease-in-out infinite alternate;
 }
 
+@keyframes floatHalloween {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(-6px);
+  }
+}
 
+/* ============================= */
 /* Névoa Sombria (efeito animado) */
+/* ============================= */
 
 @keyframes fogMove {
   from {
@@ -132,12 +142,12 @@ body {
   width: 100%;
   height: 100%;
   pointer-events: none;
-  background-image: 
-    url("https://i.imgur.com/LxQL2zT.png"), 
-    url("https://i.imgur.com/LxQL2zT.png");
+  background-image:
+    url("https://i.ibb.co/zXrT8L8/fog-layer.png"),
+    url("https://i.ibb.co/zXrT8L8/fog-layer.png");
   background-repeat: repeat, repeat;
   background-size: 1200px 600px, 1400px 700px;
-  opacity: 0.15;
+  opacity: 0.18;
   animation: fogMove 90s linear infinite;
   z-index: 0;
 }
@@ -146,15 +156,6 @@ body {
 .theme-halloween * {
   position: relative;
   z-index: 1;
-}
-
-@keyframes floatHalloween {
-  from {
-    transform: translateY(0);
-  }
-  to {
-    transform: translateY(-5px);
-  }
 }
 
 
