@@ -1,7 +1,4 @@
-// src/App.tsx
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-
-// páginas
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Home from "./pages/Home";
@@ -16,14 +13,12 @@ export default function App() {
   return (
     <Router>
       <Routes>
-        {/* Login padrão */}
+        {/* Login e cadastro */}
         <Route path="/" element={<Login />} />
         <Route path="/login" element={<Login />} />
-
-        {/* Cadastro */}
         <Route path="/register" element={<Register />} />
 
-        {/* Área logada */}
+        {/* Rotas logadas */}
         <Route path="/home" element={<Home />} />
         <Route path="/top10" element={<Top10 />} />
         <Route path="/library" element={<Library />} />
@@ -31,10 +26,10 @@ export default function App() {
         <Route path="/search" element={<Search />} />
         <Route path="/createplaylist" element={<CreatePlaylist />} />
 
-        {/* Painel admin */}
+        {/* Painel administrativo */}
         <Route path="/admin" element={<AdminPanel />} />
 
-        {/* Qualquer rota desconhecida volta pro login */}
+        {/* Fallback */}
         <Route path="*" element={<Login />} />
       </Routes>
     </Router>
