@@ -1,4 +1,4 @@
-// Página principal — só carrega se o token for válido
+// src/pages/Home.tsx
 import { useEffect, useState } from "react";
 import axios from "axios";
 import Sidebar from "../components/Sidebar";
@@ -17,31 +17,25 @@ export default function Home() {
   const [query, setQuery] = useState("");
   const [results, setResults] = useState<Track[]>([]);
   const [liked, setLiked] = useState<string[]>([]);
-  const [userId, setUserId] = useState<number | null>(null);
   const [loading, setLoading] = useState(false);
+  const [userId, setUserId] = useState<number | null>(null); // id do usuário logado
 
   const API_BASE =
     import.meta.env.VITE_API_BASE_URL ||
     "https://findmysong-backend.onrender.com";
 
-  // verifica token e identifica usuário logado
+  // verifica token e pega id do usuário
   useEffect(() => {
     const token = localStorage.getItem("token");
 
-    // se não tiver token ou for inválido, volta pro login
-    if (!token || token === "undefined" || token === "null") {
-      localStorage.removeItem("token");
+    // se não tiver token, manda pro login
+    if (!token || token === "undefined") {
       window.location.href = "/login";
       return;
     }
 
     try {
-      const payloadBase64 = token.split(".")[1];
-      const payload = JSON.parse(atob(payloadBase64));
-
-      // se não tiver id, já corta o fluxo
-      if (!payload?.id) throw new Error("Token sem ID");
-
+      const payload = JSON.parse(atob(token.split(".")[1]));
       setUserId(payload.id);
     } catch (err) {
       console.error("Token inválido:", err);
@@ -50,16 +44,19 @@ export default function Home() {
     }
   }, []);
 
-  // carrega músicas curtidas do banco
+  // carrega curtidas salvas no banco para esse usuário
   useEffect(() => {
     if (!userId) return;
+
     axios
       .get(`${API_BASE}/api/likes/${userId}`)
-      .then((res) => setLiked(res.data.map((m: any) => m.spotify_id)))
+      .then((res) => {
+        setLiked(res.data.map((m: any) => m.spotify_id));
+      })
       .catch(() => console.log("Erro ao carregar curtidas"));
   }, [userId]);
 
-  // busca músicas no Spotify
+  // busca músicas no backend (que fala com o Spotify)
   async function buscar() {
     if (!query.trim()) return;
     setLoading(true);
@@ -82,7 +79,7 @@ export default function Home() {
     }
   }
 
-  // curtir e descurtir músicas
+  // curtir / descurtir música
   async function toggleLike(track: Track) {
     if (!userId) {
       alert("Faça login para curtir músicas.");
@@ -90,6 +87,7 @@ export default function Home() {
     }
 
     const jaCurtiu = liked.includes(track.id);
+
     try {
       if (jaCurtiu) {
         await axios.delete(`${API_BASE}/api/likes/${track.id}/${userId}`);
@@ -110,7 +108,6 @@ export default function Home() {
     }
   }
 
-  // render principal
   return (
     <div className="flex min-h-screen bg-white text-gray-800">
       <Sidebar />
@@ -182,7 +179,7 @@ export default function Home() {
                 </div>
 
                 <div className="flex justify-between items-center">
-                  {/* botão de curtir */}
+                  {/* like */}
                   <button
                     onClick={() => toggleLike(m)}
                     className={`text-lg ${
@@ -194,7 +191,7 @@ export default function Home() {
                     ♥
                   </button>
 
-                  {/* link pro spotify */}
+                  {/* spotify */}
                   {m.external_urls?.spotify && (
                     <a
                       href={m.external_urls.spotify}
