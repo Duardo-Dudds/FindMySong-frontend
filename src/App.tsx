@@ -6,6 +6,7 @@ import LikedSongs from "./pages/LikedSongs";
 import Search from "./pages/Search";
 import CreatePlaylist from "./pages/CreatePlaylist";
 import Login from "./pages/Login";
+import AdminPanel from "./pages/AdminPanel";
 
 export default function App() {
   return (
@@ -18,6 +19,7 @@ export default function App() {
         <Route path="/search" element={<Search />} />
         <Route path="/createplaylist" element={<CreatePlaylist />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/admin" element={<AdminPanel />} />
       </Routes>
     </Router>
   );
