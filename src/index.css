@@ -35,53 +35,31 @@ body {
 /* ============================= */
 
 .theme-halloween {
-  background-color: #1a0b0b;
-  color: #e0b27c;
-  background-image:
-    url("https://i.ibb.co/k1ks6Rh/web.png"),  /* teia */
-    url("https://i.ibb.co/MGTkjsH/bats.png"); /* morcegos */
-  background-repeat: no-repeat, no-repeat;
-  background-position: top right, bottom left;
-  background-size: 180px, 200px;
+  background-color: #120707;   /* fundo geral bem dark */
+  color: #e9c79a;
 }
 
-/* Sidebar escura e temática */
+/* Sidebar Halloween */
 .theme-halloween .sidebar,
 .theme-halloween aside {
-  background-color: #c85e10; /* 🍊 Laranja queimado, visível mas não gritante */
-  color: #f5d6b3;
-  border-color: #662900;
-  background-image:
-    url("https://i.ibb.co/dkzHBYy/pumpkin.png"),  /* abóbora */
-    url("https://i.ibb.co/9b8Vfzk/bat2.png"),     /* morcego */
-    url("https://i.ibb.co/3TXKXQH/spiderweb.png");/* teia */
-  background-repeat: no-repeat, no-repeat, no-repeat;
-  background-position: top 25px right 25px, bottom 35px left 25px, center;
-  background-size: 60px, 70px, 140px;
-  box-shadow: inset 0 0 40px rgba(0, 0, 0, 0.5);
-  animation: floatSpooky 6s ease-in-out infinite alternate;
+  background: linear-gradient(to bottom, #d77222, #9a3c0f); /* laranja queimado */
+  color: #fbe3c4;
+  border-color: #6b2608;
+  box-shadow: inset 0 0 35px rgba(0, 0, 0, 0.6);
+  position: relative;
+  overflow: hidden; 
 }
 
-/* Animação sutil dos ícones */
-@keyframes floatSpooky {
-  from {
-    background-position: top 25px right 25px, bottom 35px left 25px, center;
-  }
-  to {
-    background-position: top 35px right 15px, bottom 25px left 35px, center;
-  }
-}
-
-/* Logo "FindMySong" em roxo */
+/* Logo roxa */
 .theme-halloween .sidebar h1,
 .theme-halloween .sidebar .logo,
 .theme-halloween .sidebar .brand {
-  color: #b97df2 !important;
+  color: #c392ff !important;
   font-weight: 700;
-  text-shadow: 0 0 6px rgba(185, 125, 242, 0.7);
+  text-shadow: 0 0 6px rgba(195, 146, 255, 0.7);
 }
 
-/* Textos em marrom mais escuro */
+/* Textos da sidebar em marrom escuro */
 .theme-halloween .sidebar a,
 .theme-halloween .sidebar li,
 .theme-halloween .sidebar span,
@@ -89,20 +67,41 @@ body {
   color: #3b1603;
 }
 
-/* Botões e hover */
+/* Botões */
 .theme-halloween button {
   background-color: #3b1603;
   color: #ffbf73;
-  transition: background-color 0.3s ease;
+  transition: background-color 0.2s ease, transform 0.1s ease;
 }
 .theme-halloween button:hover {
-  background-color: #b97df2;
-  color: white;
+  background-color: #c392ff;
+  color: #1a0b0b;
+  transform: translateY(-1px);
 }
 
-/* Ícones do tema no canto superior */
+/* Emojis decorativos dentro da sidebar */
+.theme-halloween .sidebar::before,
+.theme-halloween .sidebar::after {
+  content: "🎃🕸️🦇";
+  position: absolute;
+  font-size: 80px;
+  opacity: 0.12;
+  pointer-events: none;
+}
+
+.theme-halloween .sidebar::before {
+  top: 70px;
+  right: -10px;
+}
+
+.theme-halloween .sidebar::after {
+  bottom: 50px;
+  left: 10px;
+}
+
+/* Emojis flutuando no topo da tela */
 .theme-halloween::after {
-  content: "🕸️🦇🎃";
+  content: "🕸️  🦇  🎃";
   position: fixed;
   top: 10px;
   right: 15px;
@@ -112,6 +111,7 @@ body {
   animation: floatHalloween 3s ease-in-out infinite alternate;
 }
 
+/* Animação leve dos emojis do topo */
 @keyframes floatHalloween {
   from {
     transform: translateY(0);
@@ -120,44 +120,6 @@ body {
     transform: translateY(-6px);
   }
 }
-
-/* ============================= */
-/* Névoa Sombria (efeito animado) */
-/* ============================= */
-
-@keyframes fogMove {
-  from {
-    background-position: 0 0, 0 0;
-  }
-  to {
-    background-position: 1000px 0, -1000px 0;
-  }
-}
-
-.theme-halloween::before {
-  content: "";
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-  background-image:
-    url("https://i.ibb.co/zXrT8L8/fog-layer.png"),
-    url("https://i.ibb.co/zXrT8L8/fog-layer.png");
-  background-repeat: repeat, repeat;
-  background-size: 1200px 600px, 1400px 700px;
-  opacity: 0.18;
-  animation: fogMove 90s linear infinite;
-  z-index: 0;
-}
-
-/* Garante que o conteúdo fique acima da névoa */
-.theme-halloween * {
-  position: relative;
-  z-index: 1;
-}
-
 
 /* Tema de Natal 🎄 */
 .theme-natal {
