@@ -6,3 +6,77 @@
 body {
   @apply bg-white text-black antialiased;
 }
+
+
+/* ============================= */
+/* Temas Especiais               */
+/* ============================= */
+
+/* Tema de Halloween 🎃 */
+.theme-halloween {
+  background-color: #1a0b0b;
+  color: #ff7518;
+  background-image: url("https://i.imgur.com/qVb5XzT.png"),
+    url("https://i.imgur.com/9wT7zEb.png");
+  background-repeat: no-repeat, no-repeat;
+  background-position: top right, bottom left;
+  background-size: 180px, 180px;
+}
+
+.theme-halloween .sidebar,
+.theme-halloween aside {
+  background-color: #2b0d0d;
+  color: #ffa54f;
+  border-color: #3a0e0e;
+}
+
+.theme-halloween button {
+  background-color: #ff7518;
+  color: black;
+}
+
+.theme-halloween button:hover {
+  background-color: #ffa54f;
+}
+
+/* Tema de Natal 🎄 */
+.theme-natal {
+  background-color: #e6f3f3;
+  color: #1e4d2b;
+  background-image: url("https://i.imgur.com/kPK2rlt.png"),
+    url("https://i.imgur.com/zP3d6h1.png");
+  background-repeat: no-repeat, no-repeat;
+  background-position: top right, bottom left;
+  background-size: 200px, 200px;
+}
+
+.theme-natal .sidebar,
+.theme-natal aside {
+  background-color: #f9fdfc;
+  color: #1e4d2b;
+  border-color: #a7d4c1;
+}
+
+.theme-natal button {
+  background-color: #1e4d2b;
+  color: white;
+}
+
+.theme-natal button:hover {
+  background-color: #2a693d;
+}
+
+/* Pequenas animações */
+@keyframes snowFall {
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: 0 1000px;
+  }
+}
+
+.theme-natal {
+  background-image: url("https://i.imgur.com/zP3d6h1.png");
+  animation: snowFall 15s linear infinite;
+}

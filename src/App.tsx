@@ -10,6 +10,17 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import AdminPanel from "./pages/AdminPanel";
 
+useEffect(() => {
+  axios.get(`${API_BASE}/api/admin/config`).then((res) => {
+    document.body.classList.remove("theme-halloween", "theme-natal");
+    if (res.data.theme === "halloween") {
+      document.body.classList.add("theme-halloween");
+    } else if (res.data.theme === "natal") {
+      document.body.classList.add("theme-natal");
+    }
+  });
+}, []);
+
 export default function App() {
   return (
     <Router>
