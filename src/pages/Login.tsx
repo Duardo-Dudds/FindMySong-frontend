@@ -1,13 +1,15 @@
+// Página de login — feita pra autenticar e salvar o token do usuário
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
-const Login = () => {
+export default function Login() {
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
   const [erro, setErro] = useState("");
   const navigate = useNavigate();
 
+  // Quando envia o formulário de login
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setErro("");
@@ -18,36 +20,35 @@ const Login = () => {
     }
 
     try {
-      // pega do .env
-      const apiBase =
+      // pega do .env ou do backend em produção
+      const API_BASE =
         import.meta.env.VITE_API_BASE_URL ||
-        "http://localhost:3000";
+        "https://findmysong-backend.onrender.com";
 
-      const resp = await axios.post(
-        `${apiBase}/api/usuarios/login`,
-        { email, senha },
-        {
-          // importante pro vercel/render
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
+      // requisição de login
+      const resp = await axios.post(`${API_BASE}/api/usuarios/login`, {
+        email,
+        senha,
+      });
 
-      // se chegou aqui é porque o backend devolveu 200
       const token = resp.data?.token;
+
+      // se não veio token, já cancela
       if (!token) {
         setErro("Resposta inválida do servidor.");
         return;
       }
 
+      // salva o token pra usar nas outras rotas
       localStorage.setItem("token", token);
+
+      // vai pra home se tudo der certo
       navigate("/home");
     } catch (err: any) {
-      // aqui a gente mostra o erro real do backend
+      // mostra erro direto da API
       const msg =
         err.response?.data?.message ||
-        "Não foi possível fazer login.";
+        "Erro ao fazer login. Verifique seus dados.";
       setErro(msg);
     }
   }
@@ -73,6 +74,7 @@ const Login = () => {
           onChange={(e) => setEmail(e.target.value)}
           className="w-full p-2 mb-4 text-black rounded focus:outline-none focus:ring-2 focus:ring-green-500"
           placeholder="Digite seu e-mail"
+          autoComplete="email"
         />
 
         <label htmlFor="senha" className="block mb-2">
@@ -86,11 +88,10 @@ const Login = () => {
           onChange={(e) => setSenha(e.target.value)}
           className="w-full p-2 mb-4 text-black rounded focus:outline-none focus:ring-2 focus:ring-green-500"
           placeholder="Digite sua senha"
+          autoComplete="current-password"
         />
 
-        {erro && (
-          <p className="mb-3 text-red-300 text-sm">{erro}</p>
-        )}
+        {erro && <p className="mb-3 text-red-300 text-sm">{erro}</p>}
 
         <button
           type="submit"
@@ -111,6 +112,4 @@ const Login = () => {
       </form>
     </div>
   );
-};
-
-export default Login;
+}
