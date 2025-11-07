@@ -2,16 +2,35 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Reset opcional (visual mais limpo) */
+/* ============================= */
+/* Estilo padrão do corpo */
+/* ============================= */
 body {
   @apply bg-white text-black antialiased;
+}
+
+/* ============================= */
+/* Layout geral e cabeçalho */
+/* ============================= */
+
+/* Alinhamento do topo com título, avatar e ícones */
+.header-bar {
+  @apply flex justify-between items-center mb-6;
+}
+
+/* avatar do usuário */
+.profile-avatar {
+  @apply w-10 h-10 rounded-full border border-gray-300 shadow-sm cursor-pointer transition-all;
+}
+.profile-avatar:hover {
+  opacity: 0.85;
 }
 
 /* ============================= */
 /* Temas Especiais               */
 /* ============================= */
 
-/* ========= HALLOWEEN 🎃 ========= */
+/* Tema de Halloween 🎃 */
 .theme-halloween {
   background-color: #1a0b0b;
   color: #ff7518;
@@ -20,14 +39,13 @@ body {
   background-repeat: no-repeat, no-repeat;
   background-position: top right, bottom left;
   background-size: 180px, 180px;
-  transition: background 0.6s ease, color 0.6s ease;
 }
 
-.theme-halloween .sidebar {
+.theme-halloween .sidebar,
+.theme-halloween aside {
   background-color: #2b0d0d;
   color: #ffa54f;
   border-color: #3a0e0e;
-  box-shadow: inset 0 0 10px #4a0a0a;
 }
 
 .theme-halloween button {
@@ -39,22 +57,7 @@ body {
   background-color: #ffa54f;
 }
 
-/* animação leve com morcegos */
-.theme-halloween::before {
-  content: "🕷️🕸️🦇🎃";
-  position: fixed;
-  top: 10px;
-  right: 15px;
-  font-size: 24px;
-  animation: floatSpooky 3s ease-in-out infinite alternate;
-}
-
-@keyframes floatSpooky {
-  from { transform: translateY(0); opacity: 0.8; }
-  to { transform: translateY(-8px); opacity: 1; }
-}
-
-/* ========= NATAL 🎄 ========= */
+/* Tema de Natal 🎄 */
 .theme-natal {
   background-color: #e6f3f3;
   color: #1e4d2b;
@@ -63,14 +66,14 @@ body {
   background-repeat: no-repeat, no-repeat;
   background-position: top right, bottom left;
   background-size: 200px, 200px;
-  transition: background 0.6s ease, color 0.6s ease;
+  animation: snowFall 20s linear infinite;
 }
 
-.theme-natal .sidebar {
+.theme-natal .sidebar,
+.theme-natal aside {
   background-color: #f9fdfc;
   color: #1e4d2b;
   border-color: #a7d4c1;
-  box-shadow: inset 0 0 10px #a7d4c1;
 }
 
 .theme-natal button {
@@ -82,26 +85,12 @@ body {
   background-color: #2a693d;
 }
 
-/* efeito de neve caindo ❄️ */
+/* Animação da neve no tema de Natal */
 @keyframes snowFall {
-  0% { background-position: 0 0; }
-  100% { background-position: 0 1000px; }
-}
-
-.theme-natal {
-  animation: snowFall 15s linear infinite;
-}
-
-.theme-natal::before {
-  content: "🎄❄️🎅";
-  position: fixed;
-  top: 8px;
-  right: 12px;
-  font-size: 24px;
-  animation: floatSnow 3s ease-in-out infinite alternate;
-}
-
-@keyframes floatSnow {
-  from { transform: translateY(0); opacity: 0.9; }
-  to { transform: translateY(10px); opacity: 1; }
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: 0 1000px;
+  }
 }

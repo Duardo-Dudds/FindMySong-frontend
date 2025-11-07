@@ -17,8 +17,11 @@ import CreatePlaylist from "./pages/CreatePlaylist";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import AdminPanel from "./pages/AdminPanel";
+import Profile from "./pages/Profile"; // 🆕 página de perfil
 
-// rota protegida: só deixa entrar se tiver token
+// ===============================
+// Rota protegida (só entra se tiver token)
+// ===============================
 function PrivateRoute({ element }: { element: JSX.Element }) {
   const token = localStorage.getItem("token");
   if (!token || token === "undefined") {
@@ -27,8 +30,11 @@ function PrivateRoute({ element }: { element: JSX.Element }) {
   return element;
 }
 
+// ===============================
+// App principal
+// ===============================
 export default function App() {
-  // carrega config de tema (halloween / natal)
+  // Carrega configurações globais (tema, etc)
   useEffect(() => {
     const API_BASE =
       import.meta.env.VITE_API_BASE_URL ||
@@ -38,6 +44,7 @@ export default function App() {
       .get(`${API_BASE}/api/admin/config`)
       .then((res) => {
         document.body.classList.remove("theme-halloween", "theme-natal");
+
         if (res.data.theme === "halloween") {
           document.body.classList.add("theme-halloween");
         } else if (res.data.theme === "natal") {
@@ -52,37 +59,24 @@ export default function App() {
   return (
     <Router>
       <Routes>
-        {/* rota raiz manda sempre pro login */}
+        {/* Rota padrão → Login */}
         <Route path="/" element={<Navigate to="/login" replace />} />
 
-        {/* públicas */}
+        {/* Públicas */}
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
 
-        {/* protegidas */}
+        {/* Protegidas */}
         <Route path="/home" element={<PrivateRoute element={<Home />} />} />
         <Route path="/top10" element={<PrivateRoute element={<Top10 />} />} />
-        <Route
-          path="/library"
-          element={<PrivateRoute element={<Library />} />}
-        />
-        <Route
-          path="/likedsongs"
-          element={<PrivateRoute element={<LikedSongs />} />}
-        />
+        <Route path="/library" element={<PrivateRoute element={<Library />} />} />
+        <Route path="/likedsongs" element={<PrivateRoute element={<LikedSongs />} />} />
         <Route path="/search" element={<PrivateRoute element={<Search />} />} />
-        <Route
-          path="/createplaylist"
-          element={<PrivateRoute element={<CreatePlaylist />} />}
-        />
+        <Route path="/createplaylist" element={<PrivateRoute element={<CreatePlaylist />} />} />
+        <Route path="/admin" element={<PrivateRoute element={<AdminPanel />} />} />
+        <Route path="/profile" element={<PrivateRoute element={<Profile />} />} /> {/* 🆕 rota de perfil */}
 
-        {/* admin também é protegido (e o AdminPanel em si confere o e-mail) */}
-        <Route
-          path="/admin"
-          element={<PrivateRoute element={<AdminPanel />} />}
-        />
-
-        {/* qualquer coisa bizarra cai em /home (se logado) */}
+        {/* Qualquer rota inválida → Home */}
         <Route path="*" element={<Navigate to="/home" replace />} />
       </Routes>
     </Router>

@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import Sidebar from "../components/Sidebar";
+import ProfileAvatar from "../components/ProfileAvatar";
 import { Play } from "lucide-react";
 
 interface Track {
@@ -113,10 +114,16 @@ export default function Home() {
       <Sidebar />
 
       <main className="flex-1 p-10 overflow-y-auto">
-        {/* título */}
-        <h2 className="text-2xl font-semibold mb-6 flex items-center gap-2">
-          Explore músicas 🎵
-        </h2>
+  {/* barra superior com título e avatar */}
+  <div className="flex justify-between items-center mb-6">
+    <h2 className="text-2xl font-semibold flex items-center gap-2">
+      Explore músicas 🎵
+    </h2>
+
+    {/* 🧑‍🎤 avatar de perfil */}
+    <ProfileAvatar />
+  </div>
+
 
         {/* barra de busca */}
         <div className="mb-8 flex items-center gap-3">

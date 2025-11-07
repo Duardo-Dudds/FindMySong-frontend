@@ -3,6 +3,7 @@ import { useState } from "react";
 import axios from "axios";
 import { Play } from "lucide-react";
 import Sidebar from "../components/Sidebar";
+import ProfileAvatar from "../components/ProfileAvatar";
 
 export default function Search() {
   const [query, setQuery] = useState("");
