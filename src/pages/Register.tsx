@@ -9,27 +9,29 @@ export default function Register() {
   const [mensagem, setMensagem] = useState("");
   const navigate = useNavigate();
 
+  // Protege contra erro no import.meta.env durante build
   const API_BASE =
-    import.meta.env.VITE_API_BASE_URL || "https://findmysong-backend.onrender.com";
+    (import.meta.env && import.meta.env.VITE_API_BASE_URL) ||
+    "https://findmysong-backend.onrender.com";
 
-  // Evita erro de token
+  // Evita tela branca se token estiver inválido
   useEffect(() => {
     try {
       const token = localStorage.getItem("token");
       if (token && token !== "undefined") {
         navigate("/home");
       }
-    } catch {
+    } catch (e) {
+      console.error("Erro ao verificar token:", e);
       localStorage.removeItem("token");
     }
   }, [navigate]);
 
-  // Cadastro com tratamento de erro completo
+  // Submete cadastro com fallback de erro
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
     if (!nome || !email || !senha) {
-      setMensagem("Por favor, preencha todos os campos.");
+      setMensagem("Preencha todos os campos antes de continuar.");
       return;
     }
 
@@ -40,12 +42,14 @@ export default function Register() {
         senha,
       });
 
+      console.log("✅ Cadastro:", res.data);
       setMensagem(res.data.message || "Usuário cadastrado com sucesso!");
-      // redireciona pra login após 2 segundos
-      setTimeout(() => navigate("/login"), 2000);
+      setTimeout(() => navigate("/login"), 1500);
     } catch (err: any) {
-      console.error("Erro ao cadastrar:", err);
-      setMensagem(err.response?.data?.message || "Erro ao cadastrar usuário.");
+      console.error("❌ Erro ao cadastrar:", err);
+      const msg =
+        err?.response?.data?.message || "Erro ao cadastrar. Tente novamente.";
+      setMensagem(msg);
     }
   };
 
@@ -60,6 +64,7 @@ export default function Register() {
           value={nome}
           onChange={(e) => setNome(e.target.value)}
           className="p-2 rounded text-black"
+          autoComplete="name"
         />
         <input
           type="email"
@@ -67,6 +72,7 @@ export default function Register() {
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           className="p-2 rounded text-black"
+          autoComplete="email"
         />
         <input
           type="password"
@@ -74,6 +80,7 @@ export default function Register() {
           value={senha}
           onChange={(e) => setSenha(e.target.value)}
           className="p-2 rounded text-black"
+          autoComplete="new-password"
         />
 
         <button
