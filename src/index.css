@@ -168,20 +168,32 @@ body {
 /* ============================= */
 
 .theme-halloween .liked-icon,
-.theme-halloween .heart-icon {
-  color: #999;
-  transition: color 0.2s ease, transform 0.2s ease;
+.theme-halloween .heart-icon,
+.theme-halloween .heart-icon svg,
+.theme-halloween .liked-icon svg {
+  color: #8b4513;
+  fill: #8b4513;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: fill 0.2s ease, transform 0.2s ease;
+  cursor: pointer;
 }
 
 .theme-halloween .liked-icon:hover,
-.theme-halloween .heart-icon:hover {
-  color: #b92b22;
-  transform: scale(1.05);
+.theme-halloween .heart-icon:hover,
+.theme-halloween .heart-icon svg:hover {
+  fill: #b92b22;
+  transform: scale(1.1);
 }
 
 .theme-halloween .liked-icon.active,
-.theme-halloween .heart-icon.active {
-  color: #b92b22;
+.theme-halloween .heart-icon.active,
+.theme-halloween .heart-icon.active svg {
+  fill: #3b1603;
 }
 
 /* ============================= */
@@ -345,20 +357,32 @@ body {
 /* ============================= */
 
 .theme-natal .liked-icon,
-.theme-natal .heart-icon {
-  color: #999;
-  transition: color 0.2s ease, transform 0.2s ease;
+.theme-natal .heart-icon,
+.theme-natal .heart-icon svg,
+.theme-natal .liked-icon svg {
+  color: #8ed4ff;
+  fill: #8ed4ff;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: fill 0.2s ease, transform 0.2s ease;
+  cursor: pointer;
 }
 
 .theme-natal .liked-icon:hover,
-.theme-natal .heart-icon:hover {
-  color: #b92b22;
-  transform: scale(1.05);
+.theme-natal .heart-icon:hover,
+.theme-natal .heart-icon svg:hover {
+  fill: #b92b22;
+  transform: scale(1.1);
 }
 
 .theme-natal .liked-icon.active,
-.theme-natal .heart-icon.active {
-  color: #b92b22;
+.theme-natal .heart-icon.active,
+.theme-natal .heart-icon.active svg {
+  fill: #d2b86f;
 }
 
 /* ============================= */
@@ -390,7 +414,6 @@ body {
   }
 }
 
-/* Garante que o conteúdo fique acima da neve */
 .theme-natal * {
   position: relative;
   z-index: 1;
