@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
@@ -9,22 +9,42 @@ export default function Register() {
   const [mensagem, setMensagem] = useState("");
   const navigate = useNavigate();
 
+  const API_BASE =
+    import.meta.env.VITE_API_BASE_URL || "https://findmysong-backend.onrender.com";
+
+  // Evita erro de token
+  useEffect(() => {
+    try {
+      const token = localStorage.getItem("token");
+      if (token && token !== "undefined") {
+        navigate("/home");
+      }
+    } catch {
+      localStorage.removeItem("token");
+    }
+  }, [navigate]);
+
+  // Cadastro com tratamento de erro completo
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    try {
-      // 🔗 pega a URL base do backend (do .env)
-      const apiBaseUrl = import.meta.env.VITE_API_BASE_URL || "http://localhost:3000";
+    if (!nome || !email || !senha) {
+      setMensagem("Por favor, preencha todos os campos.");
+      return;
+    }
 
-      const res = await axios.post(`${apiBaseUrl}/api/usuarios/register`, {
+    try {
+      const res = await axios.post(`${API_BASE}/api/usuarios/register`, {
         nome,
         email,
         senha,
       });
 
       setMensagem(res.data.message || "Usuário cadastrado com sucesso!");
-      setTimeout(() => navigate("/"), 1500);
+      // redireciona pra login após 2 segundos
+      setTimeout(() => navigate("/login"), 2000);
     } catch (err: any) {
+      console.error("Erro ao cadastrar:", err);
       setMensagem(err.response?.data?.message || "Erro ao cadastrar usuário.");
     }
   };
@@ -40,7 +60,6 @@ export default function Register() {
           value={nome}
           onChange={(e) => setNome(e.target.value)}
           className="p-2 rounded text-black"
-          tabIndex={1}
         />
         <input
           type="email"
@@ -48,7 +67,6 @@ export default function Register() {
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           className="p-2 rounded text-black"
-          tabIndex={2}
         />
         <input
           type="password"
@@ -56,7 +74,6 @@ export default function Register() {
           value={senha}
           onChange={(e) => setSenha(e.target.value)}
           className="p-2 rounded text-black"
-          tabIndex={3}
         />
 
         <button
@@ -71,7 +88,7 @@ export default function Register() {
 
       <p className="mt-4">
         Já tem conta?{" "}
-        <a href="/" className="text-blue-400 hover:underline">
+        <a href="/login" className="text-blue-400 hover:underline">
           Fazer login
         </a>
       </p>

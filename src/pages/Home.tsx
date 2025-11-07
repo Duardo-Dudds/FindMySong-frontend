@@ -24,18 +24,24 @@ export default function Home() {
     "https://findmysong-backend.onrender.com";
 
   // identifica o usuário logado
-  const [userId, setUserId] = useState<number | null>(null);
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (token) {
-      try {
-        const payload = JSON.parse(atob(token.split(".")[1]));
-        setUserId(payload.id);
-      } catch {
-        console.warn("Token inválido");
-      }
-    }
-  }, []);
+  const token = localStorage.getItem("token");
+
+  // Se não houver token válido, redireciona pro login
+  if (!token || token === "undefined") {
+    window.location.href = "/login";
+    return;
+  }
+
+  try {
+    const payload = JSON.parse(atob(token.split(".")[1]));
+    setUserId(payload.id);
+  } catch (err) {
+    console.error("Token inválido:", err);
+    localStorage.removeItem("token");
+    window.location.href = "/login";
+  }
+}, []);
 
   // carrega curtidas salvas do banco
   useEffect(() => {
