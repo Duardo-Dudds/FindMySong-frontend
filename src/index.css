@@ -30,31 +30,95 @@ body {
 /* Temas Especiais               */
 /* ============================= */
 
-/* Tema de Halloween 🎃 */
+/* ============================= */
+/* 🎃 Tema de Halloween - Atualizado */
+/* ============================= */
+
 .theme-halloween {
   background-color: #1a0b0b;
-  color: #ff7518;
+  color: #5a2d0c;
   background-image: url("https://i.imgur.com/qVb5XzT.png"),
     url("https://i.imgur.com/9wT7zEb.png");
   background-repeat: no-repeat, no-repeat;
   background-position: top right, bottom left;
-  background-size: 180px, 180px;
+  background-size: 160px, 160px;
 }
 
+/* Sidebar com laranja escuro e ícones flutuando */
 .theme-halloween .sidebar,
 .theme-halloween aside {
-  background-color: #2b0d0d;
-  color: #ffa54f;
-  border-color: #3a0e0e;
-}
-
-.theme-halloween button {
   background-color: #ff7518;
-  color: black;
+  color: #5a2d0c;
+  border-color: #b95100;
+  background-image: 
+    url("https://i.imgur.com/Z9oEJ9S.png"), /* abóbora */
+    url("https://i.imgur.com/qbI4ZqH.png"), /* morcego */
+    url("https://i.imgur.com/MeQSmvU.png"); /* teia */
+  background-repeat: no-repeat, no-repeat, no-repeat;
+  background-position: top 15px right 25px, bottom 20px left 15px, center;
+  background-size: 50px, 60px, 120px;
+  animation: floatSpooky 6s ease-in-out infinite alternate;
 }
 
+/* Animação sutil dos ícones */
+@keyframes floatSpooky {
+  from {
+    background-position: top 15px right 25px, bottom 20px left 15px, center;
+  }
+  to {
+    background-position: top 25px right 15px, bottom 10px left 25px, center;
+  }
+}
+
+/* Logo "FindMySong" roxa */
+.theme-halloween .sidebar h1,
+.theme-halloween .sidebar .logo,
+.theme-halloween .sidebar .brand,
+.theme-halloween .sidebar h2,
+.theme-halloween .sidebar a[href="/home"] {
+  color: #8e44ad !important;
+  font-weight: 700;
+  text-shadow: 0 0 4px rgba(142, 68, 173, 0.6);
+}
+
+/* Itens e textos marrons */
+.theme-halloween .sidebar a,
+.theme-halloween .sidebar li,
+.theme-halloween .sidebar span,
+.theme-halloween .sidebar p {
+  color: #5a2d0c;
+}
+
+/* Botões com contraste e hover animado */
+.theme-halloween button {
+  background-color: #5a2d0c;
+  color: #fff5e1;
+  transition: background-color 0.3s ease;
+}
 .theme-halloween button:hover {
-  background-color: #ffa54f;
+  background-color: #8e44ad;
+  color: white;
+}
+
+/* Ícones do tema no canto superior */
+.theme-halloween::after {
+  content: "🎃🕸️🦇";
+  position: fixed;
+  top: 10px;
+  right: 15px;
+  font-size: 20px;
+  display: flex;
+  gap: 8px;
+  animation: floatHalloween 3s ease-in-out infinite alternate;
+}
+
+@keyframes floatHalloween {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(-5px);
+  }
 }
 
 /* Tema de Natal 🎄 */
