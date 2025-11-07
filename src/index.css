@@ -133,7 +133,6 @@ body {
 /* CARDS DE MÚSICAS */
 /* ============================= */
 
-/* Fundo alaranjado igual à sidebar */
 .theme-halloween .music-card,
 .theme-halloween .song-card,
 .theme-halloween .track-card,
@@ -145,7 +144,6 @@ body {
   transition: transform 0.2s ease, box-shadow 0.3s ease;
 }
 
-/* Efeito hover com brilho roxo */
 .theme-halloween .music-card:hover,
 .theme-halloween .song-card:hover,
 .theme-halloween .track-card:hover,
@@ -156,7 +154,6 @@ body {
   border-color: #b97df2;
 }
 
-/* Textos todos em marrom escuro */
 .theme-halloween h1,
 .theme-halloween h2,
 .theme-halloween h3,
@@ -172,7 +169,7 @@ body {
 
 .theme-halloween .liked-icon,
 .theme-halloween .heart-icon {
-  color: #8b4513;
+  color: #999;
   transition: color 0.2s ease, transform 0.2s ease;
 }
 
@@ -184,7 +181,7 @@ body {
 
 .theme-halloween .liked-icon.active,
 .theme-halloween .heart-icon.active {
-  color: #3b1603;
+  color: #b92b22;
 }
 
 /* ============================= */
@@ -324,7 +321,6 @@ body {
   border-radius: 8px;
 }
 
-/* Hover dourado */
 .theme-natal .music-card:hover,
 .theme-natal .song-card:hover,
 .theme-natal .track-card:hover,
@@ -350,28 +346,19 @@ body {
 
 .theme-natal .liked-icon,
 .theme-natal .heart-icon {
-  color: #b92b22;
-  font-size: 20px;
-  -webkit-text-stroke: 1px #1e4d2b;
+  color: #999;
   transition: color 0.2s ease, transform 0.2s ease;
 }
 
 .theme-natal .liked-icon:hover,
 .theme-natal .heart-icon:hover {
-  transform: scale(1.1);
+  color: #b92b22;
+  transform: scale(1.05);
 }
 
 .theme-natal .liked-icon.active,
 .theme-natal .heart-icon.active {
-  color: #d2b86f;
-  -webkit-text-stroke: 0;
-  animation: pulseHeart 0.3s ease;
-}
-
-@keyframes pulseHeart {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.3); }
-  100% { transform: scale(1); }
+  color: #b92b22;
 }
 
 /* ============================= */
