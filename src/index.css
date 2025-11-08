@@ -164,47 +164,6 @@ body {
 }
 
 /* ============================= */
-/* ÍCONE DE FAVORITO */
-/* ============================= */
-
-.theme-halloween .liked-icon,
-.theme-halloween .heart-icon,
-.theme-halloween .heart-icon svg,
-.theme-halloween .liked-icon svg {
-  color: #8b4513;
-  fill: #8b4513;
-  background: transparent !important;
-  border: none !important;
-  box-shadow: none !important;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  transition: fill 0.2s ease, transform 0.2s ease;
-  cursor: pointer;
-}
-
-.theme-halloween .liked-icon:hover,
-.theme-halloween .heart-icon:hover,
-.theme-halloween .heart-icon svg:hover {
-  fill: #b92b22;
-  transform: scale(1.1);
-}
-
-/* Garante que o "wrapper" do ícone não tenha fundo */
-.theme-halloween .liked-icon.active,
-.theme-halloween .heart-icon.active {
-background: transparent !important;
-border: none !important;
-box-shadow: none !important;
-}
-
-/* Aplica a cor de preenchimento APENAS ao SVG de dentro */
-.theme-halloween .liked-icon.active svg,
-.theme-halloween .heart-icon.active svg {
-fill: #3b1603;
-}
-
-/* ============================= */
 /* 🎄 TEMA DE NATAL */
 /* ============================= */
 
@@ -360,46 +319,6 @@ fill: #3b1603;
   color: #8ed4ff;
 }
 
-/* ============================= */
-/* ÍCONE DE FAVORITO */
-/* ============================= */
-
-.theme-natal .liked-icon,
-.theme-natal .heart-icon,
-.theme-natal .heart-icon svg,
-.theme-natal .liked-icon svg {
-  color: #8ed4ff;
-  fill: #8ed4ff;
-  background: transparent !important;
-  border: none !important;
-  box-shadow: none !important;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  transition: fill 0.2s ease, transform 0.2s ease;
-  cursor: pointer;
-}
-
-.theme-natal .liked-icon:hover,
-.theme-natal .heart-icon:hover,
-.theme-natal .heart-icon svg:hover {
-  fill: #b92b22;
-  transform: scale(1.1);
-}
-
-/* Garante que o "wrapper" do ícone não tenha fundo */
-.theme-natal .liked-icon.active,
-.theme-natal .heart-icon.active {
-background: transparent !important;
-border: none !important;
-box-shadow: none !important;
-}
-
-/* Aplica a cor de preenchimento APENAS ao SVG de dentro */
-.theme-natal .liked-icon.active svg,
-.theme-natal .heart-icon.active svg {
-fill: #d2b86f;
-}
 
 /* ============================= */
 /* NEVE SUAVE */
@@ -433,4 +352,86 @@ fill: #d2b86f;
 .theme-natal * {
   position: relative;
   z-index: 1;
+}
+
+
+/* ============================= */
+/* ÍCONE DE FAVORITO (VERSÃO CORRIGIDA) */
+/* ============================= */
+
+/*
+ * 1. REGRA BASE (Layout e Reset)
+ * Reseta qualquer estilo de <button> e alinha o SVG.
+ */
+.theme-natal .heart-icon,
+.theme-halloween .heart-icon,
+.theme-natal .liked-icon,
+.theme-halloween .liked-icon {
+  /* Reseta totalmente os estilos de botão (cor, fundo, borda, etc.) */
+  all: unset;
+
+  /* Força o fundo a ser transparente em TODOS os estados */
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+
+  /* Configura o layout do ícone */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  
+  /* Transições para hover e active */
+  transition: color 0.2s ease, transform 0.2s ease;
+}
+
+/*
+ * 2. REGRA DO SVG INTERNO
+ * Faz o SVG herdar a cor do seu contêiner (o .heart-icon).
+ */
+.theme-natal .heart-icon svg,
+.theme-halloween .heart-icon svg,
+.theme-natal .liked-icon svg,
+.theme-halloween .liked-icon svg {
+  fill: currentColor; /* O SVG vai usar a 'color' do elemento pai */
+}
+
+/* ============================= */
+/* 3. CORES DO TEMA: HALLOWEEN 🎃 */
+/* ============================= */
+
+.theme-halloween .heart-icon,
+.theme-halloween .liked-icon {
+  color: #8b4513; /* Cor inativa (marrom) */
+}
+
+.theme-halloween .heart-icon:hover,
+.theme-halloween .liked-icon:hover {
+  color: #b92b22; /* Cor hover (vermelho) */
+  transform: scale(1.1);
+}
+
+.theme-halloween .heart-icon.active,
+.theme-halloween .liked-icon.active {
+  color: #3b1603; /* Cor ativa (marrom escuro) */
+}
+
+/* ============================= */
+/* 4. CORES DO TEMA: NATAL 🎄 */
+/* ============================= */
+
+.theme-natal .heart-icon,
+.theme-natal .liked-icon {
+  color: #8ed4ff; /* Cor inativa (azul gelo) */
+}
+
+.theme-natal .heart-icon:hover,
+.theme-natal .liked-icon:hover {
+  color: #b92b22; /* Cor hover (vermelho) */
+  transform: scale(1.1);
+}
+
+.theme-natal .heart-icon.active,
+.theme-natal .liked-icon.active {
+  color: #d2b86f; /* Cor ativa (dourado) */
 }
