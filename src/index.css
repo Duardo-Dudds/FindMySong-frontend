@@ -190,10 +190,18 @@ body {
   transform: scale(1.1);
 }
 
+/* Garante que o "wrapper" do ícone não tenha fundo */
 .theme-halloween .liked-icon.active,
-.theme-halloween .heart-icon.active,
+.theme-halloween .heart-icon.active {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+/* Aplica a cor de preenchimento APENAS ao SVG de dentro */
+.theme-halloween .liked-icon.active svg,
 .theme-halloween .heart-icon.active svg {
-  fill: #3b1603;
+  fill: #3b1603;
 }
 
 /* ============================= */
@@ -379,10 +387,18 @@ body {
   transform: scale(1.1);
 }
 
+/* Garante que o "wrapper" do ícone não tenha fundo */
 .theme-natal .liked-icon.active,
-.theme-natal .heart-icon.active,
+.theme-natal .heart-icon.active {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+/* Aplica a cor de preenchimento APENAS ao SVG de dentro */
+.theme-natal .liked-icon.active svg,
 .theme-natal .heart-icon.active svg {
-  fill: #d2b86f;
+  fill: #d2b86f;
 }
 
 /* ============================= */
