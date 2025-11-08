@@ -354,7 +354,6 @@ body {
   z-index: 1;
 }
 
-
 /* ============================= */
 /* ÍCONE DE FAVORITO (VERSÃO CORRIGIDA) */
 /* ============================= */
@@ -363,10 +362,10 @@ body {
  * 1. REGRA BASE (Layout e Reset)
  * Reseta qualquer estilo de <button> e alinha o SVG.
  */
-.theme-natal .heart-icon,
-.theme-halloween .heart-icon,
-.theme-natal .liked-icon,
-.theme-halloween .liked-icon {
+.theme-natal button.heart-icon,
+.theme-halloween button.heart-icon,
+.theme-natal button.liked-icon,
+.theme-halloween button.liked-icon {
   /* Reseta totalmente os estilos de botão (cor, fundo, borda, etc.) */
   all: unset;
 
@@ -389,10 +388,10 @@ body {
  * 2. REGRA DO SVG INTERNO
  * Faz o SVG herdar a cor do seu contêiner (o .heart-icon).
  */
-.theme-natal .heart-icon svg,
-.theme-halloween .heart-icon svg,
-.theme-natal .liked-icon svg,
-.theme-halloween .liked-icon svg {
+.theme-natal button.heart-icon svg,
+.theme-halloween button.heart-icon svg,
+.theme-natal button.liked-icon svg,
+.theme-halloween button.liked-icon svg {
   fill: currentColor; /* O SVG vai usar a 'color' do elemento pai */
 }
 
@@ -400,19 +399,19 @@ body {
 /* 3. CORES DO TEMA: HALLOWEEN 🎃 */
 /* ============================= */
 
-.theme-halloween .heart-icon,
-.theme-halloween .liked-icon {
+.theme-halloween button.heart-icon,
+.theme-halloween button.liked-icon {
   color: #8b4513; /* Cor inativa (marrom) */
 }
 
-.theme-halloween .heart-icon:hover,
-.theme-halloween .liked-icon:hover {
+.theme-halloween button.heart-icon:hover,
+.theme-halloween button.liked-icon:hover {
   color: #b92b22; /* Cor hover (vermelho) */
   transform: scale(1.1);
 }
 
-.theme-halloween .heart-icon.active,
-.theme-halloween .liked-icon.active {
+.theme-halloween button.heart-icon.active,
+.theme-halloween button.liked-icon.active {
   color: #3b1603; /* Cor ativa (marrom escuro) */
 }
 
@@ -420,18 +419,18 @@ body {
 /* 4. CORES DO TEMA: NATAL 🎄 */
 /* ============================= */
 
-.theme-natal .heart-icon,
-.theme-natal .liked-icon {
+.theme-natal button.heart-icon,
+.theme-natal button.liked-icon {
   color: #8ed4ff; /* Cor inativa (azul gelo) */
 }
 
-.theme-natal .heart-icon:hover,
-.theme-natal .liked-icon:hover {
+.theme-natal button.heart-icon:hover,
+.theme-natal button.liked-icon:hover {
   color: #b92b22; /* Cor hover (vermelho) */
   transform: scale(1.1);
 }
 
-.theme-natal .heart-icon.active,
-.theme-natal .liked-icon.active {
+.theme-natal button.heart-icon.active,
+.theme-natal button.liked-icon.active {
   color: #d2b86f; /* Cor ativa (dourado) */
 }
