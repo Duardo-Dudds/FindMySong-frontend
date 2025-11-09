@@ -102,11 +102,7 @@ export default function Search() {
                 <div className="flex justify-between items-center mt-3">
                   <button
                     onClick={() => toggleLike(m.id)}
-                    className={`text-lg transition ${
-                      liked.includes(m.id)
-                        ? "text-red-500"
-                        : "text-gray-400 hover:text-red-400"
-                    }`}
+                    className={`heart-icon ${liked.includes(m.id) ? "active" : ""}`}
                     title="Curtir"
                   >
                     ♥

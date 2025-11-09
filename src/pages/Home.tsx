@@ -19,17 +19,14 @@ export default function Home() {
   const [results, setResults] = useState<Track[]>([]);
   const [liked, setLiked] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
-  const [userId, setUserId] = useState<number | null>(null); // id do usuário logado
+  const [userId, setUserId] = useState<number | null>(null);
 
   const API_BASE =
     import.meta.env.VITE_API_BASE_URL ||
     "https://findmysong-backend.onrender.com";
 
-  // verifica token e pega id do usuário
   useEffect(() => {
     const token = localStorage.getItem("token");
-
-    // se não tiver token, manda pro login
     if (!token || token === "undefined") {
       window.location.href = "/login";
       return;
@@ -45,32 +42,24 @@ export default function Home() {
     }
   }, []);
 
-  // carrega curtidas salvas no banco para esse usuário
   useEffect(() => {
     if (!userId) return;
-
     axios
       .get(`${API_BASE}/api/likes/${userId}`)
-      .then((res) => {
-        setLiked(res.data.map((m: any) => m.spotify_id));
-      })
+      .then((res) => setLiked(res.data.map((m: any) => m.spotify_id)))
       .catch(() => console.log("Erro ao carregar curtidas"));
   }, [userId]);
 
-  // busca músicas no backend (que fala com o Spotify)
   async function buscar() {
     if (!query.trim()) return;
     setLoading(true);
-
     try {
       const res = await axios.get(`${API_BASE}/api/spotify/search`, {
         params: { q: query },
       });
-
       const data: Track[] = Array.isArray(res.data)
         ? res.data
         : res.data.tracks?.items || [];
-
       setResults(data);
     } catch (err) {
       console.error("Erro ao buscar músicas:", err);
@@ -80,7 +69,6 @@ export default function Home() {
     }
   }
 
-  // curtir / descurtir música
   async function toggleLike(track: Track) {
     if (!userId) {
       alert("Faça login para curtir músicas.");
@@ -88,7 +76,6 @@ export default function Home() {
     }
 
     const jaCurtiu = liked.includes(track.id);
-
     try {
       if (jaCurtiu) {
         await axios.delete(`${API_BASE}/api/likes/${track.id}/${userId}`);
@@ -112,20 +99,14 @@ export default function Home() {
   return (
     <div className="flex min-h-screen bg-white text-gray-800">
       <Sidebar />
-
       <main className="flex-1 p-10 overflow-y-auto">
-  {/* barra superior com título e avatar */}
-  <div className="flex justify-between items-center mb-6">
-    <h2 className="text-2xl font-semibold flex items-center gap-2">
-      Explore músicas 🎵
-    </h2>
+        <div className="flex justify-between items-center mb-6">
+          <h2 className="text-2xl font-semibold flex items-center gap-2">
+            Explore músicas 🎵
+          </h2>
+          <ProfileAvatar />
+        </div>
 
-    {/* 🧑‍🎤 avatar de perfil */}
-    <ProfileAvatar />
-  </div>
-
-
-        {/* barra de busca */}
         <div className="mb-8 flex items-center gap-3">
           <input
             type="text"
@@ -143,7 +124,6 @@ export default function Home() {
           </button>
         </div>
 
-        {/* lista */}
         {loading ? (
           <p className="text-gray-500">Buscando músicas...</p>
         ) : results.length === 0 ? (
@@ -186,19 +166,13 @@ export default function Home() {
                 </div>
 
                 <div className="flex justify-between items-center">
-                  {/* like */}
                   <button
                     onClick={() => toggleLike(m)}
-                    className={`text-lg ${
-                      liked.includes(m.id)
-                        ? "text-red-500"
-                        : "text-gray-300 hover:text-red-400"
-                    }`}
+                    className={`heart-icon ${liked.includes(m.id) ? "active" : ""}`}
                   >
                     ♥
                   </button>
 
-                  {/* spotify */}
                   {m.external_urls?.spotify && (
                     <a
                       href={m.external_urls.spotify}
