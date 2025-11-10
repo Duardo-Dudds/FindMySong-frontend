@@ -9,6 +9,32 @@ export default function AdminPanel() {
   const [config, setConfig] = useState<any>({});
   const [message, setMessage] = useState("");
   const [previewTheme, setPreviewTheme] = useState<string>("");
+  const [feedbacks, setFeedbacks] = useState<any[]>([]);
+
+async function carregarFeedbacks() {
+  const res = await axios.get(`${API_BASE}/api/feedback`);
+  setFeedbacks(res.data);
+}
+
+function exportarCSV() {
+  const csv = [
+    ["Query", "Nota", "Comentário", "Data"],
+    ...feedbacks.map((f) => [
+      f.query,
+      f.nota,
+      `"${f.comentario || ""}"`,
+      new Date(f.data_envio).toLocaleDateString(),
+    ]),
+  ]
+    .map((r) => r.join(","))
+    .join("\n");
+
+  const blob = new Blob([csv], { type: "text/csv" });
+  const link = document.createElement("a");
+  link.href = URL.createObjectURL(blob);
+  link.download = "relatorio_feedbacks.csv";
+  link.click();
+}
 
   const API_BASE =
     import.meta.env.VITE_API_BASE_URL ||
@@ -269,6 +295,54 @@ export default function AdminPanel() {
               />
             </>
           )}
+
+{activeTab === "feedback" && (
+  <>
+    <h2 className="text-lg font-semibold mb-3">Relatórios de Feedbacks</h2>
+
+    <button
+      onClick={carregarFeedbacks}
+      className="bg-green-500 text-white px-4 py-2 rounded-md mb-3"
+    >
+      Atualizar Feedbacks
+    </button>
+    <button
+      onClick={exportarCSV}
+      className="bg-yellow-500 text-white px-4 py-2 rounded-md mb-6 ml-3"
+    >
+      Exportar CSV
+    </button>
+
+    <div className="overflow-y-auto max-h-[400px] border rounded-lg p-4 bg-white shadow">
+      {feedbacks.length === 0 ? (
+        <p className="text-gray-500">Nenhum feedback registrado ainda.</p>
+      ) : (
+        <table className="w-full text-left border-collapse">
+          <thead>
+            <tr className="bg-gray-100">
+              <th className="p-2 border">Busca</th>
+              <th className="p-2 border">Nota</th>
+              <th className="p-2 border">Comentário</th>
+              <th className="p-2 border">Data</th>
+            </tr>
+          </thead>
+          <tbody>
+            {feedbacks.map((f) => (
+              <tr key={f.id} className="hover:bg-gray-50">
+                <td className="p-2 border">{f.query}</td>
+                <td className="p-2 border text-center">{f.nota}</td>
+                <td className="p-2 border">{f.comentario}</td>
+                <td className="p-2 border">
+                  {new Date(f.data_envio).toLocaleDateString()}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      )}
+    </div>
+  </>
+)}
 
           <button
             type="button"
