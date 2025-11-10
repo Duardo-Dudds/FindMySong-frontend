@@ -17,7 +17,7 @@ import CreatePlaylist from "./pages/CreatePlaylist";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import AdminPanel from "./pages/AdminPanel";
-import Profile from "./pages/Profile"; // 🆕 página de perfil
+import Profile from "./pages/Profile"; 
 
 // ===============================
 // Rota protegida (só entra se tiver token)
