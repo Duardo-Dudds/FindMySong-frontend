@@ -4,6 +4,7 @@ import axios from "axios";
 import Sidebar from "../components/Sidebar";
 import ProfileAvatar from "../components/ProfileAvatar";
 import { Play } from "lucide-react";
+import FeedbackForm from "../components/FeedbackForm";
 
 interface Track {
   id: string;
@@ -20,6 +21,7 @@ export default function Home() {
   const [liked, setLiked] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
   const [userId, setUserId] = useState<number | null>(null);
+  const [buscaConcluida, setBuscaConcluida] = useState(false);
 
   const API_BASE =
     import.meta.env.VITE_API_BASE_URL ||
@@ -61,6 +63,7 @@ export default function Home() {
         ? res.data
         : res.data.tracks?.items || [];
       setResults(data);
+      setBuscaConcluida(true);
     } catch (err) {
       console.error("Erro ao buscar músicas:", err);
       alert("Erro ao buscar músicas.");
@@ -112,7 +115,10 @@ export default function Home() {
             type="text"
             placeholder="Buscar por música, artista ou letra..."
             value={query}
-            onChange={(e) => setQuery(e.target.value)}
+            onChange={(e) => {
+                  setQuery(e.target.value);
+                  setBuscaConcluida(false);
+                }}
             onKeyDown={(e) => e.key === "Enter" && buscar()}
             className="w-full max-w-md p-3 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-green-500"
           />
@@ -188,6 +194,9 @@ export default function Home() {
             ))}
           </div>
         )}
+        {buscaConcluida && results.length > 0 && (
+          <FeedbackForm query={query} />
+          )}
       </main>
     </div>
   );

@@ -110,10 +110,17 @@ function exportarCSV() {
             "temas",
             "backend",
             "frontend",
+            "feedback",
           ].map((tab) => (
-            <button
-              key={tab}
-              onClick={() => setActiveTab(tab)}
+           <button
+            key={tab}
+            onClick={() => {
+              setActiveTab(tab);
+                // Se for a aba de feedback, carrega os dados
+                if (tab === "feedback") {
+                      carregarFeedbacks();
+                }
+              }}
               className={`px-4 py-2 rounded-md font-medium transition ${
                 activeTab === tab
                   ? "bg-green-500 text-white"
