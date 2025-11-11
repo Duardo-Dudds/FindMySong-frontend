@@ -396,3 +396,39 @@ body {
   color: #d2b86f;
   transform: scale(1.15);
 }
+
+
+/* ============================= */
+/* ESTRELAS DE FEEDBACK */
+/* ============================= */
+
+/* Estilo base da estrela (vazia) */
+.feedback-stars .star-icon.star-empty {
+  color: #cbd5e1; /* cinza (Tailwind gray-300) */
+  fill: transparent;
+  transition: all 0.2s ease;
+}
+
+/* Estilo da estrela no hover (qualquer estrela) */
+.feedback-stars .star-icon:hover {
+  transform: scale(1.1);
+}
+
+/* Estilo da estrela preenchida (padrão) */
+.feedback-stars .star-icon.star-filled {
+  fill: #f59e0b; /* Amarelo (Tailwind amber-500) */
+  color: #f59e0b;
+  transform: scale(1.05);
+}
+
+/* 🎃 Cor preenchida - TEMA HALLOWEEN */
+.theme-halloween .feedback-stars .star-icon.star-filled {
+  fill: #f27c21; /* Laranja do seu tema */
+  color: #f27c21;
+}
+
+/* 🎄 Cor preenchida - TEMA NATAL */
+.theme-natal .feedback-stars .star-icon.star-filled {
+  fill: #d2b86f; /* Dourado do seu tema */
+  color: #d2b86f;
+}

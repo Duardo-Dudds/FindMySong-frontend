@@ -100,8 +100,8 @@ export default function Home() {
   }
 
   return (
-    <div className="flex min-h-screen bg-white text-gray-800">
-      <Sidebar />
+  <div className="flex h-screen bg-white text-gray-800 overflow-hidden">
+    <Sidebar />
       <main className="flex-1 p-10 overflow-y-auto">
         <div className="flex justify-between items-center mb-6">
           <h2 className="text-2xl font-semibold flex items-center gap-2">

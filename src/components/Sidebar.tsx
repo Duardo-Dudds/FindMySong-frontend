@@ -32,8 +32,8 @@ const Sidebar: React.FC = () => {
   };
 
   return (
-    <aside className="w-64 h-screen border-r flex flex-col p-4 sidebar">
-      <h1 className="text-2xl font-semibold mb-8 text-center text-green-600">
+    <aside className="w-64 border-r flex flex-col p-4 sidebar">
+    <h1 className="text-2xl font-semibold mb-8 text-center text-green-600">
         FindMySong
       </h1>
 

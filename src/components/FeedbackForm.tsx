@@ -1,5 +1,7 @@
+// src/components/FeedbackForm.tsx
 import { useState } from "react";
 import axios from "axios";
+import { Star } from "lucide-react"; // 1. Importar o ícone de Estrela
 
 interface FeedbackFormProps {
   query: string;
@@ -7,6 +9,7 @@ interface FeedbackFormProps {
 
 export default function FeedbackForm({ query }: FeedbackFormProps) {
   const [nota, setNota] = useState<number | null>(null);
+  const [hoveredNota, setHoveredNota] = useState<number | null>(null); // 2. Estado para o hover
   const [comentario, setComentario] = useState("");
   const [enviado, setEnviado] = useState(false);
 
@@ -48,21 +51,25 @@ export default function FeedbackForm({ query }: FeedbackFormProps) {
         Avalie a precisão da busca
       </h3>
 
-      <div className="flex gap-2 mb-4">
+      {/* === 3. BLOCO DAS ESTRELAS MODIFICADO === */}
+      <div
+        className="flex gap-1 mb-4 feedback-stars"
+        onMouseLeave={() => setHoveredNota(null)} // Limpa o hover ao sair
+      >
         {[1, 2, 3, 4, 5].map((n) => (
-          <button
+          <Star
             key={n}
             onClick={() => setNota(n)}
-            className={`px-3 py-1 rounded-full border transition ${
-              nota === n
-                ? "bg-green-600 text-white"
-                : "bg-white border-gray-300 hover:bg-green-100"
+            onMouseEnter={() => setHoveredNota(n)} // Define o hover
+            className={`cursor-pointer star-icon ${
+              // Preenche se a nota (ou o hover) for maior ou igual ao número
+              (hoveredNota || nota || 0) >= n ? "star-filled" : "star-empty"
             }`}
-          >
-            {n}
-          </button>
+            size={28}
+          />
         ))}
       </div>
+      {/* === FIM DO BLOCO DAS ESTRELAS === */}
 
       <textarea
         placeholder="Deixe um comentário (opcional, até 500 caracteres)..."
@@ -78,6 +85,7 @@ export default function FeedbackForm({ query }: FeedbackFormProps) {
           onClick={() => {
             setNota(null);
             setComentario("");
+            setHoveredNota(null); // Limpa o hover no cancelar
           }}
           className="px-4 py-2 bg-gray-200 hover:bg-gray-300 rounded-md"
         >
