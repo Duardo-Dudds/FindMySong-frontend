@@ -4,7 +4,7 @@ import Sidebar from "@/components/Sidebar";
 import ProfileAvatar from "@/components/ProfileAvatar";
 import { Play } from "lucide-react";
 import FeedbackForm from "@/components/FeedbackForm";
-import { useMusicPlayer } from "@/contexts/MusicPlayerContext";
+import { useMusicPlayer } from "@/contexts/MusicPlayerContext.tsx";
 
 // Interface da Track
 interface Track {

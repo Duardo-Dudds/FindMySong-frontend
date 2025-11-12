@@ -10,7 +10,7 @@ import { Toaster } from "sonner";
 import { AuthPage } from "./pages/AuthPage";
 
 // --- CAMINHO DE IMPORT ---
-import { MusicPlayerProvider } from "@/contexts/MusicPlayerContext";
+import { MusicPlayerProvider } from "@/contexts/MusicPlayerContext.tsx";
 import MusicPlayer from "@/components/MusicPlayer";
 
 // Resto das páginas

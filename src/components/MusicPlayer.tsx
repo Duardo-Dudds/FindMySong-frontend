@@ -1,4 +1,4 @@
-import { useMusicPlayer } from "@/contexts/MusicPlayerContext";
+import { useMusicPlayer } from "@/contexts/MusicPlayerContext.tsx";
 import { Play, Pause, SkipForward, SkipBack } from "lucide-react";
 
 export default function MusicPlayer() {
