@@ -1,4 +1,3 @@
-// src/App.tsx (VERSÃO ATUALIZADA)
 import { useEffect } from "react";
 import axios from "axios";
 import {
@@ -7,9 +6,12 @@ import {
   Route,
   Navigate,
 } from "react-router-dom";
-
-// Importe o Toaster para as notificações da nova tela
 import { Toaster } from "sonner";
+import { AuthPage } from "./pages/AuthPage";
+
+// IMPORTAÇÕES DO PLAYER
+import { MusicPlayerProvider } from "./contexts/MusicPlayerContext";
+import MusicPlayer from "./components/MusicPlayer";
 
 import Home from "./pages/Home";
 import Top10 from "./pages/Top10";
@@ -20,12 +22,6 @@ import CreatePlaylist from "./pages/CreatePlaylist";
 import AdminPanel from "./pages/AdminPanel";
 import Profile from "./pages/Profile";
 
-// PÁGINA UNIFICADA
-import { AuthPage } from "./pages/AuthPage";
-
-// ===============================
-// Rota protegida (só entra se tiver token)
-// ===============================
 function PrivateRoute({ element }: { element: JSX.Element }) {
   const token = localStorage.getItem("token");
   if (!token || token === "undefined") {
@@ -34,12 +30,9 @@ function PrivateRoute({ element }: { element: JSX.Element }) {
   return element;
 }
 
-// ===============================
-// App principal
-// ===============================
 export default function App() {
-  // Carrega configurações globais (tema, etc)
   useEffect(() => {
+    // ... seu código de carregar tema ...
     const API_BASE =
       import.meta.env.VITE_API_BASE_URL ||
       "https://findmysong-backend.onrender.com";
@@ -61,42 +54,43 @@ export default function App() {
   }, []);
 
   return (
-    <Router>
-      {/* Toaster para funcionar em toda a app */}
-      <Toaster richColors position="bottom-right" />
-      <Routes>
-        {/* Rota padrão → Login */}
-        <Route path="/" element={<Navigate to="/login" replace />} />
+    // ENVOLVA TUDO COM O PROVIDER
+    <MusicPlayerProvider>
+      <Router>
+        <Toaster richColors position="bottom-right" />
+        <div className="pb-20"> {/* Adiciona padding p/ o player não cobrir o conteúdo */}
+          <Routes>
+            <Route path="/" element={<Navigate to="/login" replace />} />
+            <Route path="/login" element={<AuthPage />} />
+            <Route path="/register" element={<AuthPage />} />
+            <Route path="/home" element={<PrivateRoute element={<Home />} />} />
+            <Route path="/top10" element={<PrivateRoute element={<Top10 />} />} />
+            <Route path="/library" element={<PrivateRoute element={<Library />} />} />
+            <Route
+              path="/likedsongs"
+              element={<PrivateRoute element={<LikedSongs />} />}
+            />
+            <Route path="/search" element={<PrivateRoute element={<Search />} />} />
+            <Route
+              path="/createplaylist"
+              element={<PrivateRoute element={<CreatePlaylist />} />}
+            />
+            <Route
+              path="/admin"
+              element={<PrivateRoute element={<AdminPanel />} />}
+            />
+            <Route
+              path="/profile"
+              element={<PrivateRoute element={<Profile />} />}
+            />
+            <Route path="*" element={<Navigate to="/home" replace />} />
+          </Routes>
+        </div>
+        
+        {/* RENDERIZA O PLAYER GLOBAL AQUI */}
+        <MusicPlayer />
 
-        {/* Públicas */}
-        <Route path="/login" element={<AuthPage />} />
-        <Route path="/register" element={<AuthPage />} />
-
-        {/* Protegidas */}
-        <Route path="/home" element={<PrivateRoute element={<Home />} />} />
-        <Route path="/top10" element={<PrivateRoute element={<Top10 />} />} />
-        <Route path="/library" element={<PrivateRoute element={<Library />} />} />
-        <Route
-          path="/likedsongs"
-          element={<PrivateRoute element={<LikedSongs />} />}
-        />
-        <Route path="/search" element={<PrivateRoute element={<Search />} />} />
-        <Route
-          path="/createplaylist"
-          element={<PrivateRoute element={<CreatePlaylist />} />}
-        />
-        <Route
-          path="/admin"
-          element={<PrivateRoute element={<AdminPanel />} />}
-        />
-        <Route
-          path="/profile"
-          element={<PrivateRoute element={<Profile />} />}
-        />
-
-        {/* Qualquer rota inválida → Home */}
-        <Route path="*" element={<Navigate to="/home" replace />} />
-      </Routes>
-    </Router>
+      </Router>
+    </MusicPlayerProvider>
   );
 }
