@@ -1,12 +1,10 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import Sidebar from "../components/Sidebar";
-import ProfileAvatar from "../components/ProfileAvatar";
+import Sidebar from "@/components/Sidebar";
+import ProfileAvatar from "@/components/ProfileAvatar";
 import { Play } from "lucide-react";
-import FeedbackForm from "../components/FeedbackForm";
-
-// 1. Puxa o hook (cérebro) do player
-import { useMusicPlayer } from "../contexts/MusicPlayerContext";
+import FeedbackForm from "@/components/FeedbackForm";
+import { useMusicPlayer } from "@/contexts/MusicPlayerContext";
 
 // Interface da Track
 interface Track {
@@ -19,7 +17,6 @@ interface Track {
 }
 
 export default function Home() {
-  // States da página
   const [query, setQuery] = useState("");
   const [results, setResults] = useState<Track[]>([]);
   const [liked, setLiked] = useState<string[]>([]);
@@ -27,15 +24,13 @@ export default function Home() {
   const [userId, setUserId] = useState<number | null>(null);
   const [buscaConcluida, setBuscaConcluida] = useState(false);
 
-  // 2. Pega a função de "tocar" do cérebro
   const { playTrack } = useMusicPlayer();
 
   const API_BASE =
     import.meta.env.VITE_API_BASE_URL ||
     "https://findmysong-backend.onrender.com";
 
-  // Carrega ID do usuário
-  useEffect(() => {
+    useEffect(() => {
     const token = localStorage.getItem("token");
     if (!token || token === "undefined") {
       window.location.href = "/login";
@@ -51,7 +46,6 @@ export default function Home() {
     }
   }, []);
 
-  // Carrega curtidas do usuário
   useEffect(() => {
     if (!userId) return;
     axios
@@ -60,13 +54,12 @@ export default function Home() {
       .catch(() => console.log("Erro ao carregar curtidas"));
   }, [userId]);
 
-  // Função de buscar
   async function buscar() {
     if (!query.trim()) return;
     setLoading(true);
     try {
       const res = await axios.get(`${API_BASE}/api/spotify/search`, {
-        params: { q: query },
+        params: { q: query, market: "BR" },
       });
       const data: Track[] = Array.isArray(res.data)
         ? res.data
@@ -81,7 +74,6 @@ export default function Home() {
     }
   }
 
-  // Função de curtir/descurtir
   async function toggleLike(track: Track) {
     if (!userId) {
       alert("Faça login para curtir músicas.");
@@ -110,12 +102,9 @@ export default function Home() {
 
   // Renderização da página
   return (
-    // Layout principal da Home (com sidebar fixa)
     <div className="flex h-screen bg-white text-gray-800 overflow-hidden">
       <Sidebar />
-      <main className="flex-1 p-10 overflow-y-auto"> {/* Conteúdo principal com scroll */}
-        
-        {/* Header com título e avatar */}
+      <main className="flex-1 p-10 overflow-y-auto">
         <div className="flex justify-between items-center mb-6">
           <h2 className="text-2xl font-semibold flex items-center gap-2">
             Explore músicas 🎵
@@ -123,7 +112,6 @@ export default function Home() {
           <ProfileAvatar />
         </div>
 
-        {/* Barra de busca */}
         <div className="mb-8 flex items-center gap-3">
           <input
             type="text"
@@ -131,7 +119,7 @@ export default function Home() {
             value={query}
             onChange={(e) => {
               setQuery(e.target.value);
-              setBuscaConcluida(false); // Esconde feedback ao digitar de novo
+              setBuscaConcluida(false);
             }}
             onKeyDown={(e) => e.key === "Enter" && buscar()}
             className="w-full max-w-md p-3 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-green-500"
@@ -144,7 +132,6 @@ export default function Home() {
           </button>
         </div>
 
-        {/* Resultados da busca */}
         {loading ? (
           <p className="text-gray-500">Buscando músicas...</p>
         ) : results.length === 0 ? (
@@ -158,26 +145,22 @@ export default function Home() {
                 key={m.id}
                 className="bg-white border rounded-xl shadow-sm hover:shadow-md transition p-3 flex flex-col gap-3"
               >
-                {/* 3. Adiciona 'group' pro hover do botão play funcionar */}
                 <div className="relative group">
                   <img
                     src={m.album?.images?.[0]?.url}
                     alt={m.name}
                     className="rounded-md w-full h-36 object-cover"
                   />
-                  
-                  {/* 4. Botão de play */}
+
                   <button
                     onClick={() => {
                       if (m.preview_url) {
-                        playTrack(m); // 5. Chama o player global
+                        playTrack(m);
                       } else {
-                        // Se não tem preview, abre o Spotify
                         window.open(m.external_urls?.spotify, "_blank");
                         alert("Essa música não tem preview disponível.");
                       }
                     }}
-                    // Estilo do botão de play que aparece no hover
                     className="absolute inset-0 flex items-center justify-center w-12 h-12 m-auto
                                bg-green-500 text-white rounded-full
                                opacity-0 group-hover:opacity-100 
@@ -187,7 +170,6 @@ export default function Home() {
                   </button>
                 </div>
 
-                {/* Infos do Card */}
                 <div>
                   <h3 className="font-medium truncate">{m.name}</h3>
                   <p className="text-sm text-gray-500 truncate">
@@ -195,7 +177,6 @@ export default function Home() {
                   </p>
                 </div>
 
-                {/* Like e Link Spotify */}
                 <div className="flex justify-between items-center">
                   <button
                     onClick={() => toggleLike(m)}
@@ -222,7 +203,6 @@ export default function Home() {
           </div>
         )}
 
-        {/* Formulário de Feedback */}
         {buscaConcluida && results.length > 0 && (
           <FeedbackForm query={query} />
         )}

@@ -1,21 +1,22 @@
-import { useMusicPlayer } from "../contexts/MusicPlayerContext";
+import { useMusicPlayer } from "@/contexts/MusicPlayerContext";
 import { Play, Pause, SkipForward, SkipBack } from "lucide-react";
 
 export default function MusicPlayer() {
   const { currentTrack, isPlaying, togglePlayPause } = useMusicPlayer();
 
-  // Se não tiver música tocando, não mostre nada
   if (!currentTrack) {
     return null;
   }
 
   const trackName = currentTrack.name;
   const artistName = currentTrack.artists[0]?.name || "Artista Desconhecido";
-  const imageUrl = currentTrack.album?.images?.[0]?.url || "https://placehold.co/64x64/22c55e/white?text=🎵";
+  const imageUrl =
+    currentTrack.album?.images?.[0]?.url ||
+    "https://placehold.co/64x64/22c55e/white?text=🎵";
 
   return (
     <footer className="fixed bottom-0 left-0 right-0 h-20 bg-white border-t border-gray-200 p-4 flex items-center justify-between shadow-lg z-50">
-      {/* Informações da Música */}
+      {/* Infos da Música (Esquerda) */}
       <div className="flex items-center gap-3 w-1/4">
         <img
           src={imageUrl}
@@ -28,7 +29,7 @@ export default function MusicPlayer() {
         </div>
       </div>
 
-      {/* Controles do Player */}
+      {/* Controles do Player (Centro) */}
       <div className="flex items-center gap-4">
         <button className="text-gray-400 hover:text-gray-700">
           <SkipBack size={20} />
@@ -44,10 +45,8 @@ export default function MusicPlayer() {
         </button>
       </div>
 
-      {/* Volume (placeholder) */}
-      <div className="w-1/4">
-        {/* Você pode adicionar um slider de volume aqui mais tarde */}
-      </div>
+      {/* Volume (Direita) */}
+      <div className="w-1/4"></div>
     </footer>
   );
 }
