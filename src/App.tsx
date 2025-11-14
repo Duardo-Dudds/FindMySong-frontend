@@ -7,23 +7,30 @@ import {
   Navigate,
 } from "react-router-dom";
 import { Toaster } from "sonner";
-import { AuthPage } from "./pages/AuthPage";
 
-// --- CAMINHO DE IMPORT ---
-import { MusicPlayerProvider } from "@/contexts/MusicPlayerContext.tsx";
-import MusicPlayer from "@/components/MusicPlayer";
+// Contexto
+import {
+  MusicPlayerProvider,
+  useMusicPlayer, // <-- Importa o hook
+} from "@/contexts/MusicPlayerContext.tsx";
 
-// Resto das páginas
-import Home from "./pages/Home";
-import Top10 from "./pages/Top10";
-import Library from "./pages/Library";
-import LikedSongs from "./pages/LikedSongs";
-import Search from "./pages/Search";
-import CreatePlaylist from "./pages/CreatePlaylist";
-import AdminPanel from "./pages/AdminPanel";
-import Profile from "./pages/Profile";
+// Componentes
+import MusicPlayer from "@/components/MusicPlayer.tsx";
 
-// Rota privada
+// Páginas
+import Home from "@/pages/Home.tsx";
+import Top10 from "@/pages/Top10.tsx";
+import Library from "@/pages/Library.tsx";
+import LikedSongs from "@/pages/LikedSongs.tsx";
+import Search from "@/pages/Search.tsx";
+import CreatePlaylist from "@/pages/CreatePlaylist.tsx";
+import AdminPanel from "@/pages/AdminPanel.tsx";
+import Profile from "@/pages/Profile.tsx";
+import { AuthPage } from "@/pages/AuthPage.tsx";
+
+// ===============================
+// Rota Protegida (Helper)
+// ===============================
 function PrivateRoute({ element }: { element: JSX.Element }) {
   const token = localStorage.getItem("token");
   if (!token || token === "undefined") {
@@ -32,9 +39,11 @@ function PrivateRoute({ element }: { element: JSX.Element }) {
   return element;
 }
 
-// App principal
-export default function App() {
-  // Efeito para carregar o tema
+function AppContent() {
+  // Lê o estado do player
+  const { currentTrack } = useMusicPlayer();
+
+  // Carrega o tema
   useEffect(() => {
     const API_BASE =
       import.meta.env.VITE_API_BASE_URL ||
@@ -44,7 +53,6 @@ export default function App() {
       .get(`${API_BASE}/api/admin/config`)
       .then((res) => {
         document.body.classList.remove("theme-halloween", "theme-natal");
-
         if (res.data.theme === "halloween") {
           document.body.classList.add("theme-halloween");
         } else if (res.data.theme === "natal") {
@@ -57,51 +65,48 @@ export default function App() {
   }, []);
 
   return (
-    <MusicPlayerProvider>
-      <Router>
+    <div className={`relative min-h-screen ${currentTrack ? "pb-20" : ""}`}>
+      <Routes>
+        <Route path="/" element={<Navigate to="/login" replace />} />
+        <Route path="/login" element={<AuthPage />} />
+        <Route path="/register" element={<AuthPage />} />
+        <Route path="/home" element={<PrivateRoute element={<Home />} />} />
+        <Route path="/top10" element={<PrivateRoute element={<Top10 />} />} />
+        <Route path="/library" element={<PrivateRoute element={<Library />} />} />
+        <Route
+          path="/likedsongs"
+          element={<PrivateRoute element={<LikedSongs />} />}
+        />
+        <Route path="/search" element={<PrivateRoute element={<Search />} />} />
+        <Route
+          path="/createplaylist"
+          element={<PrivateRoute element={<CreatePlaylist />} />}
+        />
+        <Route
+          path="/admin"
+          element={<PrivateRoute element={<AdminPanel />} />}
+        />
+        <Route
+          path="/profile"
+          element={<PrivateRoute element={<Profile />} />}
+        />
+        <Route path="*" element={<Navigate to="/home" replace />} />
+      </Routes>
+    </div>
+  );
+}
+
+// ===============================
+// App principal (agora é só o "casulo")
+// ===============================
+export default function App() {
+  return (
+    <Router>
+      <MusicPlayerProvider>
         <Toaster richColors position="bottom-right" />
-
-        <div className="pb-20">
-          <Routes>
-            {/* Rotas públicas */}
-            <Route path="/" element={<Navigate to="/login" replace />} />
-            <Route path="/login" element={<AuthPage />} />
-            <Route path="/register" element={<AuthPage />} />
-
-            {/* Rotas privadas */}
-            <Route path="/home" element={<PrivateRoute element={<Home />} />} />
-            <Route path="/top10" element={<PrivateRoute element={<Top10 />} />} />
-            <Route
-              path="/library"
-              element={<PrivateRoute element={<Library />} />}
-            />
-            <Route
-              path="/likedsongs"
-              element={<PrivateRoute element={<LikedSongs />} />}
-            />
-            <Route
-              path="/search"
-              element={<PrivateRoute element={<Search />} />}
-            />
-            <Route
-              path="/createplaylist"
-              element={<PrivateRoute element={<CreatePlaylist />} />}
-            />
-            <Route
-              path="/admin"
-              element={<PrivateRoute element={<AdminPanel />} />}
-            />
-            <Route
-              path="/profile"
-              element={<PrivateRoute element={<Profile />} />}
-            />
-
-            <Route path="*" element={<Navigate to="/home" replace />} />
-          </Routes>
-        </div>
-
-        <MusicPlayer />
-      </Router>
-    </MusicPlayerProvider>
+        <AppContent /> {/* Renderiza o conteúdo que lê o contexto */}
+        <MusicPlayer /> {/* Renderiza o player */}
+      </MusicPlayerProvider>
+    </Router>
   );
 }

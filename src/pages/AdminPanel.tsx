@@ -94,10 +94,9 @@ function exportarCSV() {
   }
 
   return (
-    <div className="flex min-h-screen bg-gray-50 text-gray-800">
+    <div className="flex h-screen bg-gray-50 text-gray-800 overflow-hidden">
       <Sidebar />
-
-      <main className="flex-1 p-10">
+      <main className="flex-1 p-10 overflow-y-auto">
         <h1 className="text-2xl font-semibold mb-6">
           Painel Administrativo ⚙️
         </h1>

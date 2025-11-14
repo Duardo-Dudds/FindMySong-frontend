@@ -489,6 +489,36 @@ body {
   }
 }
 
+/* ============================= */
+/* SIDEBAR RESPONSIVA (TEMAS) */
+/* ============================= */
+
+/* Cor do logo (tema halloween) */ 
+.theme-halloween .sidebar-logo {
+  color: #c392ff !important;
+  font-weight: 700;
+  text-shadow: 0 0 6px rgba(195, 146, 255, 0.7);
+}
+
+/* Cor do logo (tema natal) */
+.theme-natal .sidebar-logo {
+  color: #d2b86f !important;
+  font-weight: 700;
+  text-shadow: 0 0 6px rgba(210, 184, 111, 0.6);
+}
+
+/* Fundo do link ativo (tema halloween) */
+.theme-halloween .sidebar-link-active {
+  background-color: rgba(59, 22, 3, 0.4); /* marrom transparente */
+  color: #fbe3c4 !important; /* cor de texto clara */
+}
+
+/* Fundo do link ativo (tema natal) */
+.theme-natal .sidebar-link-active {
+  background-color: rgba(210, 184, 111, 0.2); /* dourado transparente */
+  color: #d2b86f !important; /* dourado */
+}
+
 @layer base {
   * {
     @apply border-border;

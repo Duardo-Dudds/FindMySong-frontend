@@ -1,7 +1,6 @@
-// src/pages/Profile.tsx
 import { useEffect, useState } from "react";
 import axios from "axios";
-import Sidebar from "../components/Sidebar";
+import Sidebar from "@/components/Sidebar.tsx"; // Corrigido
 
 export default function Profile() {
   const [user, setUser] = useState<any>(null);
@@ -47,10 +46,11 @@ export default function Profile() {
   }
 
   return (
-    <div className="flex min-h-screen bg-gray-50 text-gray-800">
+    
+    <div className="flex h-screen bg-gray-50 text-gray-800 overflow-hidden">
       <Sidebar />
+      <main className="flex-1 p-10 overflow-y-auto">
 
-      <main className="flex-1 p-10">
         <div className="flex justify-between items-center mb-6">
           <h1 className="text-2xl font-semibold">Meu Perfil 👤</h1>
           {avatar && (

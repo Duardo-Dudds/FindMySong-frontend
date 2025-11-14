@@ -22,9 +22,9 @@ export default function Top10() {
   }, []);
 
   return (
-    <div className="flex min-h-screen bg-white text-gray-800">
+    <div className="flex h-screen bg-white text-gray-800 overflow-hidden">
       <Sidebar />
-      <main className="flex-1 p-10">
+      <main className="flex-1 p-10 overflow-y-auto">
         <h2 className="text-2xl font-semibold mb-6 flex items-center gap-2">
           Top 10 da Semana 🎧
         </h2>

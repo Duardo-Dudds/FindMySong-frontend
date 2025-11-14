@@ -67,9 +67,8 @@ export default function CreatePlaylist() {
   }
 
   return (
-    <div className="flex min-h-screen bg-white text-gray-800">
+    <div className="flex h-screen bg-white text-gray-800 overflow-hidden">
       <Sidebar />
-
       <main className="flex-1 p-10 overflow-y-auto">
         <h2 className="text-2xl font-semibold mb-2">Create Playlist</h2>
         <p className="text-gray-500 mb-8 text-sm">

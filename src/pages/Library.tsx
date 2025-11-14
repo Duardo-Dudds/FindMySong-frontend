@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import Sidebar from "../components/Sidebar";
+import Sidebar from "@/components/Sidebar.tsx"; // Corrigido
 
 interface Musica {
   spotify_id: string;
@@ -48,9 +48,11 @@ export default function Library() {
   }, [userId]);
 
   return (
-    <div className="flex min-h-screen bg-white text-gray-800">
+    // --- LAYOUT CORRIGIDO ---
+    <div className="flex h-screen bg-white text-gray-800 overflow-hidden">
       <Sidebar />
       <main className="flex-1 p-10 overflow-y-auto">
+        {/* --- FIM DA CORREÇÃO --- */}
         <h1 className="text-2xl font-semibold mb-6 flex items-center gap-2">
           Sua Biblioteca 🎶
         </h1>
@@ -58,7 +60,9 @@ export default function Library() {
         {loading ? (
           <p className="text-gray-500">Carregando biblioteca...</p>
         ) : musicas.length === 0 ? (
-          <p className="text-gray-400">Você ainda não adicionou músicas à biblioteca.</p>
+          <p className="text-gray-400">
+            Você ainda não adicionou músicas à biblioteca.
+          </p>
         ) : (
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
             {musicas.map((m) => (
