@@ -1,7 +1,10 @@
+// src/pages/Library.tsx
 import { useEffect, useState } from "react";
 import axios from "axios";
-import Sidebar from "@/components/Sidebar.tsx"; // Corrigido
+import Sidebar from "@/components/Sidebar.tsx"; // Import com alias
+import { ListMusic, Music } from "lucide-react"; // Ícones para os títulos
 
+// Interface para Músicas Salvas
 interface Musica {
   spotify_id: string;
   titulo: string;
@@ -10,8 +13,22 @@ interface Musica {
   url: string;
 }
 
+// Interface para Playlists Criadas
+interface Playlist {
+  id: number;
+  nome: string;
+  descricao?: string;
+}
+
+// Função de busca do Genius (corrigida)
+function getGeniusUrl(title: string, artist: string) {
+  const formattedQuery = encodeURIComponent(`${title} ${artist}`);
+  return `https://genius.com/search?q=${formattedQuery}`;
+}
+
 export default function Library() {
   const [musicas, setMusicas] = useState<Musica[]>([]);
+  const [playlists, setPlaylists] = useState<Playlist[]>([]); // Estado para playlists
   const [loading, setLoading] = useState(true);
 
   const API_BASE =
@@ -32,20 +49,30 @@ export default function Library() {
     }
   }, []);
 
+  // Busca Músicas e Playlists
   useEffect(() => {
     if (!userId) return;
-    const loadLibrary = async () => {
+    
+    const loadLibraryData = async () => {
+      setLoading(true);
       try {
-        const res = await axios.get(`${API_BASE}/api/library/${userId}`);
-        setMusicas(res.data);
+        // Busca os dois ao mesmo tempo
+        const [musicasRes, playlistsRes] = await Promise.all([
+          axios.get(`${API_BASE}/api/library/${userId}`),
+          axios.get(`${API_BASE}/api/playlists/${userId}`)
+        ]);
+        
+        setMusicas(musicasRes.data);
+        setPlaylists(playlistsRes.data);
+
       } catch (err) {
         console.error("Erro ao carregar biblioteca:", err);
       } finally {
         setLoading(false);
       }
     };
-    loadLibrary();
-  }, [userId]);
+    loadLibraryData();
+  }, [userId, API_BASE]); // Adicionei API_BASE aqui
 
   return (
     // --- LAYOUT CORRIGIDO ---
@@ -59,37 +86,83 @@ export default function Library() {
 
         {loading ? (
           <p className="text-gray-500">Carregando biblioteca...</p>
-        ) : musicas.length === 0 ? (
-          <p className="text-gray-400">
-            Você ainda não adicionou músicas à biblioteca.
-          </p>
         ) : (
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-            {musicas.map((m) => (
-              <div
-                key={m.spotify_id}
-                className="bg-white border rounded-xl shadow-sm hover:shadow-md transition p-3 flex flex-col gap-3"
-              >
-                <img
-                  src={m.imagem}
-                  alt={m.titulo}
-                  className="rounded-md w-full h-36 object-cover"
-                />
-                <div>
-                  <h3 className="font-medium truncate">{m.titulo}</h3>
-                  <p className="text-sm text-gray-500 truncate">{m.artista}</p>
+          <>
+            {/* --- SEÇÃO DE PLAYLISTS CRIADAS --- */}
+            {playlists.length > 0 && (
+              <div className="mb-8">
+                <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
+                  <ListMusic size={22} /> Suas Playlists
+                </h2>
+                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
+                  {playlists.map((pl) => (
+                    <div
+                      key={pl.id}
+                      className="bg-gray-50 border rounded-xl shadow-sm hover:shadow-md transition p-4 flex flex-col gap-3 cursor-pointer"
+                      // Futuramente, podemos fazer isso ser um link
+                      // onClick={() => navigate(`/playlist/${pl.id}`)} 
+                    >
+                      <div className="flex-1">
+                        <h3 className="font-medium text-lg truncate">{pl.nome}</h3>
+                        <p className="text-sm text-gray-500 truncate line-clamp-2">
+                          {pl.descricao || "Nenhuma descrição"}
+                        </p>
+                      </div>
+                      <p className="text-xs text-gray-400 mt-2">Playlist</p>
+                    </div>
+                  ))}
                 </div>
-                <a
-                  href={m.url}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="bg-green-500 hover:bg-green-600 text-white text-sm px-3 py-1 rounded-md text-center"
-                >
-                  Abrir no Spotify
-                </a>
+                <hr className="my-8" />
               </div>
-            ))}
-          </div>
+            )}
+            
+            {/* --- SEÇÃO DE MÚSICAS SALVAS --- */}
+            <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
+              <Music size={22} /> Músicas Salvas
+            </h2>
+            {musicas.length === 0 ? (
+              <p className="text-gray-400">Você ainda não adicionou músicas à biblioteca.</p>
+            ) : (
+              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
+                {musicas.map((m) => (
+                  <div
+                    key={m.spotify_id}
+                    className="bg-white border rounded-xl shadow-sm hover:shadow-md transition p-3 flex flex-col gap-3"
+                  >
+                    <img
+                      src={m.imagem}
+                      alt={m.titulo}
+                      className="rounded-md w-full h-36 object-cover"
+                    />
+                    <div>
+                      <h3 className="font-medium truncate">{m.titulo}</h3>
+                      <p className="text-sm text-gray-500 truncate">{m.artista}</p>
+                    </div>
+
+                    {/* --- LINKS (COM LETRA) --- */}
+                    <div className="flex justify-between items-center mt-auto pt-2">
+                      <a
+                        href={getGeniusUrl(m.titulo, m.artista)}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="text-xs text-blue-500 hover:underline"
+                      >
+                        Letra (Genius)
+                      </a>
+                      <a
+                        href={m.url}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="text-sm text-green-600 hover:underline"
+                      >
+                        Spotify
+                      </a>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </>
         )}
       </main>
     </div>

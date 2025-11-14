@@ -1,6 +1,7 @@
 // src/pages/CreatePlaylist.tsx
 import { useEffect, useState } from "react";
-import Sidebar from "../components/Sidebar";
+import Sidebar from "@/components/Sidebar.tsx";
+import axios from "axios"; // Importar axios
 
 interface PlaylistForm {
   nome: string;
@@ -48,28 +49,31 @@ export default function CreatePlaylist() {
       setCarregando(true);
       setMensagem("");
 
-      // por enquanto só fazemos um POST de exemplo
-      // quando o backend tiver a rota /api/playlists, é só ligar aqui
-      console.log("Criar playlist ->", {
+      // --- CORREÇÃO ---
+      // Agora chama o backend de verdade
+      const res = await axios.post(`${API_BASE}/api/playlists`, {
         usuario_id: userId,
-        ...form,
+        nome: form.nome,
+        descricao: form.descricao,
       });
+      // --- FIM DA CORREÇÃO ---
 
-      // simulando sucesso
-      setMensagem("Playlist criada (simulado). Integração com o backend vem em seguida.");
+      setMensagem(`Playlist "${res.data.nome}" criada com sucesso!`);
       setForm({ nome: "", descricao: "" });
-    } catch (err) {
+    } catch (err: any) {
       console.error("Erro ao criar playlist:", err);
-      setMensagem("Erro ao criar playlist.");
+      setMensagem(err.response?.data?.message || "Erro ao criar playlist.");
     } finally {
       setCarregando(false);
     }
   }
 
   return (
+    // --- LAYOUT CORRIGIDO ---
     <div className="flex h-screen bg-white text-gray-800 overflow-hidden">
       <Sidebar />
       <main className="flex-1 p-10 overflow-y-auto">
+        {/* --- FIM DA CORREÇÃO --- */}
         <h2 className="text-2xl font-semibold mb-2">Create Playlist</h2>
         <p className="text-gray-500 mb-8 text-sm">
           Crie uma playlist personalizada para organizar suas músicas favoritas.

@@ -1,6 +1,7 @@
+// src/pages/LikedSongs.tsx
 import { useEffect, useState } from "react";
 import axios from "axios";
-import Sidebar from "@/components/Sidebar.tsx"; // Corrigido
+import Sidebar from "@/components/Sidebar.tsx"; // Import com alias
 
 interface Musica {
   spotify_id: string;
@@ -8,6 +9,12 @@ interface Musica {
   artista: string;
   imagem: string;
   url: string;
+}
+
+// Função de busca do Genius (corrigida)
+function getGeniusUrl(title: string, artist: string) {
+  const formattedQuery = encodeURIComponent(`${title} ${artist}`);
+  return `https://genius.com/search?q=${formattedQuery}`;
 }
 
 export default function LikedSongs() {
@@ -45,7 +52,7 @@ export default function LikedSongs() {
       }
     };
     loadLikes();
-  }, [userId]);
+  }, [userId, API_BASE]); // Adicionei API_BASE
 
   return (
     // --- LAYOUT CORRIGIDO ---
@@ -62,7 +69,7 @@ export default function LikedSongs() {
         ) : musicas.length === 0 ? (
           <p className="text-gray-400">Você ainda não curtiu nenhuma música.</p>
         ) : (
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
             {musicas.map((m) => (
               <div
                 key={m.spotify_id}
@@ -77,19 +84,31 @@ export default function LikedSongs() {
                   <h3 className="font-medium truncate">{m.titulo}</h3>
                   <p className="text-sm text-gray-500 truncate">{m.artista}</p>
                 </div>
-                <a
-                  href={m.url}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="bg-green-500 hover:bg-green-600 text-white text-sm px-3 py-1 rounded-md text-center"
-                >
-                  Abrir no Spotify
-                </a>
+
+                {/* --- LINKS (COM LETRA) --- */}
+                <div className="flex justify-between items-center mt-auto pt-2">
+                  <a
+                    href={getGeniusUrl(m.titulo, m.artista)}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="text-xs text-blue-500 hover:underline"
+                  >
+                    Letra (Genius)
+                  </a>
+                  <a
+                    href={m.url}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="text-sm text-green-600 hover:underline"
+                  >
+                    Spotify
+                  </a>
+                </div>
               </div>
             ))}
           </div>
         )}
-      </main>
+      </a-main>
     </div>
   );
 }
